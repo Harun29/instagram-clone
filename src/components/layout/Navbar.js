@@ -3,6 +3,7 @@ import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLink";
 
 const Navbar = () => {
+
   return ( 
     <nav className="nav-wrapper">
       <div className="container">
