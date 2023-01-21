@@ -80,13 +80,27 @@ a{
 }
 
 .signed-in-out-links li{
-  padding: 1em;
+  padding: 0.5em  1em;
+  cursor: pointer;
+  border: 1px solid gray;
+  margin: 0 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+          /* profile picture wrapper */
+.signed-in-out-links li:nth-child(3){
+  border-radius: 50%;
 }
 
-.profile-picture-wrapper{
-  border: 1px solid black;
-  border-radius: 50%;
-  padding: 1em;
+.notif-button{
+  position: relative;
+}
+
+.notifications{
+  position: absolute;
+  top: 2em;
 }
 
 /* HOMEPAGE */
