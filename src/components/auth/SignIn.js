@@ -1,6 +1,6 @@
-const SignIn = () => {
+const SignIn = ({loginForm, setLoginForm}) => {
 
-  return ( 
+  return (
     <form className="login-form">
       <label>
         Email:
@@ -10,16 +10,16 @@ const SignIn = () => {
       </label>
 
       <label>
-        Password:
+        Password: 
         <input 
           type="password" 
         />
       </label>
 
       <input type="submit" name="" id="" />
-      <div className="close-button">X</div>
+      <div className="close-button" onClick={() => setLoginForm(!loginForm)}>X</div>
     </form>
   );
 }
- 
+
 export default SignIn;
