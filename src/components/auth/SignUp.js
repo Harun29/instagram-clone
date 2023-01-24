@@ -2,40 +2,31 @@ const SignUp = ({signupForm, setSignupForm}) => {
 
   return (
     <form className="login-signup-form">
-      <label>
-        Name:
-        <input 
-          type="text" 
-        />
-      </label>
+      
+      <div className="input-wrapper">
+        <label>Name: </label>
+        <input type="text" />
+      </div>
 
-      <label>
-        Username:
-        <input 
-          type="text" 
-        />
-      </label>
+      <div className="input-wrapper">
+        <label>Username: </label>
+        <input type="text" />
+      </div>
 
-      <label>
-        Age:
-        <input 
-          type="date" 
-        />
-      </label>
+      <div className="input-wrapper">
+        <label>Age: </label>
+        <input type="date" />
+      </div>
 
-      <label>
-        Email:
-        <input 
-          type="email" 
-        />
-      </label>
+      <div className="input-wrapper">
+        <label>Email: </label>
+        <input type="email" />
+      </div>
 
-      <label>
-        Password:
-        <input 
-          type="password" 
-        />
-      </label>
+      <div className="input-wrapper">
+        <label>Password: </label>
+        <input type="password" />
+      </div>
 
       <input type="submit" name="" id="" value="Signup"/>
       <div className="close-button" onClick={() => setSignupForm(!signupForm)}>X</div>
