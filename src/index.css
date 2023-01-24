@@ -146,7 +146,7 @@ a{
 
 /* LOGIN AND REGISTER */
 
-.login-form {
+.login-signup-form {
   position: fixed;
   
   display: flex;
@@ -173,12 +173,12 @@ a{
   cursor: pointer;
 }
 
-.login-form label{
+.login-signup-form label{
   padding: 1em;
   box-sizing: border-box;
 }
 
-.login-form input {
+.login-signup-form input {
   padding: 0.5em;
   margin: 0 1em;
   font-size: 1em;
