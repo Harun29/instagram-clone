@@ -1,4 +1,5 @@
 const SignIn = () => {
+
   return ( 
     <form className="login-form">
       <label>
@@ -16,6 +17,7 @@ const SignIn = () => {
       </label>
 
       <input type="submit" name="" id="" />
+      <div className="close-button">X</div>
     </form>
   );
 }

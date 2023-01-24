@@ -1,12 +1,18 @@
 import { NavLink } from "react-router-dom";
 import SignIn from "../auth/SignIn";
+import { useState } from "react";
 
 const SignedOutLinks = () => {
+
+  const [loginForm, setLoginForm] = useState(false)
+
   return (  
     <ul className="signed-in-out-links">
       <li><NavLink to='/'>Signup</NavLink></li>
-      <li><NavLink to='/'>Login</NavLink></li>
-      <SignIn />
+      <li onClick={() => (setLoginForm(!loginForm))}><NavLink to='/'>Login</NavLink></li>
+      {loginForm ? (
+        <SignIn />
+      ): null}
     </ul>
   );
 }
