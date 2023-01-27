@@ -10,8 +10,17 @@ const SignedOutLinks = () => {
 
   return (  
     <ul className="signed-in-out-links">
-      <li onClick={() => (setSignupForm(!signupForm))}><NavLink to='/'>Signup</NavLink></li>
-      <li onClick={() => (setLoginForm(!loginForm))}><NavLink to='/'>Login</NavLink></li>
+      <button 
+      onClick={() => (setSignupForm(!signupForm))}
+      className='navbar-button'>
+        <NavLink to='/'>Signup</NavLink>
+      </button>
+
+      <button 
+      onClick={() => (setLoginForm(!loginForm))}
+      className='navbar-button'>
+        <NavLink to='/'>Login</NavLink>
+      </button>
       {loginForm ? (
         <SignIn loginForm={loginForm} setLoginForm={setLoginForm}/>
       ): null}
