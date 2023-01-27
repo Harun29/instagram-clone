@@ -6,7 +6,8 @@ const SignIn = ({loginForm, setLoginForm}) => {
   const [password, setPassword] = useState('');
 
   return (
-    <form className="login-signup-form">
+    <form 
+    className="login-signup-form">
 
       <div className="input-wrapper">
         <label>Email: </label>
