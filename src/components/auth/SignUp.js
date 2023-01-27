@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const SignUp = ({signupForm, setSignupForm}) => {
 
@@ -65,7 +67,9 @@ const SignUp = ({signupForm, setSignupForm}) => {
       </div>
 
       <input type="submit" name="" id="" value="Signup"/>
-      <div className="close-button" onClick={() => setSignupForm(!signupForm)}>X</div>
+      <div className="close-button" onClick={() => setSignupForm(!signupForm)}>
+        <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
+      </div>
     </form>
   );
 }

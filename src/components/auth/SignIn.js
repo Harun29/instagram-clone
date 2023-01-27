@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const SignIn = ({loginForm, setLoginForm}) => {
 
@@ -28,7 +30,9 @@ const SignIn = ({loginForm, setLoginForm}) => {
       </div>
 
       <input type="submit" name="" id="" value="Login"/>
-      <div className="close-button" onClick={() => setLoginForm(!loginForm)}>X</div>
+      <div className="close-button" onClick={() => setLoginForm(!loginForm)}>
+        <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
+      </div>
     </form>
   );
 }

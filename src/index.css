@@ -53,6 +53,7 @@ svg{
 
 a{
   text-decoration: none;
+  color: inherit;
 }
 
 /* NAVBAR */
@@ -77,9 +78,10 @@ a{
 
 .signed-in-out-links{
   display: flex;
+  align-items: center;
 }
 
-.signed-in-out-links li{
+.signed-in-out-links button{
   padding: 0.5em  1em;
   cursor: pointer;
   border: 1px solid gray;
@@ -90,10 +92,20 @@ a{
   border-radius: 5px;
 }
 
-  /* profile picture wrapper */
-.signed-in-out-links li:nth-child(3){
-  border-radius: 50%;
+.signed-in-out-links button:hover{
+  background-color: red;
+  border: 1px solid white;
+  color: white;
 }
+
+  /* profile picture wrapper */
+
+.signed-in-out-links button:nth-child(3){
+  border-radius: 50%;
+  padding: 1.2em;
+  width: auto;
+}
+
 
 .notif-button{
   position: relative;
@@ -166,11 +178,20 @@ a{
   outline: 1000px solid rgba(50, 50, 50, 0.5);
 }
 
-.close-button{
+.close-button svg{
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   cursor: pointer;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.close-button:hover svg{
+  background-color: red;
+  border: 1px solid red;
+  color: white;
 }
 
 .login-signup-form label{
