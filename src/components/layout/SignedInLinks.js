@@ -16,8 +16,15 @@ const SignedInLinks = () => {
         ) : null}
       </button>
       
-      <button className="navbar-button"><NavLink to='/'>Log Out</NavLink></button>
-      <button className="profile-picture"><NavLink to='/' >HI</NavLink></button>
+      <NavLink to='/createpost'>
+        <button className="navbar-button">Post</button>
+      </NavLink>
+      <NavLink to='/'>
+        <button className="navbar-button">Log Out</button>
+      </NavLink>
+      <NavLink to='/' >
+        <button className="profile-picture">HI</button>
+      </NavLink>
     </ul>
   );
 }
