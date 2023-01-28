@@ -83,11 +83,11 @@ a{
   list-style: none;
 }
 
-.signed-in-out-links button:hover {
+.signed-in-out-links .navbar-button:hover {
   background-color: red;
   cursor: pointer;
-  color: white;
   border: 1px solid red;
+  color: white;
 }
 
 .navbar-button {
@@ -98,11 +98,11 @@ a{
   margin-right: 10px;
   font-size: 14px;
   border: 1px solid gray;
+  min-height: 100%;
 }
 
-.notif-button:hover {
-  background-color: #eee;
-  cursor: pointer;
+.notif-button{
+  position: relative;
 }
 
 .profile-picture {
@@ -131,6 +131,25 @@ a{
 
 .profile-picture:hover {
   background-color: #eee;
+}
+
+/* notifications */
+
+.notifications{
+  height: 200px;
+  width: 300px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  box-sizing: border-box;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+.close-notifications{
+  margin: 5px;
 }
 
 /* HOMEPAGE */

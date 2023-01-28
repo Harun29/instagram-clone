@@ -8,7 +8,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     console.log(title, description)
-  }, [title]);
+  }, [title, description]);
 
   return (  
     <form>

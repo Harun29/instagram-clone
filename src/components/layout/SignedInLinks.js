@@ -8,13 +8,12 @@ const SignedInLinks = () => {
 
   return ( 
     <ul className="signed-in-out-links">
-      <button onClick={() => setNotifDropdown(!notifDropdown)} className="navbar-button">
+      <button onClick={() => setNotifDropdown(!notifDropdown)} className="navbar-button notif-button">
         Notifications
-
-        {notifDropdown ? (
-        <Notifications />
-        ) : null}
       </button>
+      {notifDropdown ? (
+        <Notifications notifDropdown={notifDropdown} setNotifDropdown={setNotifDropdown}/>
+        ) : null}
       
       <NavLink to='/createpost'>
         <button className="navbar-button">Post</button>
@@ -22,9 +21,7 @@ const SignedInLinks = () => {
       <NavLink to='/'>
         <button className="navbar-button">Log Out</button>
       </NavLink>
-      <NavLink to='/' >
-        <button className="profile-picture">HI</button>
-      </NavLink>
+      <button className="profile-picture">HI</button>
     </ul>
   );
 }

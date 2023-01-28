@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import SignIn from "../auth/SignIn";
 import { useState } from "react";
 import SignUp from "../auth/SignUp";
@@ -13,13 +12,13 @@ const SignedOutLinks = () => {
       <button 
       onClick={() => (setSignupForm(!signupForm))}
       className='navbar-button'>
-        <NavLink to='/'>Signup</NavLink>
+      Signup
       </button>
 
       <button 
       onClick={() => (setLoginForm(!loginForm))}
       className='navbar-button'>
-        <NavLink to='/'>Login</NavLink>
+      Login
       </button>
       {loginForm ? (
         <SignIn loginForm={loginForm} setLoginForm={setLoginForm}/>
