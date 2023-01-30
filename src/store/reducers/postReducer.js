@@ -1,7 +1,10 @@
-const initState = {}
+import { createSlice } from "@reduxjs/toolkit";
 
-const postReducer = (state = initState, action) => {
-  return state
-}
+export const postSlice = createSlice({
+  name: "post",
+  initialState: {
+    header: ""
+  }
+});
 
-export default postReducer;
+export default postSlice.reducer;
