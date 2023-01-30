@@ -11,9 +11,9 @@ const CreatePost = () => {
   }, [title, description]);
 
   return (  
-    <form>
+    <form className="create-post">
       <h4>Create post</h4>
-      <div className="input-wrapper">
+      <div className="input-wrapper create-post-inputs">
         <label>Header</label>
         <input 
         type="text" 
@@ -21,7 +21,7 @@ const CreatePost = () => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}/>
       </div>
-      <div className="input-wrapper">
+      <div className="input-wrapper create-post-inputs">
         <textarea 
         id="description"
         required

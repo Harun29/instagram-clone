@@ -259,3 +259,20 @@ a{
   justify-content: space-between;
   width: 100%;
 }
+
+/* create post */
+
+.create-post{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  box-sizing: border-box;
+  margin: 0 35%;
+}
+
+.create-post-inputs{
+  display: flex;
+  flex-direction: column;
+}
