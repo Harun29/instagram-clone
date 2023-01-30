@@ -172,6 +172,7 @@ a{
   border: 1px solid gray;
   border-radius: 15px;
   display: flex;
+  flex-direction: column;
   min-height: 20em;
   max-height: 35em;
 }

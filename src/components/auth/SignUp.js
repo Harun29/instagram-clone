@@ -10,10 +10,6 @@ const SignUp = ({signupForm, setSignupForm}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    console.log(age);
-  }, [age]);
-
   return (
     <form 
     className="login-signup-form">

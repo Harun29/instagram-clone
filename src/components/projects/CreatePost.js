@@ -6,10 +6,6 @@ const CreatePost = () => {
   // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
 
-  useEffect(() => {
-    console.log(title, description)
-  }, [title, description]);
-
   return (  
     <form className="create-post">
       <h4>Create post</h4>
