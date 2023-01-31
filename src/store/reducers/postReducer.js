@@ -9,7 +9,17 @@ export const postSlice = createSlice({
       {id: '3', header: 'help me find apple', description: 'i have no idea where i lost it'},
       {id: '4', header: 'help me find apple', description: 'i have no idea where i lost it'}
     ]
+  },
+  reducers: {
+    addPost: (state, action) => {
+      state.posts = [...state.posts, action.payload];
+      console.log("action payload", action.payload);
+      console.log("state posts", state.posts);
+    }
   }
+
 });
+
+export const { addPost } = postSlice.actions
 
 export default postSlice.reducer;

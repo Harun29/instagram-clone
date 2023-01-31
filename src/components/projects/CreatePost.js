@@ -1,26 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
+import { addPost } from "../../store/reducers/postReducer";
 
 const CreatePost = () => {
   
   const [title, setTitle] = useState('');
   // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
+  // const  { posts } = useSelector((state) => state.post);
 
-  // const [newPost, setNewPost] = useState({
-  //   title: title,
-  //   description: description
-  // });
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   setNewPost({
-  //     title:title,
-  //     description: description
-  //   })
-  // }, [title, description])
+  const [newPost, setNewPost] = useState({
+    title: title,
+    description: description
+  });
+
+  useEffect(() => {
+    setNewPost({
+      title:title,
+      description: description
+    })
+  }, [title, description])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  };
+    dispatch(addPost(newPost));
+  }
 
   return (  
     <form 
