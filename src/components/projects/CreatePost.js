@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { createPost } from "../../store/actions/postActions";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
+import { addPost } from "../../store/reducers/postReducer";
 
 const CreatePost = () => {
   
   const [title, setTitle] = useState('');
   // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
+  // const  { posts } = useSelector((state) => state.post);
+
+  const dispatch = useDispatch()
 
   const [newPost, setNewPost] = useState({
     title: title,
@@ -22,7 +26,7 @@ const CreatePost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createPost(newPost);
+    dispatch(addPost(newPost));
   }
 
   return (  
@@ -50,10 +54,4 @@ const CreatePost = () => {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createPost: (post) => dispatch(createPost(post))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(CreatePost);
+export default CreatePost;
