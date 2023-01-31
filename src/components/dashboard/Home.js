@@ -8,7 +8,7 @@ const Home = () => {
 
   return (  
     <div className="home">
-      <PostsList />
+      <PostsList posts={ posts }/>
     </div>
   );
 }
