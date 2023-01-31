@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { createPost } from "../../store/actions/postActions";
+import { useState } from "react";
 
 const CreatePost = () => {
   
@@ -8,22 +6,21 @@ const CreatePost = () => {
   // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
 
-  const [newPost, setNewPost] = useState({
-    title: title,
-    description: description
-  });
+  // const [newPost, setNewPost] = useState({
+  //   title: title,
+  //   description: description
+  // });
 
-  useEffect(() => {
-    setNewPost({
-      title:title,
-      description: description
-    })
-  }, [title, description])
+  // useEffect(() => {
+  //   setNewPost({
+  //     title:title,
+  //     description: description
+  //   })
+  // }, [title, description])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createPost(newPost);
-  }
+  };
 
   return (  
     <form 
@@ -50,10 +47,4 @@ const CreatePost = () => {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createPost: (post) => dispatch(createPost(post))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(CreatePost);
+export default CreatePost;
