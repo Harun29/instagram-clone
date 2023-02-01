@@ -16,9 +16,29 @@ export const postSlice = createSlice({
       console.log("action payload", action.payload);
       console.log("state posts", state.posts);
     }
+  },
+  extraReducers: {
+    [addPostAsync.fulfilled]: (state, action) => {
+      state.posts = [...state.posts, action.payload];
+    }
   }
 
 });
+
+export const addPostAsync = post => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const newPost = {
+    header: post.header,
+    description: post.description,
+    createdAt: new Date()
+  };
+  try {
+    await firestore.collection("posts").add(newPost);
+    dispatch(addPost(newPost));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const { addPost } = postSlice.actions
 
