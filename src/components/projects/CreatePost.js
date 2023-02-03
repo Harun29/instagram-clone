@@ -1,7 +1,4 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-// import { useSelector } from "react-redux";
-import { addPost } from "../../store/reducers/postReducer";
+import { useState } from "react";
 
 const CreatePost = () => {
   
@@ -10,24 +7,21 @@ const CreatePost = () => {
   const [description, setDescription] = useState('');
   // const  { posts } = useSelector((state) => state.post);
 
-  const dispatch = useDispatch()
+  // const [newPost, setNewPost] = useState({
+  //   title: title,
+  //   description: description
+  // });
 
-  const [newPost, setNewPost] = useState({
-    title: title,
-    description: description
-  });
-
-  useEffect(() => {
-    setNewPost({
-      title:title,
-      description: description
-    })
-  }, [title, description])
+  // useEffect(() => {
+  //   setNewPost({
+  //     title:title,
+  //     description: description
+  //   })
+  // }, [title, description])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addPost(newPost));
-  }
+  };
 
   return (  
     <form 
