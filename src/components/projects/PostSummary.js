@@ -1,4 +1,8 @@
+// import { PostsProvider } from "../../context/PostContext";
+// import { useContext } from "react";
+
 const PostSummary = () => {
+
   return (  
   <div className="post-summary">
     <h3>Naslov posta</h3>

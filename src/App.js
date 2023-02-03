@@ -3,19 +3,22 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/dashboard/Home';
 import PostDetails from './components/projects/PostDetails';
 import CreatePost from './components/projects/CreatePost';
+import { PostsProvider } from './context/PostContext';
 
 function App() {
   return (
-    <Router>
+    <PostsProvider>
       <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/post/:id' element={<PostDetails />}/>
-          <Route path='/createpost' element={<CreatePost />}/>
-        </Routes>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/post/:id' element={<PostDetails />}/>
+              <Route path='/createpost' element={<CreatePost />}/>
+            </Routes>
+          </Router>
       </div>
-    </Router>
+    </PostsProvider>
   );
 }
 

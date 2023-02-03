@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import PostContext from "../../context/PostContext";
 
 const CreatePost = () => {
   
   const [title, setTitle] = useState('');
   // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
-  // const  { posts } = useSelector((state) => state.post);
 
-  // const [newPost, setNewPost] = useState({
-  //   title: title,
-  //   description: description
-  // });
-
-  // useEffect(() => {
-  //   setNewPost({
-  //     title:title,
-  //     description: description
-  //   })
-  // }, [title, description])
+  const {addToPosts} = useContext(PostContext);
 
   const handleSubmit = (e) => {
+    addToPosts(title, description);
     e.preventDefault();
   };
 
