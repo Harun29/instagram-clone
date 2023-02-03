@@ -6,7 +6,6 @@ const CreatePost = () => {
   const [title, setTitle] = useState('');
   // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
-
   const {addToPosts} = useContext(PostContext);
 
   const handleSubmit = (e) => {

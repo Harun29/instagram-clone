@@ -1,19 +1,26 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const PostContext = createContext();
 
-export function PostsProvider({childer}) {
+export function PostsProvider({children}) {
 
   const [posts, setPosts] = useState([]);
 
   const addToPosts = (header, description) => {
-    setPosts((prevState) => [...prevState, {header, description}])
-    console.log(posts);
+    setPosts((prevState) => [...prevState, {header, description}]);
   }
 
+  useEffect(() => {
+    console.log(posts)
+  }, [posts]);
+
   return (
-    <PostContext.Provider value={{posts, addToPosts}}>{childer}</PostContext.Provider>
+    <PostContext.Provider value={{posts, addToPosts}}>{children}</PostContext.Provider>
   )
-}
+};
 
 export default PostContext;
+
+
+
+
