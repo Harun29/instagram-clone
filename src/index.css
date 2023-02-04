@@ -261,6 +261,26 @@ a{
   width: 100%;
 }
 
+.google-signin-button {
+  border: none;
+  padding: 15px 20px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.google-signin-button:hover svg, .google-signin-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.google-signin-button svg{
+  margin-left: 10px;
+}
+
 /* create post */
 
 .create-post{

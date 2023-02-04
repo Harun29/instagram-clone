@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { auth, googleProvider } from "../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 
@@ -39,8 +40,12 @@ const SignIn = ({loginForm, setLoginForm}) => {
         onChange={(e) => setPassword(e.target.value)}/>
       </div>
 
-      <div className="input-wrapper">
-        <button onClick={signInWithGoogle}>Sign In With Google</button>
+      <div className="google-signin-wrapper">
+        <button 
+        className="google-signin-button" 
+        onClick={signInWithGoogle}>Sign In With Google
+        <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
+        </button>
       </div>
 
       <input type="submit" name="" id="" value="Login"/>

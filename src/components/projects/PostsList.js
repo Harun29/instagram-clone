@@ -1,12 +1,17 @@
 import PostSummary from "./PostSummary";
+import { useContext } from "react";
+import PostContext from "../../context/PostContext";
 
-const PostsList = ({posts}) => {
+const PostsList = () => {
+
+  const { posts } = useContext(PostContext);
+
   return (  
     <div className="posts-list">
 
       {posts && posts.map(post => {
         return(
-          <PostSummary />
+          <PostSummary header={post.header} description={post.description}/>
         )
       })}
 
