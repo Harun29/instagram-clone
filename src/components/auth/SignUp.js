@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { auth, googleProvider } from "../../config/firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 const SignUp = ({signupForm, setSignupForm}) => {
 
@@ -10,9 +12,26 @@ const SignUp = ({signupForm, setSignupForm}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const handleSubmit = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <form 
-    className="login-signup-form">
+    className="login-signup-form"
+    onSubmit={handleSubmit}>
       
       <div className="input-wrapper">
         <label>Name: </label>
@@ -60,6 +79,10 @@ const SignUp = ({signupForm, setSignupForm}) => {
         required
         value={password}
         onChange={(e) => setPassword(e.target.value)}/>
+      </div>
+
+      <div className="input-wrapper">
+        <button onClick={signInWithGoogle}>Sign In With Google</button>
       </div>
 
       <input type="submit" name="" id="" value="Signup"/>
