@@ -15,7 +15,9 @@ export function PostsProvider({children}) {
   }, [posts]);
 
   return (
-    <PostContext.Provider value={{posts, addToPosts}}>{children}</PostContext.Provider>
+    <PostContext.Provider value={{posts, addToPosts}}>
+      {children}
+    </PostContext.Provider>
   )
 };
 
