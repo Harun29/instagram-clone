@@ -1,16 +1,17 @@
 import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider } from "../../config/firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { auth } from "../../config/firebase";
+// import { googleProvider } from "../../config/firebase";
+// import { signInWithPopup } from "firebase/auth";
 import AuthContext from "../../context/AuthContext";
 
 const SignUp = ({signupForm, setSignupForm}) => {
 
-  const [name, setName] = useState('')
-  const [userName, setUserName] = useState('')
-  const [age, setAge] = useState('')
+  // const [name, setName] = useState('')
+  // const [userName, setUserName] = useState('')
+  // const [age, setAge] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -28,7 +29,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
     try{
       setError('');
       setLoading(true);
-      await signup(email, password)
+      await signup(email, password);
     } catch {
       e.preventDefault();
       setLoading(false);
@@ -37,20 +38,20 @@ const SignUp = ({signupForm, setSignupForm}) => {
 
   };
 
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const signInWithGoogle = async () => {
+  //   try {
+  //     await signInWithPopup(auth, googleProvider);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <form 
     className="login-signup-form"
     onSubmit={handleSubmit}>
       
-      <div className="input-wrapper">
+      {/* <div className="input-wrapper">
         <label>Name: </label>
         <input 
         type="text" 
@@ -78,7 +79,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
         value={age}
         onChange={(e) => setAge(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <div className="input-wrapper">
         <label>Email: </label>
@@ -107,13 +108,13 @@ const SignUp = ({signupForm, setSignupForm}) => {
         onChange={(e) => setConfirmPassword(e.target.value)}/>
       </div>
 
-      <div className="google-signin-wrapper">
+      {/* <div className="google-signin-wrapper">
         <button 
         className="google-signin-button" 
         onClick={signInWithGoogle}>Sign In With Google
         <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
         </button>
-      </div>
+      </div> */}
 
       <input disabled={loading} type="submit" name="" id="" value="Signup"/>
       <div className="close-button" onClick={() => setSignupForm(!signupForm)}>
