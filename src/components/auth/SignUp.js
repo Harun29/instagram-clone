@@ -19,7 +19,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
-     
+
     if (password !== confirmPassword){
       e.preventDefault();
       return setError('Passwords do not match')
@@ -30,7 +30,9 @@ const SignUp = ({signupForm, setSignupForm}) => {
       setLoading(true);
       await signup(email, password)
     } catch {
-      setError('Failed to create an accaunt')
+      e.preventDefault();
+      setLoading(false);
+      setError('failed to create an accaunt')
     }
 
   };
