@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 // import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 // import { auth } from "../../config/firebase";
 // import { googleProvider } from "../../config/firebase";
 // import { signInWithPopup } from "firebase/auth";
-import AuthContext from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const SignUp = ({signupForm, setSignupForm}) => {
 
@@ -15,9 +15,11 @@ const SignUp = ({signupForm, setSignupForm}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const {signup} = useContext(AuthContext)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const {signup} = useAuth()
+  
 
   const handleSubmit = async (e) => {
 
@@ -25,15 +27,15 @@ const SignUp = ({signupForm, setSignupForm}) => {
       e.preventDefault();
       return setError('Passwords do not match')
     }
-
     try{
       setError('');
       setLoading(true);
       await signup(email, password);
-    } catch {
+    } catch (err) {
       e.preventDefault();
       setLoading(false);
       setError('failed to create an accaunt')
+      console.log(err);
     }
 
   };

@@ -9,8 +9,8 @@ const CreatePost = () => {
   const {addToPosts} = useContext(PostContext);
 
   const handleSubmit = (e) => {
-    addToPosts(title, description);
     e.preventDefault();
+    addToPosts(title, description);
   };
 
   return (  

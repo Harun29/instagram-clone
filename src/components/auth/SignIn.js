@@ -1,26 +1,46 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider } from "../../config/firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { auth, googleProvider } from "../../config/firebase";
+// import { signInWithPopup } from "firebase/auth";
+import { useAuth } from "../../context/AuthContext";
 
 const SignIn = ({loginForm, setLoginForm}) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const {login} = useAuth();
 
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
+  // const signInWithGoogle = async () => {
+  //   try {
+  //     await signInWithPopup(auth, googleProvider);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+
+    try{
+      setError('');
+      setLoading(true);
+      await login(email, password);
     } catch (err) {
-      console.error(err);
+      e.preventDefault();
+      setLoading(false);
+      setError('failed to create an accaunt')
+      console.log(err);
     }
+
   };
 
   return (
     <form 
     className="login-signup-form">
+    onSubmit={handleSubmit}
 
       <div className="input-wrapper">
         <label>Email: </label>
@@ -40,15 +60,16 @@ const SignIn = ({loginForm, setLoginForm}) => {
         onChange={(e) => setPassword(e.target.value)}/>
       </div>
 
-      <div className="google-signin-wrapper">
+      {/* <div className="google-signin-wrapper">
         <button 
         className="google-signin-button" 
         onClick={signInWithGoogle}>Sign In With Google
         <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
         </button>
-      </div>
+      </div> */}
 
-      <input type="submit" name="" id="" value="Login"/>
+      <input disabled={loading} type="submit" name="" id="" value="Login"/>
+      <p>{error}</p>
       <div className="close-button" onClick={() => setLoginForm(!loginForm)}>
         <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
       </div>
