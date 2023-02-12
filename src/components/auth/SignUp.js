@@ -6,6 +6,8 @@ import { googleProvider } from "../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
 import { auth } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
+
 
 const SignUp = ({signupForm, setSignupForm}) => {
 
@@ -17,6 +19,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const {signup} = useAuth()
   
@@ -29,6 +32,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
       setError('');
       setLoading(true);
       await signup(email, password);
+      navigate('/')
     } catch (err) {
       setLoading(false);
       setError('failed to create an accaunt')
@@ -37,9 +41,11 @@ const SignUp = ({signupForm, setSignupForm}) => {
 
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (e) => {
+    e.preventDefault();
     try {
       await signInWithPopup(auth, googleProvider);
+      navigate('/');
     } catch (err) {
       console.error(err);
     }

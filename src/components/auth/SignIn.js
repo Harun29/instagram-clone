@@ -5,6 +5,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { auth, googleProvider } from "../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = ({loginForm, setLoginForm}) => {
 
@@ -13,10 +14,13 @@ const SignIn = ({loginForm, setLoginForm}) => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const {login} = useAuth();
+  const navigate = useNavigate();
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (e) => {
+    e.preventDefault();
     try {
       await signInWithPopup(auth, googleProvider);
+      navigate('/');
     } catch (err) {
       console.error(err);
     }
@@ -28,6 +32,7 @@ const SignIn = ({loginForm, setLoginForm}) => {
       setError('');
       setLoading(true);
       await login(email, password);
+      navigate('/');
     } catch (err) {
       setLoading(false);
       setError('Failed to login')

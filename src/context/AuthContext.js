@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword,
-        signInWithEmailAndPassword } from "firebase/auth";
+        signInWithEmailAndPassword,
+        signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 
 const AuthContext = createContext();
@@ -15,7 +16,6 @@ export function AuthProvider ({children}) {
   const [loading, setLoading] = useState(true)
 
   function signup(email, password) {
-    console.log('user is trying to be crated');
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
@@ -23,11 +23,14 @@ export function AuthProvider ({children}) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  function logout() {
+    return signOut(auth)
+  }
+
 
   /* why are we using unsubscribe */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
-      console.log('user state changed')
       setCurrentUser(user)
       setLoading(false)
     })
@@ -37,7 +40,8 @@ export function AuthProvider ({children}) {
   const value = {
     currentUser,
     signup,
-    login
+    login,
+    logout
   }
 
   return (  
