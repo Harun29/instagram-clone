@@ -70,7 +70,6 @@ a{
   display: flex;
   justify-content: space-between;
   width: 100%;
-  position: relative;
 }
 
 .brand-logo{
@@ -117,10 +116,6 @@ a{
   border-radius: 50%;
   border: 1px solid gray;
 
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translate(0, -50%);
 }
 
 .profile-picture a {
