@@ -79,7 +79,7 @@ const SignIn = ({loginForm, setLoginForm}) => {
         <Link to="/forgot-password">Forgot password?</Link>
       </div>
 
-      <p>{error}</p>
+      {error && <p>{error}</p>}
       <div className="close-button" onClick={() => setLoginForm(!loginForm)}>
         <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
       </div>
