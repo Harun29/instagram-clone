@@ -54,6 +54,15 @@ svg{
 a{
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
+}
+
+.center-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+  min-height: calc(100vh - 100px);
 }
 
 /* NAVBAR */
@@ -274,6 +283,29 @@ a{
 
 .google-signin-button svg{
   margin-left: 10px;
+}
+
+/* password reset */
+
+.password-reset-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30rem;
+  height: 40rem;
+  border-radius: 10px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.password-reset-form label{
+  margin: 50px 0;
+  font-size: large;
+}
+
+.password-reset-form input{
+  margin: 50px 0;
 }
 
 /* create post */

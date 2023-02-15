@@ -3,6 +3,7 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/dashboard/Home'
 import PostDetails from './components/projects/PostDetails';
 import CreatePost from './components/projects/CreatePost';
+import ForgotPassword from './components/auth/ForgotPassword';
 import { PostsProvider } from './context/PostContext';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRouteForProfile from './components/PrivateRouteForProfile';
@@ -18,6 +19,7 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='/post/:id' element={<PostDetails />}/>
               <Route path='/createpost' element={<CreatePost />}/>
+              <Route path='/forgot-password' element={<ForgotPassword />}/>
               <Route path='/profile' element={<PrivateRouteForProfile />}/>
             </Routes>
           </Router>

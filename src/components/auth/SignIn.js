@@ -6,6 +6,7 @@ import { auth, googleProvider } from "../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SignIn = ({loginForm, setLoginForm}) => {
 
@@ -73,6 +74,11 @@ const SignIn = ({loginForm, setLoginForm}) => {
       </div>
 
       <input disabled={loading} type="submit" name="" id="" value="Login"/>
+
+      <div className="forgot-password-label">
+        <Link to="/forgot-password">Forgot password?</Link>
+      </div>
+
       <p>{error}</p>
       <div className="close-button" onClick={() => setLoginForm(!loginForm)}>
         <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
