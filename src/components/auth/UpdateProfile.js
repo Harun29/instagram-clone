@@ -13,7 +13,7 @@ const UpdateProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { currentUser, updateEmail, updatePassword } = useAuth()
+  const { currentUser, emailUpdate, passwordUpdate } = useAuth()
   const navigate = useNavigate()
   
   const handleSubmit = (e) => {
@@ -21,23 +21,29 @@ const UpdateProfile = () => {
     if (password !== confirmPassword){
       return setError('Passwords do not match')
     }
+
+    const promises = []
+    setLoading(true)
+    setError('')
+
+    if (email !== currentUser.email){
+      promises.push(emailUpdate(email))
+    }
+    if (password) {
+      promises.push(passwordUpdate(password))
+    }
+
+    Promise.all(promises).then(() => {
+      navigate('/')
+    }).catch(() => {
+      setError('Failed to update account')
+    }).finally(() => {
+      setLoading(false)
+    })
+
   };
 
-  const promises = []
-  if (email !== currentUser.email){
-    promises.push(updateEmail(email))
-  }
-  if (password) {
-    promises.push(updatePassword(password))
-  }
-
-  Promise.all(promises).then(() => {
-    navigate('/')
-  }).catch(() => {
-    setError('Failed to update account')
-  }).finally(() => {
-    setLoading(false)
-  })
+  
 
   return (
     <form 
@@ -77,17 +83,16 @@ const UpdateProfile = () => {
       <div className="input-wrapper">
         <label>Email: </label>
         <input 
-        type="email" 
-        required
-        value={currentUser.email}
+        type="email"
+        value={email}
+        placeholder={currentUser.email}
         onChange={(e) => setEmail(e.target.value)}/>
       </div>
 
       <div className="input-wrapper">
         <label>New password: </label>
         <input 
-        type="password" 
-        required
+        type="password"
         value={password}
         placeholder="leave blank to the same"
         onChange={(e) => setPassword(e.target.value)}/>
@@ -96,8 +101,7 @@ const UpdateProfile = () => {
       <div className="input-wrapper">
         <label>Confirm Password: </label>
         <input 
-        type="password" 
-        required
+        type="password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}/>
       </div>
