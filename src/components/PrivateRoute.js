@@ -1,16 +1,16 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Profile from './projects/Profile'
+// import Profile from './projects/Profile'
 
-const PrivateRouteForProfile = (...rest) => {
+const PrivateRoute = ({component: Component, ...rest}) => {
   const { currentUser } = useAuth();
 
   return currentUser ? (
-    <Profile {...rest}/>
+    <Component {...rest}/>
   ) : (
     <Navigate to="/" />
   );
 
 };
 
-export default PrivateRouteForProfile;
+export default PrivateRoute;

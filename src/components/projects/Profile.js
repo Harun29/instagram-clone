@@ -1,6 +1,7 @@
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
 
@@ -27,6 +28,9 @@ const Profile = () => {
       <h5>Email: {currentUser.email}</h5>
       <button className="navbar-button" onClick={handleLoogout}>Log Out</button>
       {error && <div>{error}</div>}
+      <Link to="../update-profile">
+        <button>Update</button>
+      </Link>
     </div>
   );
 }

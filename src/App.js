@@ -4,9 +4,12 @@ import Home from './components/dashboard/Home'
 import PostDetails from './components/projects/PostDetails';
 import CreatePost from './components/projects/CreatePost';
 import ForgotPassword from './components/auth/ForgotPassword';
+import Profile from './components/projects/Profile';
+import UpdateProfile from './components/auth/UpdateProfile';
+
 import { PostsProvider } from './context/PostContext';
 import { AuthProvider } from './context/AuthContext';
-import PrivateRouteForProfile from './components/PrivateRouteForProfile';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -20,7 +23,8 @@ function App() {
               <Route path='/post/:id' element={<PostDetails />}/>
               <Route path='/createpost' element={<CreatePost />}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
-              <Route path='/profile' element={<PrivateRouteForProfile />}/>
+              <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
+              <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
             </Routes>
           </Router>
       </div>
