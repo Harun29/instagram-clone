@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -7,6 +7,8 @@ import { signInWithPopup } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../config/firebase"
 
 
 const SignUp = ({signupForm, setSignupForm}) => {
@@ -23,8 +25,29 @@ const SignUp = ({signupForm, setSignupForm}) => {
 
   const {signup} = useAuth()
   
+  const [user, setUser] = useState({})
+
+  const addData = async (data) => {
+    try {
+      const docRef = await addDoc(collection(db, 'users'), data);
+      console.log('Document written with ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+  }
+
+  useEffect(() => {
+    setUser({
+      email: email,
+      name: name,
+      userName: userName,
+      age: age
+    });
+  }, [email, name, userName, age])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (password !== confirmPassword){
       return setError('Passwords do not match')
     }
@@ -32,13 +55,13 @@ const SignUp = ({signupForm, setSignupForm}) => {
       setError('');
       setLoading(true);
       await signup(email, password);
+      await addData(user);
       navigate('/')
     } catch (err) {
       setLoading(false);
       setError('failed to create an accaunt')
-      console.log(err);
+      console.error(err);
     }
-
   };
 
   const signInWithGoogle = async (e) => {
