@@ -11,9 +11,8 @@ const Profile = () => {
   const navigate = useNavigate();
 
 
-  const handleLoogout = async () => {
+  const handleLogout = async () => {
     setError('')
-
     try{
       await logout()
       navigate('/')
@@ -26,7 +25,7 @@ const Profile = () => {
   return (
     <div className="profile">
       <h5>Email: {currentUser.email}</h5>
-      <button className="navbar-button" onClick={handleLoogout}>Log Out</button>
+      <button className="navbar-button" onClick={handleLogout}>Log Out</button>
       {error && <div>{error}</div>}
       <Link to="../update-profile">
         <button>Update</button>
