@@ -11,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 const SignUp = ({signupForm, setSignupForm}) => {
 
-  // const [name, setName] = useState('')
-  // const [userName, setUserName] = useState('')
-  // const [age, setAge] = useState('')
+  const [name, setName] = useState('')
+  const [userName, setUserName] = useState('')
+  const [age, setAge] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -56,7 +56,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
     className="login-signup-form"
     onSubmit={handleSubmit}>
       
-      {/* <div className="input-wrapper">
+      <div className="input-wrapper">
         <label>Name: </label>
         <input 
         type="text" 
@@ -84,7 +84,7 @@ const SignUp = ({signupForm, setSignupForm}) => {
         value={age}
         onChange={(e) => setAge(e.target.value)}
         />
-      </div> */}
+      </div>
 
       <div className="input-wrapper">
         <label>Email: </label>
