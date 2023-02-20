@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword,
         updatePassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { db } from "../config/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -44,6 +44,20 @@ export function AuthProvider ({children}) {
     return updateEmail(auth.currentUser, email)
   }
 
+  async function nameUpdate(email, name) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+  
+    if (querySnapshot.docs.length === 1) {
+      const docRef = doc(db, "users", querySnapshot.docs[0].id);
+      return updateDoc(docRef, { name: name });
+    } else {
+      throw new Error("User not found or multiple users found with the same email.");
+    }
+  }
+  
+
   const getUserByEmail = async (email) => {
     const usersRef = collection(db, 'users');
     const q = query(usersRef, where('email', '==', email));
@@ -76,6 +90,7 @@ export function AuthProvider ({children}) {
     resetPassword,
     passwordUpdate,
     emailUpdate,
+    nameUpdate,
     getUserByEmail
   }
 

@@ -16,9 +16,7 @@ const Profile = () => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmail(email);
       setUser(user);
-      console.log("test: ", user);
     }
-
     try{
       currentUser && fetchUserByEmail(currentUser.email)
     }

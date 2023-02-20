@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = () => {
 
-  // const [name, setName] = useState('')
+  const [name, setName] = useState('')
   // const [userName, setUserName] = useState('')
   // const [age, setAge] = useState('')
   const [email, setEmail] = useState('')
@@ -13,7 +13,7 @@ const UpdateProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { currentUser, emailUpdate, passwordUpdate } = useAuth()
+  const { currentUser, emailUpdate, passwordUpdate, nameUpdate } = useAuth()
   const navigate = useNavigate()
   
   const handleSubmit = (e) => {
@@ -32,11 +32,15 @@ const UpdateProfile = () => {
     if (password) {
       promises.push(passwordUpdate(password))
     }
+    if (name) {
+      promises.push(nameUpdate(currentUser.email, name))
+    }
 
     Promise.all(promises).then(() => {
       navigate('/')
-    }).catch(() => {
+    }).catch((err) => {
       setError('Failed to update account')
+      console.log(err)
     }).finally(() => {
       setLoading(false)
     })
@@ -50,7 +54,7 @@ const UpdateProfile = () => {
     className="login-signup-form"
     onSubmit={handleSubmit}>
       
-      {/* <div className="input-wrapper">
+      <div className="input-wrapper">
         <label>Name: </label>
         <input 
         type="text" 
@@ -60,7 +64,7 @@ const UpdateProfile = () => {
         />
       </div>
 
-      <div className="input-wrapper">
+      {/* <div className="input-wrapper">
         <label>Username: </label>
         <input 
         type="text" 
