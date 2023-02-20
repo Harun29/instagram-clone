@@ -13,7 +13,7 @@ const UpdateProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { currentUser, emailUpdate, passwordUpdate, nameUpdate, userNameUpdate } = useAuth()
+  const { currentUser, emailUpdate, passwordUpdate, nameUpdate, userNameUpdate, birthdayUpdate } = useAuth()
   const navigate = useNavigate()
   
   const handleSubmit = (e) => {
@@ -37,6 +37,9 @@ const UpdateProfile = () => {
     }
     if (userName) {
       promises.push(userNameUpdate(currentUser.email, userName))
+    }
+    if (age) {
+      promises.push(birthdayUpdate(currentUser.email, age))
     }
 
     Promise.all(promises).then(() => {
