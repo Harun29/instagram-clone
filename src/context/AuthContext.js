@@ -6,8 +6,8 @@ import { createUserWithEmailAndPassword,
         updateEmail,
         updatePassword } from "firebase/auth";
 import { auth } from "../config/firebase";
-// import { db } from "../config/firebase";
-// import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../config/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -44,19 +44,19 @@ export function AuthProvider ({children}) {
     return updateEmail(auth.currentUser, email)
   }
 
-  // const getUserByEmail = async (email) => {
-  //   const usersRef = collection(db, 'users');
-  //   const q = query(usersRef, where('email', '==', email));
-  //   const querySnapshot = await getDocs(q);
+  const getUserByEmail = async (email) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
   
-  //   if (querySnapshot.empty) {
-  //     console.error('No matching documents for email:', email);
-  //     return null;
-  //   }
+    if (querySnapshot.empty) {
+      console.error('No matching documents for email:', email);
+      return null;
+    }
   
-  //   const user = querySnapshot.docs[0].data();
-  //   return user;
-  // }
+    const user = querySnapshot.docs[0].data();
+    return user;
+  }
 
   /* why are we using unsubscribe */
   useEffect(() => {
@@ -75,7 +75,8 @@ export function AuthProvider ({children}) {
     logout,
     resetPassword,
     passwordUpdate,
-    emailUpdate
+    emailUpdate,
+    getUserByEmail
   }
 
   return (  
