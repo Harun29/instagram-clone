@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 const UpdateProfile = () => {
 
   const [name, setName] = useState('')
-  // const [userName, setUserName] = useState('')
-  // const [age, setAge] = useState('')
+  const [userName, setUserName] = useState('')
+  const [age, setAge] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { currentUser, emailUpdate, passwordUpdate, nameUpdate } = useAuth()
+  const { currentUser, emailUpdate, passwordUpdate, nameUpdate, userNameUpdate } = useAuth()
   const navigate = useNavigate()
   
   const handleSubmit = (e) => {
@@ -34,6 +34,9 @@ const UpdateProfile = () => {
     }
     if (name) {
       promises.push(nameUpdate(currentUser.email, name))
+    }
+    if (userName) {
+      promises.push(userNameUpdate(currentUser.email, userName))
     }
 
     Promise.all(promises).then(() => {
@@ -57,18 +60,16 @@ const UpdateProfile = () => {
       <div className="input-wrapper">
         <label>Name: </label>
         <input 
-        type="text" 
-        required
+        type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         />
       </div>
 
-      {/* <div className="input-wrapper">
+      <div className="input-wrapper">
         <label>Username: </label>
         <input 
-        type="text" 
-        required
+        type="text"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         />
@@ -77,12 +78,11 @@ const UpdateProfile = () => {
       <div className="input-wrapper">
         <label>Age: </label>
         <input 
-        type="date" 
-        required
+        type="date"
         value={age}
         onChange={(e) => setAge(e.target.value)}
         />
-      </div> */}
+      </div>
 
       <div className="input-wrapper">
         <label>Email: </label>
