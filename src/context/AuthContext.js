@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword,
         updatePassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { db } from "../config/firebase";
-import { collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -105,6 +105,26 @@ export function AuthProvider ({children}) {
       setLoading(false);
     })
     return unsubscribe
+  }, [])
+
+
+/* WILL USE IN ANOTHER PROJECT */
+
+  useEffect(async() => {
+    const usersRef = collection(db, 'users');
+    const querySnapshot = await getDocs(usersRef);
+
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data())
+      console.log(doc.id)
+    })
+  }, [])
+
+  useEffect(async() => {
+    const docRef = doc(db, 'users', 'tBSqAN37R82YQatxVUdD')
+    const querySnapshot = await getDoc(docRef);
+
+    console.log(querySnapshot.data())
   }, [])
 
 
