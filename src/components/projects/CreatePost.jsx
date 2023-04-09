@@ -4,7 +4,6 @@ import PostContext from "../../context/PostContext";
 const CreatePost = () => {
   
   const [title, setTitle] = useState('');
-  // const [postPicture, setPostPicture] = useState('');
   const [description, setDescription] = useState('');
   const {addToPosts} = useContext(PostContext);
 

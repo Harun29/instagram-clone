@@ -10,10 +10,6 @@ export function PostsProvider({children}) {
     setPosts((prevState) => [...prevState, {header, description}]);
   }
 
-  useEffect(() => {
-    console.log(posts)
-  }, [posts]);
-
   return (
     <PostContext.Provider value={{posts, addToPosts}}>
       {children}

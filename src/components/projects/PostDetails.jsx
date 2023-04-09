@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 const PostDetails = () => {
   
   const params = useParams();
-  console.log(params);
 
   return (  
     <div className="post-details">
