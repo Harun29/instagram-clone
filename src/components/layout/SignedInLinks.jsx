@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faPerson } from "@fortawesome/free-solid-svg-icons";
 
 const SignedInLinks = () => {
 
@@ -22,9 +22,17 @@ const SignedInLinks = () => {
       <NavLink to='/createpost'>
         <Button className="me-2">Post</Button>
       </NavLink>
-      <NavLink to='/profile'>
-        <Button className="me-2">Profile</Button>
-      </NavLink>
+
+      <div className="dropdown">
+        <Button className="btn dropdown-toggle" type="button" id="profile-dropdown" data-bs-toggle="dropdown">
+          <FontAwesomeIcon icon={faPerson} className="text-white"></FontAwesomeIcon>
+        </Button>
+        <div className="dropdown-menu" aria-labelledby="profile-dropdown">
+          <NavLink to="profile" className="dropdown-item">Profile</NavLink>
+          <NavLink to="update-profile" className="dropdown-item">Settings</NavLink>
+          <button className="dropdown-item">Logout</button>
+        </div>
+      </div>
     </ul>
   );
 }
