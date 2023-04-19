@@ -19,6 +19,7 @@ export function AuthProvider ({children}) {
 
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false);
 
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -40,15 +41,36 @@ export function AuthProvider ({children}) {
     return updatePassword(auth.currentUser, password)
   }
 
-  function emailUpdate(email) {
-    return updateEmail(auth.currentUser, email)
+  async function emailUpdate(currentEmail, email) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", currentEmail));
+    const querySnapshot = await getDocs(q);
+    setError(false);
+
+    const authUpdate = async() => {
+      try{
+        updateEmail(auth.currentUser, email)}
+      catch(err){
+        setError(true);
+        throw new Error("Failed changing email!");
+      }
+    }
+
+    await authUpdate();
+    
+    if (querySnapshot.docs.length === 1 && !error) {
+      const docRef = doc(db, "users", querySnapshot.docs[0].id);
+      return updateDoc(docRef, { email: email });
+    } else {
+      throw new Error("User not found or multiple users found with the same email.");
+    }
   }
 
   async function nameUpdate(email, name) {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
     const querySnapshot = await getDocs(q);
-  
+
     if (querySnapshot.docs.length === 1) {
       const docRef = doc(db, "users", querySnapshot.docs[0].id);
       return updateDoc(docRef, { name: name });
