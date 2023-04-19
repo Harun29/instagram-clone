@@ -1,6 +1,7 @@
 import SignIn from "../auth/SignIn";
 import { useState } from "react";
 import SignUp from "../auth/SignUp";
+import Button from "react-bootstrap/Button"
 
 const SignedOutLinks = () => {
 
@@ -9,17 +10,17 @@ const SignedOutLinks = () => {
 
   return (  
     <ul className="signed-in-out-links">
-      <button 
+      <Button 
       onClick={() => (setSignupForm(!signupForm))}
-      className='navbar-button'>
+      className='navbar-button me-3'>
       Signup
-      </button>
+      </Button>
 
-      <button 
+      <Button 
       onClick={() => (setLoginForm(!loginForm))}
       className='navbar-button'>
       Login
-      </button>
+      </Button>
       {loginForm ? (
         <SignIn loginForm={loginForm} setLoginForm={setLoginForm}/>
       ): null}

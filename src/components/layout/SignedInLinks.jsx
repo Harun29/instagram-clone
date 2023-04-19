@@ -2,8 +2,32 @@ import { NavLink } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPerson } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { useEffect, useState } from "react";
 
 const SignedInLinks = () => {
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const [error, setError] = useState("");
+
+  const handleLogout = async () => {
+    setError('')
+    try{
+      await logout()
+      navigate('/')
+    } catch (err) {
+      setError('Failed to logout')
+      console.log(err)
+    }
+  }
+
+  useEffect(()=>{
+    if(error){
+      console.log(error)
+    }
+  }, [error])
 
   return ( 
     <ul className="d-flex mt-3">
@@ -30,7 +54,7 @@ const SignedInLinks = () => {
         <div className="dropdown-menu" aria-labelledby="profile-dropdown">
           <NavLink to="profile" className="dropdown-item">Profile</NavLink>
           <NavLink to="update-profile" className="dropdown-item">Settings</NavLink>
-          <button className="dropdown-item">Logout</button>
+          <button onClick={handleLogout} className="dropdown-item">Logout</button>
         </div>
       </div>
     </ul>

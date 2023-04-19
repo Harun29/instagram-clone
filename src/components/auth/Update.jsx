@@ -5,11 +5,8 @@ import { Link } from "react-router-dom";
 const UpdateProfile = () => {
 
   const { currentUser } = useAuth();
-  const { logout, getUserByEmail } = useAuth();
-
-  const [error, setError] = useState("");
+  const { getUserByEmail } = useAuth();
   const [user, setUser] = useState();
-  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -23,17 +20,6 @@ const UpdateProfile = () => {
       console.error(err)
     }
   }, [currentUser, getUserByEmail])
-
-  // const handleLogout = async () => {
-  //   setError('')
-  //   try{
-  //     await logout()
-  //     navigate('/')
-  //   } catch (err) {
-  //     setError('Failed to logout')
-  //     console.log(err)
-  //   }
-  // }
 
   if(user){
     return (
@@ -51,7 +37,6 @@ const UpdateProfile = () => {
           <Link to="birthday-update" className="ms-3">Update</Link>
         </h5>
         <Link to="password-update" className="ms-3">Update password</Link>
-        {error && <div>{error}</div>}
       </div>
     );
   } else {
