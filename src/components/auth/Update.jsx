@@ -10,7 +10,7 @@ const UpdateProfile = () => {
 
   const [error, setError] = useState("");
   const [user, setUser] = useState();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -43,14 +43,15 @@ const UpdateProfile = () => {
           <Link to="email-update" className="ms-3">Update</Link>
         </h5>
         <h5>Name: {user.name}
-          <Link to="#" className="ms-3">Update</Link>
+          <Link to="name-update" className="ms-3">Update</Link>
         </h5>
         <h5>Username: {user.userName}
-          <Link to="#" className="ms-3">Update</Link>
+          <Link to="username-update" className="ms-3">Update</Link>
         </h5>
         <h5>birth date: {user.age}
-          <Link to="#" className="ms-3">Update</Link>
+          <Link to="birthday-update" className="ms-3">Update</Link>
         </h5>
+        <Link to="password-update" className="ms-3">Update password</Link>
         {error && <div>{error}</div>}
       </div>
     );
