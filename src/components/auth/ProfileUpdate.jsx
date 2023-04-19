@@ -290,4 +290,73 @@ const UserNameUpdate = () => {
     );
 }
 
-export {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate}
+const BirthdayUpdate = () => {
+
+  const [birthday, setBirthday] = useState('')
+  const [error, setError] = useState('')
+  const [status, setStatus] = useState('')
+  const {birthdayUpdate} = useAuth()
+  const [loading, setLoading] = useState(false)
+  const {currentUser} = useAuth();
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setLoading(true)
+    setError('')
+    setStatus('')
+
+    async function updateBirthday(){
+
+      try{
+        await birthdayUpdate(currentUser.email, birthday);
+        setStatus("Birthday updated!")
+      }
+      catch(err){
+        setError("Failed to update birthday!")
+        setStatus('')
+        console.log('errorcina')
+        console.log("error: ", err)
+        setLoading(false)
+      }
+      finally{
+        setLoading(false)
+      }
+    }
+
+    updateBirthday();
+
+    }
+
+    return (
+      <form 
+      className="login-signup-form mt-3"
+      onSubmit={handleSubmit}>
+        
+        <div className="input-wrapper">
+          <input 
+          type="date"
+          required
+          value={birthday} 
+          onChange={(e) => setBirthday(e.target.value)}
+          />
+        </div>
+  
+        <input disabled={loading} type="submit" name="" id="" value="Update"/>
+  
+        {error && <p>{error}</p>}
+        {status && 
+        <div>
+          <p>
+            {status}
+          </p>
+          <Link to="/">
+            Back to home page
+          </Link>
+        </div>}
+        
+      </form>
+    );
+}
+
+export {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate, BirthdayUpdate}

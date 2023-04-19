@@ -6,7 +6,7 @@ import CreatePost from './components/projects/CreatePost';
 import ForgotPassword from './components/auth/ForgotPassword';
 import Profile from './components/projects/Profile';
 import UpdateProfile from './components/auth/Update';
-import {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate} from './components/auth/ProfileUpdate';
+import {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate, BirthdayUpdate} from './components/auth/ProfileUpdate';
 
 import { PostsProvider } from './context/PostContext';
 import { AuthProvider } from './context/AuthContext';
@@ -33,6 +33,7 @@ function App() {
               <Route path='/update-profile/password-update' element={<PrivateRoute component={PasswordUpdate} />}/>
               <Route path='/update-profile/name-update' element={<PrivateRoute component={NameUpdate} />}/>
               <Route path='/update-profile/username-update' element={<PrivateRoute component={UserNameUpdate} />}/>
+              <Route path='/update-profile/birthday-update' element={<PrivateRoute component={BirthdayUpdate} />}/>
             </Routes>
           </Router>
       </div>
