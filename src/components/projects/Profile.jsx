@@ -1,5 +1,6 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 
 const Profile = () => {
 
@@ -20,20 +21,39 @@ const Profile = () => {
     }
   }, [currentUser, getUserByEmail])
 
-  if(user){
-    return (
-      <div className="profile">
-        <h5>Email: {user.email}</h5>
-        <h5>Name: {user.name}</h5>
-        <h5>Username: {user.userName}</h5>
-        <h5>birth date: {user.age}</h5>
+  return user ? (
+    <div className="profile-container d-flex justify-content-center align-items-center shadow p-3 mb-5 bg-white rounded">
+      <div className="d-flex flex-column align-items-center">
+        <div className="mb-3">
+          <img
+            src={user.photo || 'https://via.placeholder.com/150'}
+            alt="Profile"
+            className="rounded-circle"
+            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+          />
+        </div>
+        <h5 className="mb-3">{user.name}</h5>
+        <div className="d-flex justify-content-center align-items-center">
+          <div className="me-4">
+            <strong>10</strong> posts
+          </div>
+          <div className="me-4">
+            <strong>20</strong> followers
+          </div>
+          <div>
+            <strong>30</strong> following
+          </div>
+        </div>
       </div>
-    );
-  } else {
-    return(
-      <div className="loading">Loading...</div>
-    )
-  }
+    </div>
+  ) : (
+    <div className="d-flex justify-content-center align-items-center">
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>
+  );
+
 }
  
 export default Profile;
