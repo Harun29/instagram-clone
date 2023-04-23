@@ -1,32 +1,22 @@
-import SignIn from "../auth/SignIn";
-import { useState } from "react";
-import SignUp from "../auth/SignUp";
 import Button from "react-bootstrap/Button"
+import { Link } from "react-router-dom";
 
 const SignedOutLinks = () => {
 
-  const [loginForm, setLoginForm] = useState(false);
-  const [signupForm, setSignupForm] = useState(false);
-
   return (  
     <ul className="signed-in-out-links">
-      <Button 
+      <Link 
       onClick={() => (setSignupForm(!signupForm))}
-      className='navbar-button me-3'>
+      className='Button me-3'>
       Signup
-      </Button>
+      </Link>
 
-      <Button 
+      <Link 
       onClick={() => (setLoginForm(!loginForm))}
-      className='navbar-button'>
+      className='Button'>
       Login
-      </Button>
-      {loginForm ? (
-        <SignIn loginForm={loginForm} setLoginForm={setLoginForm}/>
-      ): null}
-      {signupForm ? (
-        <SignUp signupForm={signupForm} setSignupForm={setSignupForm}/>
-      ): null}
+      </Link>
+
     </ul>
   );
 }
