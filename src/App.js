@@ -6,6 +6,8 @@ import CreatePost from './components/projects/CreatePost';
 import ForgotPassword from './components/auth/ForgotPassword';
 import Profile from './components/projects/Profile';
 import UpdateProfile from './components/auth/Update';
+import SignUp from './components/Auth/SignUp';
+import SignIn from './components/Auth/SignIn';
 import {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate, BirthdayUpdate} from './components/auth/ProfileUpdate';
 
 import { PostsProvider } from './context/PostContext';
@@ -27,8 +29,8 @@ function App() {
               <Route path='/post/:id' element={<PostDetails />}/>
               <Route path='/createpost' element={<CreatePost />}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
-              <Route path='/signup' element={<ForgotPassword />}/>
-              <Route path='/login' element={<ForgotPassword />}/>
+              <Route path='/signup' element={<SignUp />}/>
+              <Route path='/login' element={<SignIn />}/>
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
               <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
               <Route path='/update-profile/email-update' element={<PrivateRoute component={EmailUpdate} />}/>
