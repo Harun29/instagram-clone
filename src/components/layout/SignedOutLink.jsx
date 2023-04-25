@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const SignedOutLinks = () => {
 
   return (  
-    <div className="signed-in-out-links">
+     <ul className="d-flex mt-3">
       <Link to="/signup">
        Signup
       </Link>
@@ -13,7 +13,7 @@ const SignedOutLinks = () => {
        Login
       </Link>
 
-    </div>
+    </ul>
   );
 }
  
