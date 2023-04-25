@@ -6,8 +6,8 @@ import CreatePost from './components/projects/CreatePost';
 import ForgotPassword from './components/auth/ForgotPassword';
 import Profile from './components/projects/Profile';
 import UpdateProfile from './components/auth/Update';
-import SignUp from './components/Auth/SignUp';
-import SignIn from './components/Auth/SignIn';
+import SignUp from './components/auth/SignUp';
+import SignIn from './components/auth/SignIn';
 import {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate, BirthdayUpdate} from './components/auth/ProfileUpdate';
 
 import { PostsProvider } from './context/PostContext';
