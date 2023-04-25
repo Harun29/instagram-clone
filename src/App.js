@@ -27,6 +27,8 @@ function App() {
               <Route path='/post/:id' element={<PostDetails />}/>
               <Route path='/createpost' element={<CreatePost />}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
+              <Route path='/signup' element={<ForgotPassword />}/>
+              <Route path='/login' element={<ForgotPassword />}/>
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
               <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
               <Route path='/update-profile/email-update' element={<PrivateRoute component={EmailUpdate} />}/>
