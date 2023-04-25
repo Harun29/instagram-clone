@@ -4,20 +4,16 @@ import { Link } from "react-router-dom";
 const SignedOutLinks = () => {
 
   return (  
-    <ul className="signed-in-out-links">
-      <Link 
-      onClick={() => (setSignupForm(!signupForm))}
-      className='Button me-3'>
-      Signup
+    <div className="signed-in-out-links">
+      <Link to="/signup">
+       Signup
       </Link>
 
-      <Link 
-      onClick={() => (setLoginForm(!loginForm))}
-      className='Button'>
-      Login
+      <Link to="/login">
+       Login
       </Link>
 
-    </ul>
+    </div>
   );
 }
  
