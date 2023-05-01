@@ -4,13 +4,14 @@ const SignedOutLinks = () => {
 
   return (  
      <ul className="d-flex mt-3">
-      <Link to="/signup" className="Button">
-       Signup
+
+      <Link to="/login" className="me-2 btn btn-primary">
+        Login
       </Link>
 
-      <Link to="/login" className="Button">
-       Login
-      </Link>
+      <Link to="/signup" className="btn btn-primary">
+        Signup
+      </Link> 
 
     </ul>
   );

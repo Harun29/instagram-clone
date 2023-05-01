@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { auth, googleProvider } from "../../config/firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { auth, googleProvider } from "../../config/firebase";
+// import { signInWithPopup } from "firebase/auth";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const SignIn = ({loginForm, setLoginForm}) => {
+const SignIn = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,15 +16,15 @@ const SignIn = ({loginForm, setLoginForm}) => {
   const {login} = useAuth();
   const navigate = useNavigate();
 
-  const signInWithGoogle = async (e) => {
-    e.preventDefault();
-    try {
-      await signInWithPopup(auth, googleProvider);
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const signInWithGoogle = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await signInWithPopup(auth, googleProvider);
+  //     navigate('/');
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,45 +43,48 @@ const SignIn = ({loginForm, setLoginForm}) => {
 
   return (
     <form 
-    className="login-signup-form"
+    className="form-container w-25 ms-auto me-auto mb-auto mt-5 col-10 col-md-8 col-lg-6"
     onSubmit={handleSubmit}>
     
-      <div className="input-wrapper">
-        <label>Email: </label>
+      <div className="form-outline mb-4">
         <input 
+        className="form-control"
         type="email"
         required
         value={email}
+        placeholder="Email address"
         onChange={(e) => setEmail(e.target.value)}/>
       </div>
 
-      <div className="input-wrapper">
-        <label>Password: </label>
+      <div className="form-outline mb-4">
         <input 
+        className="form-control"
         type="password" 
         required
         value={password}
+        placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}/>
       </div>
 
-      <div className="google-signin-wrapper">
+      {/* <div className="google-signin-wrapper">
         <button 
         className="google-signin-button" 
         onClick={signInWithGoogle}>Sign In With Google
         <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
         </button>
-      </div>
+      </div> */}
 
-      <input disabled={loading} type="submit" name="" id="" value="Login"/>
-
-      <div className="forgot-password-label">
+      <div className="mb-4">
         <Link to="/forgot-password">Forgot password?</Link>
       </div>
 
-      {error && <p>{error}</p>}
-      <div className="close-button" onClick={() => setLoginForm(!loginForm)}>
-        <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
+      <input className="btn btn-primary btn-block mb-4" disabled={loading} type="submit" name="" id="" value="Login"/>
+
+      <div className="text-center">
+        <p>Not a member? <Link to="/signup">Register</Link></p>
       </div>
+
+      {error && <p>{error}</p>}
     </form>
   );
 }

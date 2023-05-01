@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { googleProvider } from "../../config/firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+// import { googleProvider } from "../../config/firebase";
+// import { signInWithPopup } from "firebase/auth";
+// import { auth } from "../../config/firebase";
+
 import { useAuth } from "../../context/AuthContext";
-import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../config/firebase"
 
 
-const SignUp = ({signupForm, setSignupForm}) => {
+const SignUp = () => {
 
   const [name, setName] = useState('')
   const [userName, setUserName] = useState('')
@@ -64,20 +63,18 @@ const SignUp = ({signupForm, setSignupForm}) => {
     }
   };
 
-  const signInWithGoogle = async (e) => {
-    e.preventDefault();
-    try {
-      await signInWithPopup(auth, googleProvider);
-      navigate('/');
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const signInWithGoogle = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await signInWithPopup(auth, googleProvider);
+  //     navigate('/');
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
-    <form 
-    className="login-signup-form"
-    onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       
       <div className="input-wrapper">
         <label>Name: </label>
@@ -136,18 +133,15 @@ const SignUp = ({signupForm, setSignupForm}) => {
         onChange={(e) => setConfirmPassword(e.target.value)}/>
       </div>
 
-      <div className="google-signin-wrapper">
+      {/* <div className="google-signin-wrapper">
         <button 
         className="google-signin-button" 
         onClick={signInWithGoogle}>Sign In With Google
         <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
         </button>
-      </div>
+      </div> */}
 
       <input disabled={loading} type="submit" name="" id="" value="Signup"/>
-      <div className="close-button" onClick={() => setSignupForm(!signupForm)}>
-        <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
-      </div>
 
       {error && <p>{error}</p>}
     </form>
