@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../config/firebase"
-
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
 
@@ -74,62 +74,70 @@ const SignUp = () => {
   // };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+    className="form-container w-25 ms-auto me-auto mb-auto mt-5 col-10 col-md-8 col-lg-6" 
+    onSubmit={handleSubmit}>
       
-      <div className="input-wrapper">
-        <label>Name: </label>
-        <input 
+      <div className="form-outline mb-4">
+        <input
+        className="form-control"
         type="text" 
         required
         value={name}
+        placeholder="Name"
         onChange={(e) => setName(e.target.value)}
         />
       </div>
 
-      <div className="input-wrapper">
-        <label>Username: </label>
-        <input 
+      <div className="form-outline mb-4">
+        <input
+        className="form-control" 
         type="text" 
         required
         value={userName}
+        placeholder="User name"
         onChange={(e) => setUserName(e.target.value)}
         />
       </div>
 
-      <div className="input-wrapper">
-        <label>Age: </label>
-        <input 
+      <div className="form-outline mb-4">
+        <input
+        className="form-control"
         type="date" 
         required
         value={age}
+        placeholder="Date of birth"
         onChange={(e) => setAge(e.target.value)}
         />
       </div>
 
-      <div className="input-wrapper">
-        <label>Email: </label>
-        <input 
+      <div className="form-outline mb-4">
+        <input
+        className="form-control"
         type="email" 
         required
         value={email}
+        placeholder="Email"
         onChange={(e) => setEmail(e.target.value)}/>
       </div>
 
-      <div className="input-wrapper">
-        <label>Password: </label>
-        <input 
+      <div className="form-outline mb-4">
+        <input
+        className="form-control"
         type="password" 
         required
         value={password}
+        placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}/>
       </div>
 
-      <div className="input-wrapper">
-        <label>Confirm Password: </label>
-        <input 
+      <div className="form-outline mb-4">
+        <input
+        className="form-control"
         type="password" 
         required
         value={confirmPassword}
+        placeholder="Confirm password"
         onChange={(e) => setConfirmPassword(e.target.value)}/>
       </div>
 
@@ -141,7 +149,11 @@ const SignUp = () => {
         </button>
       </div> */}
 
-      <input disabled={loading} type="submit" name="" id="" value="Signup"/>
+      <input className="btn btn-primary btn-block mb-4" disabled={loading} type="submit" name="" id="" value="Signup"/>
+
+      <div className="text-center">
+        <p>Already have an account? <Link to="/login">Login</Link></p>
+      </div>
 
       {error && <p>{error}</p>}
     </form>
