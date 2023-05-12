@@ -18,8 +18,21 @@ const UpdateProfile = () => {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
+  const [loading, setLoading] = useState(false);
 
+  const handleChanges = async () => {
+    setLoading(true)
 
+    await nameUpdate(user.email, name)
+    await userNameUpdate(user.email, userName)
+    await emailUpdate(user.email, email)
+
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    console.log(user)
+  }, [user])
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -81,7 +94,7 @@ const UpdateProfile = () => {
           </label>
           <input type="file" className="form-control" id="photo" />
         </div>
-        <button onClick={handleChanges} type="submit" className="btn btn-primary">
+        <button disabled={loading} onClick={handleChanges} type="submit" className="btn btn-primary">
           Save Changes
         </button>
       </div>
