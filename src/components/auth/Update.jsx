@@ -27,6 +27,7 @@ const UpdateProfile = () => {
     await userNameUpdate(user.email, userName)
     await emailUpdate(user.email, email)
 
+    window.location.reload();
     setLoading(false)
   }
 

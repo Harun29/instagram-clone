@@ -20,7 +20,6 @@ export function AuthProvider ({children}) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false);
-  const [update, setUpdate] = useState(false);
 
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -50,7 +49,7 @@ export function AuthProvider ({children}) {
 
     const authUpdate = async() => {
       try{
-        await updateEmail(auth.currentUser, email)
+        await updateEmail(auth.currentUser, email);
       }catch(err){
         setError(true);
         throw new Error("Failed changing email!");
