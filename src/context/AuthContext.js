@@ -47,17 +47,13 @@ export function AuthProvider ({children}) {
     const querySnapshot = await getDocs(q);
     setError(false);
 
-    const authUpdate = async() => {
-      try{
-        await updateEmail(auth.currentUser, email);
-      }catch(err){
-        setError(true);
-        throw new Error("Failed changing email!");
-      }
+    try{
+      await updateEmail(auth.currentUser, email);
+    }catch(err){
+      setError(true);
+      throw new Error("Failed changing email!");
     }
-
-    await authUpdate();
-    
+        
     if (querySnapshot.docs.length === 1 && !error) {
       const docRef = doc(db, "users", querySnapshot.docs[0].id);
       return updateDoc(docRef, { email: email });
