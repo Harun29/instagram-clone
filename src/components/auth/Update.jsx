@@ -9,16 +9,19 @@ const UpdateProfile = () => {
   const { nameUpdate } = useAuth();
   const { userNameUpdate } = useAuth();
   const { emailUpdate } = useAuth();
+  const { passwordUpdate } = useAuth();
   const [user, setUser] = useState();
 
   const [name, setName] = useState();
   const [userName, setUserName] = useState();
   const [email, setEmail] = useState();
 
+  const [currentPassword, setCurrentPassword] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
   const [loading, setLoading] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
   const handleChanges = async () => {
     setLoading(true)
@@ -29,6 +32,14 @@ const UpdateProfile = () => {
 
     window.location.reload();
     setLoading(false)
+  }
+
+  const handlePasswordChange = async () => {
+    if(currentPassword === user.password){
+      // await passwordUpdate(password)
+      // setLoading(false)
+      console.log("match")
+    }
   }
 
   useEffect(() => {
@@ -108,21 +119,21 @@ const UpdateProfile = () => {
           <label htmlFor="currentPassword" className="form-label">
             Current Password
           </label>
-          <input type="password" className="form-control" id="currentPassword" />
+          <input onChange={(e) => {setCurrentPassword(e.target.value)}} type="password" className="form-control" id="currentPassword" />
         </div>
         <div className="mb-3">
           <label htmlFor="newPassword" className="form-label">
             New Password
           </label>
-          <input type="password" className="form-control" id="newPassword" />
+          <input onChange={(e) => {setPassword(e.target.value)}} type="password" className="form-control" id="newPassword" />
         </div>
         <div className="mb-3">
           <label htmlFor="confirmNewPassword" className="form-label">
             Confirm New Password
           </label>
-          <input type="password" className="form-control" id="confirmNewPassword" />
+          <input onChange={(e) => {setConfirmPassword(e.target.value)}} type="password" className="form-control" id="confirmNewPassword" />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button onClick={handlePasswordChange} disabled={passwordLoading} type="submit" className="btn btn-primary">
           Change Password
         </button>
       </div>
