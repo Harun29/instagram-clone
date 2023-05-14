@@ -16,7 +16,6 @@ const UpdateProfile = () => {
   const [userName, setUserName] = useState();
   const [email, setEmail] = useState();
 
-  const [currentPassword, setCurrentPassword] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
@@ -35,11 +34,7 @@ const UpdateProfile = () => {
   }
 
   const handlePasswordChange = async () => {
-    if(currentPassword === user.password){
-      // await passwordUpdate(password)
-      // setLoading(false)
-      console.log("match")
-    }
+
   }
 
   useEffect(() => {
@@ -115,12 +110,6 @@ const UpdateProfile = () => {
 
       <div>
         <h4 className="mb-3">Change Password</h4>
-        <div className="mb-3">
-          <label htmlFor="currentPassword" className="form-label">
-            Current Password
-          </label>
-          <input onChange={(e) => {setCurrentPassword(e.target.value)}} type="password" className="form-control" id="currentPassword" />
-        </div>
         <div className="mb-3">
           <label htmlFor="newPassword" className="form-label">
             New Password
