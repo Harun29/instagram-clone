@@ -10,19 +10,21 @@ const UpdateProfile = () => {
   const { userNameUpdate } = useAuth();
   const { emailUpdate } = useAuth();
   const { passwordUpdate } = useAuth();
+  const { resetPassword } = useAuth();
   const [user, setUser] = useState();
 
   const [name, setName] = useState();
   const [userName, setUserName] = useState();
   const [email, setEmail] = useState();
-
+  
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
-
+  
   const [loading, setLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(true);
   const [passwordUpdating, setPasswordUpdateing] = useState(false);
-
+  const [confirmation, setConfirmation] = useState();
+  
   const handleChanges = async (e) => {
     e.preventDefault();
     setLoading(true)
@@ -38,12 +40,21 @@ const UpdateProfile = () => {
     }
   }
 
-  const handlePasswordChange = async (e) => {
-    e.preventDefault();
+  const handlePasswordChange = async () => {
     setPasswordUpdateing(true)
     try{
       await passwordUpdate(password)
       setPasswordUpdateing(false)
+    }catch(err){
+      console.error(err)
+    }
+  }
+
+  const handlePasswordEmail = async (e) => {
+    e.preventDefault();
+    try{
+      await resetPassword(user.email)
+      setConfirmation(true)
     }catch(err){
       console.error(err)
     }
@@ -70,7 +81,6 @@ const UpdateProfile = () => {
     }
   }, [currentUser, getUserByEmail])
 
-
   useEffect(() => {
     if(user){
       setName(user.name)
@@ -79,9 +89,9 @@ const UpdateProfile = () => {
     }
   },[user])
 
-  useEffect(() => {
-    console.log(name, userName, email)
-  }, [name, userName, email])
+  // useEffect(() => {
+  //   console.log(name, userName, email)
+  // }, [name, userName, email])
 
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
@@ -146,6 +156,14 @@ const UpdateProfile = () => {
             className={`form-control ${passwordLoading ? " is-invalid" : ""} ${confirmPassword && !passwordLoading ? " is-valid" : ""}`} 
             id="confirmNewPassword" />
         </div>
+        {!confirmation ?
+          <div className="text-center">
+            <button onClick={handlePasswordEmail} className="btn btn-link mb-3">Send password reset email</button>
+          </div> :
+          <p className="d-flex align-items-center">Check your email. Dont see the email: 
+            <button onClick={handlePasswordEmail} className="btn btn-link py-0">resend</button>
+          </p>
+        }
         <button disabled={passwordLoading || passwordUpdating} type="submit" className="btn btn-primary">
           Change Password
         </button>
@@ -159,8 +177,6 @@ const UpdateProfile = () => {
     </div>
   );
   
-  
-
 }
  
 export default UpdateProfile;
