@@ -21,6 +21,7 @@ const UpdateProfile = () => {
 
   const [loading, setLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(true);
+  const [passwordUpdating, setPasswordUpdateing] = useState(false);
 
   const handleChanges = async () => {
     setLoading(true)
@@ -28,16 +29,13 @@ const UpdateProfile = () => {
       await nameUpdate(user.email, name)
       await userNameUpdate(user.email, userName)
       await emailUpdate(user.email, email)
-      window.location.reload();
+      // window.location.reload();
     }catch(err){
       console.error(err)
     }finally{
       setLoading(false)
     }
-
   }
-
-  const [passwordUpdating, setPasswordUpdateing] = useState(false);
 
   const handlePasswordChange = async () => {
     setPasswordUpdateing(true)
@@ -85,7 +83,9 @@ const UpdateProfile = () => {
 
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
-      <div className="me-5">
+      <form 
+        className="me-5"
+        onSubmit={handleChanges}>
         <h3 className="mb-3">Settings</h3>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
@@ -117,10 +117,10 @@ const UpdateProfile = () => {
           </label>
           <input type="file" className="form-control" id="photo" />
         </div>
-        <button disabled={loading} onClick={handleChanges} type="submit" className="btn btn-primary">
+        <button disabled={loading} type="submit" className="btn btn-primary">
           Save Changes
         </button>
-      </div>
+      </form>
 
       {/* PASSWORD CHANGE */}
 
@@ -137,7 +137,12 @@ const UpdateProfile = () => {
           <label htmlFor="confirmNewPassword" className="form-label">
             Confirm New Password
           </label>
-          <input required onChange={(e) => {setConfirmPassword(e.target.value)}} type="password" className={`form-control ${passwordLoading ? " is-invalid" : ""}`} id="confirmNewPassword" />
+          <input 
+            required 
+            onChange={(e) => {setConfirmPassword(e.target.value)}} 
+            type="password"
+            className={`form-control ${passwordLoading ? " is-invalid" : ""} ${confirmPassword && !passwordLoading ? " is-valid" : ""}`} 
+            id="confirmNewPassword" />
         </div>
         <button disabled={passwordLoading || passwordUpdating} type="submit" className="btn btn-primary">
           Change Password
