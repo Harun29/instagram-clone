@@ -37,8 +37,16 @@ const UpdateProfile = () => {
 
   }
 
-  const handlePasswordChange = async () => {
+  const [passwordUpdating, setPasswordUpdateing] = useState(false);
 
+  const handlePasswordChange = async () => {
+    setPasswordUpdateing(true)
+    try{
+      await passwordUpdate(password)
+      setPasswordUpdateing(false)
+    }catch(err){
+      console.error(err)
+    }
   }
 
   useEffect(() => {
@@ -48,10 +56,6 @@ const UpdateProfile = () => {
       setPasswordLoading(true)
     }
   }, [confirmPassword, password])
-
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -135,7 +139,7 @@ const UpdateProfile = () => {
           </label>
           <input required onChange={(e) => {setConfirmPassword(e.target.value)}} type="password" className={`form-control ${passwordLoading ? " is-invalid" : ""}`} id="confirmNewPassword" />
         </div>
-        <button disabled={passwordLoading} type="submit" className="btn btn-primary">
+        <button disabled={passwordLoading || passwordUpdating} type="submit" className="btn btn-primary">
           Change Password
         </button>
       </form>
