@@ -23,13 +23,14 @@ const UpdateProfile = () => {
   const [passwordLoading, setPasswordLoading] = useState(true);
   const [passwordUpdating, setPasswordUpdateing] = useState(false);
 
-  const handleChanges = async () => {
+  const handleChanges = async (e) => {
+    e.preventDefault();
     setLoading(true)
     try{
       await nameUpdate(user.email, name)
       await userNameUpdate(user.email, userName)
       await emailUpdate(user.email, email)
-      // window.location.reload();
+      window.location.reload();
     }catch(err){
       console.error(err)
     }finally{
@@ -37,7 +38,8 @@ const UpdateProfile = () => {
     }
   }
 
-  const handlePasswordChange = async () => {
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
     setPasswordUpdateing(true)
     try{
       await passwordUpdate(password)
