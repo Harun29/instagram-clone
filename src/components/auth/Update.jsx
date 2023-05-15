@@ -20,7 +20,7 @@ const UpdateProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState();
 
   const [loading, setLoading] = useState(false);
-  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(true);
 
   const handleChanges = async () => {
     setLoading(true)
@@ -37,9 +37,17 @@ const UpdateProfile = () => {
 
   }
 
-  // const handlePasswordChange = async () => {
+  const handlePasswordChange = async () => {
 
-  // }
+  }
+
+  useEffect(() => {
+    if ((confirmPassword === password) || !password || !confirmPassword){
+      setPasswordLoading(false)
+    }else{
+      setPasswordLoading(true)
+    }
+  }, [confirmPassword, password])
 
   useEffect(() => {
     console.log(user)
@@ -112,24 +120,25 @@ const UpdateProfile = () => {
 
       {/* PASSWORD CHANGE */}
 
-      <div>
+      <form
+      onSubmit={handlePasswordChange}>
         <h4 className="mb-3">Change Password</h4>
         <div className="mb-3">
           <label htmlFor="newPassword" className="form-label">
             New Password
           </label>
-          <input onChange={(e) => {setPassword(e.target.value)}} type="password" className="form-control" id="newPassword" />
+          <input required onChange={(e) => {setPassword(e.target.value)}} type="password" className="form-control" id="newPassword" />
         </div>
         <div className="mb-3">
           <label htmlFor="confirmNewPassword" className="form-label">
             Confirm New Password
           </label>
-          <input onChange={(e) => {setConfirmPassword(e.target.value)}} type="password" className="form-control" id="confirmNewPassword" />
+          <input required onChange={(e) => {setConfirmPassword(e.target.value)}} type="password" className={`form-control ${passwordLoading ? " is-invalid" : ""}`} id="confirmNewPassword" />
         </div>
         <button disabled={passwordLoading} type="submit" className="btn btn-primary">
           Change Password
         </button>
-      </div>
+      </form>
     </div>
   ) : (
     <div className="d-flex justify-content-center align-items-center">
