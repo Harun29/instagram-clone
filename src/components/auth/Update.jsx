@@ -1,6 +1,15 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import Spinner from 'react-bootstrap/Spinner';
+import { db } from "../../config/firebase";
+import { addDoc, collection } from "firebase/firestore";
+import { storage } from "../../config/firebase";
+import { v4 } from "uuid";
+import {
+  ref,
+  uploadBytes
+} from "firebase/storage";
+import { useNavigate } from "react-router";
 
 const UpdateProfile = () => {
 
@@ -25,6 +34,10 @@ const UpdateProfile = () => {
   const [passwordUpdating, setPasswordUpdateing] = useState(false);
   const [confirmation, setConfirmation] = useState();
   
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imgName, setImgName] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const handleChanges = async (e) => {
     e.preventDefault();
     setLoading(true)
@@ -93,10 +106,52 @@ const UpdateProfile = () => {
   //   console.log(name, userName, email)
   // }, [name, userName, email])
 
+  /* Adding profile picture */
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageUpload(file);
+      setImgName(file.name + v4());
+      setSelectedImage(URL.createObjectURL(file));
+    }
+  };
+
+  // const uploadFile = async () => {
+  //   try {
+  //     if (imageUpload == null) return;
+  //     const imageRef = ref(storage, `images/${imgName}`);
+  //     await uploadBytes(imageRef, imageUpload);
+  //   } catch (err){
+  //     console.error('Error adding image: ', err);
+  //   }
+  // };
+
+  // const addData = async (data) => {
+  //   try {
+  //     const docRef = await addDoc(collection(db, 'recepies'), data);
+  //     console.log('Document written with ID: ', docRef.id);
+  //   } catch (err) {
+  //     console.error('Error adding document: ', err);
+  //   }
+  // }
+
+  // const handleSubmit = async(e) => {
+  //   e.preventDefault();
+  //   try{
+  //     setLoading(true);
+  //     await uploadFile();
+  //     await addData(recepie);
+  //     navigate('/')
+  //   } catch (err) {
+  //     setError('Failed to add recepie! Error: ', err)
+  //   }
+  // }
+
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
       <form 
-        className="me-5"
+        className="me-5 profile-setting-form"
         onSubmit={handleChanges}>
         <h3 className="mb-3">Settings</h3>
         <div className="mb-3">
@@ -127,7 +182,18 @@ const UpdateProfile = () => {
           <label htmlFor="photo" className="form-label">
             Profile Photo
           </label>
-          <input type="file" className="form-control" id="photo" />
+          <input 
+          type="file" 
+          className="form-control" 
+          id="photo"
+          accept="image/*"
+          onChange={handleImageChange} 
+          />
+          
+          {selectedImage ?
+           <img src={selectedImage} alt="Selected" className="profile-picture-settings mt-3"/>
+          : null}
+          
         </div>
         <button disabled={loading} type="submit" className="btn btn-primary">
           Save Changes

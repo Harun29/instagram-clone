@@ -48,3 +48,14 @@ table {
 svg{
   color: black;
 }
+
+.profile-setting-form{
+	max-width: 400px;
+}
+
+.profile-picture-settings{
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 100%;
+}
