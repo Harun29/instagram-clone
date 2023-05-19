@@ -8,7 +8,6 @@ import Profile from './components/projects/Profile';
 import UpdateProfile from './components/auth/Update';
 import SignUp from './components/auth/SignUp';
 import SignIn from './components/auth/SignIn';
-import {EmailUpdate, PasswordUpdate, NameUpdate, UserNameUpdate, BirthdayUpdate} from './components/auth/ProfileUpdate';
 
 import { PostsProvider } from './context/PostContext';
 import { AuthProvider } from './context/AuthContext';
@@ -33,11 +32,6 @@ function App() {
               <Route path='/login' element={<SignIn />}/>
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
               <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
-              <Route path='/update-profile/email-update' element={<PrivateRoute component={EmailUpdate} />}/>
-              <Route path='/update-profile/password-update' element={<PrivateRoute component={PasswordUpdate} />}/>
-              <Route path='/update-profile/name-update' element={<PrivateRoute component={NameUpdate} />}/>
-              <Route path='/update-profile/username-update' element={<PrivateRoute component={UserNameUpdate} />}/>
-              <Route path='/update-profile/birthday-update' element={<PrivateRoute component={BirthdayUpdate} />}/>
             </Routes>
           </Router>
       </div>
