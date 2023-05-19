@@ -1,12 +1,18 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import Spinner from 'react-bootstrap/Spinner';
+import { storage } from "../../config/firebase";
+import {
+  ref,
+  getDownloadURL
+} from "firebase/storage";
 
 const Profile = () => {
 
   const { currentUser } = useAuth();
   const { getUserByEmail } = useAuth();
   const [user, setUser] = useState();
+  const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -21,12 +27,22 @@ const Profile = () => {
     }
   }, [currentUser, getUserByEmail])
 
+  useEffect(() => {
+    const getLink = async() => {
+      const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+      setCurrentProfilePhoto(url)
+    }
+    if(user){
+      getLink();
+    }
+  }, [user])
+
   return user ? (
     <div className="profile-container d-flex justify-content-center align-items-center shadow p-3 mb-5 bg-white rounded">
       <div className="d-flex flex-column align-items-center">
         <div className="mb-3">
           <img
-            src={user.photo || 'https://via.placeholder.com/150'}
+            src={currentProfilePhoto}
             alt="Profile"
             className="rounded-circle"
             style={{ width: '150px', height: '150px', objectFit: 'cover' }}
