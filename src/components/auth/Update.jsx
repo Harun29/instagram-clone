@@ -5,7 +5,8 @@ import { storage } from "../../config/firebase";
 import { v4 } from "uuid";
 import {
   ref,
-  uploadBytes
+  uploadBytes,
+  getDownloadURL
 } from "firebase/storage";
 
 const UpdateProfile = () => {
@@ -35,6 +36,8 @@ const UpdateProfile = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imgName, setImgName] = useState('')
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
 
   /* Adding profile picture */
 
@@ -68,7 +71,7 @@ const UpdateProfile = () => {
       await userNameUpdate(user.email, userName);
       await emailUpdate(user.email, email);
       await uploadFile();
-      // window.location.reload();
+      window.location.reload();
     }catch(err){
       console.error(err)
     }finally{
@@ -129,6 +132,19 @@ const UpdateProfile = () => {
   //   console.log(name, userName, email)
   // }, [name, userName, email])
 
+  useEffect(() => {
+
+    const getLink = async() => {
+      const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+      setCurrentProfilePhoto(url)
+    }
+
+    if(user){
+      getLink();
+    }
+    
+  }, [user])
+
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
       <form 
@@ -173,7 +189,7 @@ const UpdateProfile = () => {
 
           {selectedImage ?
            <img src={selectedImage} alt="Selected" className="profile-picture-settings mt-3"/>
-          : null}
+          : <img src={currentProfilePhoto} alt="Selected" className="profile-picture-settings mt-3"/>}
           
         </div>
         <button disabled={loading} type="submit" className="btn btn-primary">
