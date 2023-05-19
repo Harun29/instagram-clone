@@ -100,7 +100,19 @@ export function AuthProvider ({children}) {
       throw new Error("User not found or multiple users found with the same email.");
     }
   }
-  
+
+  async function profilePhotoUpdate(email, photoName) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.docs.length === 1) {
+      const docRef = doc(db, "users", querySnapshot.docs[0].id);
+      return updateDoc(docRef, { pphoto: photoName });
+    } else {
+      throw new Error("User not found or multiple users found with the same email.");
+    }
+  }
 
   const getUserByEmail = async (email) => {
     const usersRef = collection(db, 'users');
@@ -136,7 +148,8 @@ export function AuthProvider ({children}) {
     nameUpdate,
     getUserByEmail,
     userNameUpdate,
-    birthdayUpdate
+    birthdayUpdate,
+    profilePhotoUpdate
   }
 
   return (  

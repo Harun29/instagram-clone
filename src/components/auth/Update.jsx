@@ -1,15 +1,12 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import Spinner from 'react-bootstrap/Spinner';
-import { db } from "../../config/firebase";
-import { addDoc, collection } from "firebase/firestore";
 import { storage } from "../../config/firebase";
 import { v4 } from "uuid";
 import {
   ref,
   uploadBytes
 } from "firebase/storage";
-import { useNavigate } from "react-router";
 
 const UpdateProfile = () => {
 
@@ -20,6 +17,7 @@ const UpdateProfile = () => {
   const { emailUpdate } = useAuth();
   const { passwordUpdate } = useAuth();
   const { resetPassword } = useAuth();
+  const { profilePhotoUpdate } = useAuth();
   const [user, setUser] = useState();
 
   const [name, setName] = useState();
@@ -38,14 +36,39 @@ const UpdateProfile = () => {
   const [imgName, setImgName] = useState('')
   const [selectedImage, setSelectedImage] = useState(null);
 
+  /* Adding profile picture */
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageUpload(file);
+      setImgName(file.name + v4());
+      setSelectedImage(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadFile = async () => {
+    try {
+      if (imageUpload == null) return;
+      const imageRef = ref(storage, `profile_pictures/${imgName}`);
+      await uploadBytes(imageRef, imageUpload);
+      await profilePhotoUpdate(user.email, imgName)
+    } catch (err){
+      console.error('Error adding image: ', err);
+    }
+  };
+
+  /* ----- */ 
+
   const handleChanges = async (e) => {
     e.preventDefault();
     setLoading(true)
     try{
-      await nameUpdate(user.email, name)
-      await userNameUpdate(user.email, userName)
-      await emailUpdate(user.email, email)
-      window.location.reload();
+      await nameUpdate(user.email, name);
+      await userNameUpdate(user.email, userName);
+      await emailUpdate(user.email, email);
+      await uploadFile();
+      // window.location.reload();
     }catch(err){
       console.error(err)
     }finally{
@@ -106,48 +129,6 @@ const UpdateProfile = () => {
   //   console.log(name, userName, email)
   // }, [name, userName, email])
 
-  /* Adding profile picture */
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageUpload(file);
-      setImgName(file.name + v4());
-      setSelectedImage(URL.createObjectURL(file));
-    }
-  };
-
-  // const uploadFile = async () => {
-  //   try {
-  //     if (imageUpload == null) return;
-  //     const imageRef = ref(storage, `images/${imgName}`);
-  //     await uploadBytes(imageRef, imageUpload);
-  //   } catch (err){
-  //     console.error('Error adding image: ', err);
-  //   }
-  // };
-
-  // const addData = async (data) => {
-  //   try {
-  //     const docRef = await addDoc(collection(db, 'recepies'), data);
-  //     console.log('Document written with ID: ', docRef.id);
-  //   } catch (err) {
-  //     console.error('Error adding document: ', err);
-  //   }
-  // }
-
-  // const handleSubmit = async(e) => {
-  //   e.preventDefault();
-  //   try{
-  //     setLoading(true);
-  //     await uploadFile();
-  //     await addData(recepie);
-  //     navigate('/')
-  //   } catch (err) {
-  //     setError('Failed to add recepie! Error: ', err)
-  //   }
-  // }
-
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
       <form 
@@ -189,7 +170,7 @@ const UpdateProfile = () => {
           accept="image/*"
           onChange={handleImageChange} 
           />
-          
+
           {selectedImage ?
            <img src={selectedImage} alt="Selected" className="profile-picture-settings mt-3"/>
           : null}
