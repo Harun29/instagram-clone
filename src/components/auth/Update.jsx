@@ -20,6 +20,7 @@ const UpdateProfile = () => {
   const { passwordUpdate } = useAuth();
   const { resetPassword } = useAuth();
   const { profilePhotoUpdate } = useAuth();
+  const { bioUpdate } = useAuth();
   const [user, setUser] = useState();
 
   const [name, setName] = useState();
@@ -41,6 +42,8 @@ const UpdateProfile = () => {
   const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
   const [currentPhotoName, setCurrentPhotoName] = useState();
 
+  const [bio, setBio] = useState();
+
   /* Changing profile picture */
 
   const handleImageChange = (e) => {
@@ -56,7 +59,8 @@ const UpdateProfile = () => {
     try {
       if (imageUpload == null) return;
       const imageRef = ref(storage, `profile_pictures/${imgName}`);
-      console.log(currentPhotoName)
+
+      // we check for current photo name in case the person does not have profile photo
       if(currentPhotoName){
         await deleteObject(ref(storage, 'profile_pictures/' + currentPhotoName))
       }
@@ -76,9 +80,14 @@ const UpdateProfile = () => {
       await nameUpdate(user.email, name);
       await userNameUpdate(user.email, userName);
       await emailUpdate(user.email, email);
+      await bioUpdate(user.email, bio);
+
+      /* we chack for imageUpload so it does not delete current photo every
+      time we save changes */
       if(imageUpload){
         await updatePhoto();
       }
+
       window.location.reload();
     }catch(err){
       console.error(err)
@@ -170,7 +179,7 @@ const UpdateProfile = () => {
           <label htmlFor="bio" className="form-label">
             Bio
           </label>
-          <textarea className="form-control" id="bio" rows="3" defaultValue={user.bio}></textarea>
+          <textarea onChange={(e) => setBio(e.target.value)} className="form-control" id="bio" rows="3" defaultValue={user.bio}></textarea>
         </div>
         <div className="mb-3">
           <label htmlFor="photo" className="form-label">

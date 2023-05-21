@@ -49,6 +49,7 @@ const Profile = () => {
           />
         </div>
         <h5 className="mb-3">{user.name}</h5>
+        <p>{user.bio}</p>
         <div className="d-flex justify-content-center align-items-center">
           <div className="me-4">
             <strong>10</strong> posts
