@@ -42,8 +42,8 @@ const Profile = () => {
       <div className="d-flex flex-column align-items-center">
         <div className="mb-3">
           <img
-            src={currentProfilePhoto}
-            alt="Profile"
+            src={currentProfilePhoto ? currentProfilePhoto : "blank-profile.jpg"}
+            alt=""
             className="rounded-circle"
             style={{ width: '150px', height: '150px', objectFit: 'cover' }}
           />
