@@ -21,6 +21,7 @@ const UpdateProfile = () => {
   const { resetPassword } = useAuth();
   const { profilePhotoUpdate } = useAuth();
   const { bioUpdate } = useAuth();
+  const { birthdayUpdate } = useAuth();
   const [user, setUser] = useState();
 
   const [name, setName] = useState();
@@ -43,6 +44,8 @@ const UpdateProfile = () => {
   const [currentPhotoName, setCurrentPhotoName] = useState();
 
   const [bio, setBio] = useState();
+
+  const [birthday, setBirthday] = useState();
 
   /* Changing profile picture */
 
@@ -77,11 +80,12 @@ const UpdateProfile = () => {
     e.preventDefault();
     setLoading(true)
     try{
+      console.log(birthday)
       await nameUpdate(user.email, name);
       await userNameUpdate(user.email, userName);
       await emailUpdate(user.email, email);
       await bioUpdate(user.email, bio);
-
+      await birthdayUpdate(user.email, birthday);
       /* we chack for imageUpload so it does not delete current photo every
       time we save changes */
       if(imageUpload){
@@ -180,6 +184,12 @@ const UpdateProfile = () => {
             Bio
           </label>
           <textarea onChange={(e) => setBio(e.target.value)} className="form-control" id="bio" rows="3" defaultValue={user.bio}></textarea>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="bio" className="form-label">
+            Birthday
+          </label>
+          <input type="date" onChange={(e) => setBirthday(e.target.value)} className="form-control" id="birthday" rows="3" defaultValue={user.age}></input>
         </div>
         <div className="mb-3">
           <label htmlFor="photo" className="form-label">
