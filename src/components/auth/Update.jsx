@@ -152,8 +152,10 @@ const UpdateProfile = () => {
       setUserName(user.userName)
       setEmail(user.email)
       setCurrentPhotoName(user.pphoto)
+      setBio(user.bio)
+      setBirthday(user.age)
     }
-  }, [user, ])
+  }, [user])
 
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
