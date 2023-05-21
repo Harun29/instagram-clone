@@ -41,7 +41,8 @@ const SignUp = () => {
       name: name,
       userName: userName,
       age: age,
-      pphoto: ''
+      pphoto: '',
+      bio: ''
     });
   }, [email, name, userName, age])
 
