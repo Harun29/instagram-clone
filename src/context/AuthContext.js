@@ -111,7 +111,7 @@ export function AuthProvider ({children}) {
     return user;
   }
 
-  /* why are we using unsubscribe */
+  /* we use unsubscribe because "return" in useeffect runs when the component is unmounted */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
