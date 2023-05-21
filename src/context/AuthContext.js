@@ -62,70 +62,40 @@ export function AuthProvider ({children}) {
     }
   }
 
+  async function updateField(email, fieldName, value) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+  
+    if (querySnapshot.docs.length === 1) {
+      const docRef = doc(db, "users", querySnapshot.docs[0].id);
+      const fieldToUpdate = {};
+      fieldToUpdate[fieldName] = value;
+      return updateDoc(docRef, fieldToUpdate);
+    } else {
+      throw new Error("User not found or multiple users found with the same email.");
+    }
+  }
+  
   async function nameUpdate(email, name) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.docs.length === 1) {
-      const docRef = doc(db, "users", querySnapshot.docs[0].id);
-      return updateDoc(docRef, { name: name });
-    } else {
-      throw new Error("User not found or multiple users found with the same email.");
-    }
+    return updateField(email, "name", name);
   }
-
+  
   async function userNameUpdate(email, userName) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-  
-    if (querySnapshot.docs.length === 1) {
-      const docRef = doc(db, "users", querySnapshot.docs[0].id);
-      return updateDoc(docRef, { userName: userName });
-    } else {
-      throw new Error("User not found or multiple users found with the same email.");
-    }
+    return updateField(email, "userName", userName);
   }
-
+  
   async function birthdayUpdate(email, birthday) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
+    return updateField(email, "age", birthday);
+  }
   
-    if (querySnapshot.docs.length === 1) {
-      const docRef = doc(db, "users", querySnapshot.docs[0].id);
-      return updateDoc(docRef, { age: birthday });
-    } else {
-      throw new Error("User not found or multiple users found with the same email.");
-    }
-  }
-
   async function profilePhotoUpdate(email, photoName) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.docs.length === 1) {
-      const docRef = doc(db, "users", querySnapshot.docs[0].id);
-      return updateDoc(docRef, { pphoto: photoName });
-    } else {
-      throw new Error("User not found or multiple users found with the same email.");
-    }
+    return updateField(email, "pphoto", photoName);
   }
-
+  
   async function bioUpdate(email, bio) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.docs.length === 1) {
-      const docRef = doc(db, "users", querySnapshot.docs[0].id);
-      return updateDoc(docRef, { bio: bio });
-    } else {
-      throw new Error("User not found or multiple users found with the same email.");
-    }
-  }
+    return updateField(email, "bio", bio);
+  }  
 
   const getUserByEmail = async (email) => {
     const usersRef = collection(db, 'users');
