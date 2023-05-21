@@ -6,7 +6,8 @@ import { v4 } from "uuid";
 import {
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "firebase/storage";
 
 const UpdateProfile = () => {
@@ -38,8 +39,9 @@ const UpdateProfile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
+  const [currentPhotoName, setCurrentPhotoName] = useState();
 
-  /* Adding profile picture */
+  /* Changing profile picture */
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -50,10 +52,14 @@ const UpdateProfile = () => {
     }
   };
 
-  const uploadFile = async () => {
+  const updatePhoto = async () => {
     try {
       if (imageUpload == null) return;
       const imageRef = ref(storage, `profile_pictures/${imgName}`);
+      console.log(currentPhotoName)
+      if(currentPhotoName){
+        await deleteObject(ref(storage, 'profile_pictures/' + currentPhotoName))
+      }
       await uploadBytes(imageRef, imageUpload);
       await profilePhotoUpdate(user.email, imgName)
     } catch (err){
@@ -70,7 +76,9 @@ const UpdateProfile = () => {
       await nameUpdate(user.email, name);
       await userNameUpdate(user.email, userName);
       await emailUpdate(user.email, email);
-      await uploadFile();
+      if(imageUpload){
+        await updatePhoto();
+      }
       window.location.reload();
     }catch(err){
       console.error(err)
@@ -121,22 +129,18 @@ const UpdateProfile = () => {
   }, [currentUser, getUserByEmail])
 
   useEffect(() => {
-    if(user){
-      setName(user.name)
-      setUserName(user.userName)
-      setEmail(user.email)
-    }
-  },[user])
-
-  useEffect(() => {
     const getLink = async() => {
       const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
       setCurrentProfilePhoto(url)
     }
     if(user){
       getLink();
+      setName(user.name)
+      setUserName(user.userName)
+      setEmail(user.email)
+      setCurrentPhotoName(user.pphoto)
     }
-  }, [user])
+  }, [user, ])
 
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">

@@ -40,7 +40,8 @@ const SignUp = () => {
       email: email,
       name: name,
       userName: userName,
-      age: age
+      age: age,
+      pphoto: ''
     });
   }, [email, name, userName, age])
 
