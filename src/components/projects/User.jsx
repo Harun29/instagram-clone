@@ -6,12 +6,13 @@ import {
   where,
   getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import Spinner from "react-bootstrap/Spinner";
 import { storage } from "../../config/firebase";
 import {
   ref,
   getDownloadURL
 } from "firebase/storage";
+import Spinner from "react-bootstrap/Spinner";
+import Button from "react-bootstrap/Button";
 
 const User = () => {
 
@@ -70,7 +71,7 @@ const User = () => {
           <div className="d-flex flex-column align-items-center">
             <div className="mb-3">
               <img
-                src={currentProfilePhoto ? currentProfilePhoto : "blank-profile.jpg"}
+                src={currentProfilePhoto || "/blank-profile.jpg"}
                 alt=""
                 className="rounded-circle"
                 style={{ width: '150px', height: '150px', objectFit: 'cover' }}
@@ -89,6 +90,9 @@ const User = () => {
                 <strong>30</strong> following
               </div>
             </div>
+            <Button variant="primary" className="mt-3">
+              Follow
+            </Button>
           </div>
         </div>
       ) : (
