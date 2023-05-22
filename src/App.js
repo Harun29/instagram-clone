@@ -8,6 +8,7 @@ import Profile from './components/projects/Profile';
 import UpdateProfile from './components/auth/Update';
 import SignUp from './components/auth/SignUp';
 import SignIn from './components/auth/SignIn';
+import User from './components/projects/User';
 
 import { PostsProvider } from './context/PostContext';
 import { AuthProvider } from './context/AuthContext';
@@ -30,6 +31,7 @@ function App() {
               <Route path='/forgot-password' element={<ForgotPassword />}/>
               <Route path='/signup' element={<SignUp />}/>
               <Route path='/login' element={<SignIn />}/>
+              <Route path='/user/:username' element={<User />}/>
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
               <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
             </Routes>

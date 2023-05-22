@@ -14,7 +14,7 @@ const Navigation = () => {
       <div className="container">
         <Link to='/' className="brand-logo">
           <h1>
-            Arcibald
+            Blog
           </h1>
         </Link>
         {currentUser ? <SignedInLinks /> : <SignedOutLinks />}
