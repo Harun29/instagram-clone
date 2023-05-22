@@ -29,8 +29,10 @@ const Profile = () => {
 
   useEffect(() => {
     const getLink = async() => {
-      const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
-      setCurrentProfilePhoto(url)
+      if(user.pphoto){
+        const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+        setCurrentProfilePhoto(url)
+      }
     }
     if(user){
       getLink();
