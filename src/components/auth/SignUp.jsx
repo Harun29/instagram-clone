@@ -75,6 +75,12 @@ const SignUp = () => {
   //   }
   // };
 
+  const handleUserNameChange = (e) => {
+    const value = e.target.value;
+    const replacedValue = value.replace(/\s/g, "_"); // Replace spaces with low lines (_)
+    setUserName(replacedValue);
+  };
+
   return (
     <form
     className="form-container w-25 ms-auto me-auto mb-auto mt-5 col-10 col-md-8 col-lg-6" 
@@ -98,7 +104,7 @@ const SignUp = () => {
         required
         value={userName}
         placeholder="User name"
-        onChange={(e) => setUserName(e.target.value)}
+        onChange={handleUserNameChange}
         />
       </div>
 
