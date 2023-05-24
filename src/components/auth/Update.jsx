@@ -12,20 +12,22 @@ import {
 
 const UpdateProfile = () => {
 
-  const { currentUser } = useAuth();
-  const { getUserByEmail } = useAuth();
-  const { nameUpdate } = useAuth();
-  const { userNameUpdate } = useAuth();
-  const { emailUpdate } = useAuth();
-  const { passwordUpdate } = useAuth();
-  const { resetPassword } = useAuth();
-  const { profilePhotoUpdate } = useAuth();
-  const { bioUpdate } = useAuth();
-  const { birthdayUpdate } = useAuth();
+  const { 
+    currentUser, 
+    getUserByEmail, 
+    nameUpdate, 
+    userNameUpdate, 
+    emailUpdate, 
+    passwordUpdate, 
+    resetPassword, 
+    profilePhotoUpdate, 
+    bioUpdate, 
+    birthdayUpdate } = useAuth();
+
   const [user, setUser] = useState();
 
   const [name, setName] = useState();
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState();
   
   const [password, setPassword] = useState();
@@ -80,7 +82,6 @@ const UpdateProfile = () => {
     e.preventDefault();
     setLoading(true)
     try{
-      console.log(birthday)
       await nameUpdate(user.email, name);
       await userNameUpdate(user.email, userName);
       await emailUpdate(user.email, email);
@@ -157,6 +158,12 @@ const UpdateProfile = () => {
     }
   }, [user])
 
+  const handleUserNameChange = (e) => {
+    const value = e.target.value;
+    const replacedValue = value.replace(/\s/g, "_"); // Replace spaces with low lines (_)
+    setUserName(replacedValue);
+  };
+
   return user ? (
     <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
       <form 
@@ -173,7 +180,7 @@ const UpdateProfile = () => {
           <label htmlFor="userName" className="form-label">
             Username
           </label>
-          <input onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" id="userName" defaultValue={user.userName} />
+          <input onChange={handleUserNameChange} type="text" className="form-control" id="userName" value={userName}/>
         </div>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
