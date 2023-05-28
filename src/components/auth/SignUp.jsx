@@ -42,7 +42,9 @@ const SignUp = () => {
       userName: userName,
       age: age,
       pphoto: '',
-      bio: ''
+      bio: '',
+      following: [],
+      followers: []
     });
   }, [email, name, userName, age])
 

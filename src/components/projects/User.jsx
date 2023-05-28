@@ -84,10 +84,10 @@ const User = () => {
                 <strong>10</strong> posts
               </div>
               <div className="me-4">
-                <strong>20</strong> followers
+                <strong>{user.followers.length}</strong> followers
               </div>
               <div>
-                <strong>30</strong> following
+                <strong>{user.following.length}</strong> following
               </div>
             </div>
             <Button variant="primary" className="mt-3">
