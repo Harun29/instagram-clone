@@ -95,6 +95,14 @@ export function AuthProvider ({children}) {
   
   async function bioUpdate(email, bio) {
     return updateField(email, "bio", bio);
+  } 
+
+  async function followersUpdate(email, followers) {
+    return updateField(email, "followers", followers);
+  }  
+
+  async function followingUpdate(email, following) {
+    return updateField(email, "following", following);
   }  
 
   const getUserByEmail = async (email) => {
@@ -133,7 +141,9 @@ export function AuthProvider ({children}) {
     userNameUpdate,
     birthdayUpdate,
     profilePhotoUpdate,
-    bioUpdate
+    bioUpdate,
+    followersUpdate,
+    followingUpdate
   }
 
   return (  

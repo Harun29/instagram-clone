@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";    
 import { 
   collection,
   query,
@@ -16,9 +17,49 @@ import Button from "react-bootstrap/Button";
 
 const User = () => {
 
+  const { currentUser } = useAuth();
+  const { followersUpdate } = useAuth();
+  const { followingUpdate } = useAuth();
+
   const param = useParams();
   const [user, setUser] = useState();
   const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
+  const [currentUserFollowing, setCurrentUserFollowing] = useState();
+  const [userFollowers, setUserFollowers] = useState([]);
+  const [followingStatus, setFollowingStatus] = useState(false);
+
+  useEffect(() => {
+    if(user && currentUser){
+      setCurrentUserFollowing(currentUser.following)
+      setUserFollowers(user.followers)
+    }
+  }, [user, currentUser])
+
+  useEffect(() => {
+    if(currentUserFollowing && currentUserFollowing.includes(user.userName)){
+      setFollowingStatus(true)
+    }else{
+      setFollowingStatus(false)
+    }
+  }, [user, currentUserFollowing])
+
+  const handleFollow = async () => {
+    try{
+      await followersUpdate(user.email, [...userFollowers, currentUser.userName])
+      await followingUpdate(currentUser.email, [...currentUserFollowing, user.userName])
+    }catch(err){
+      console.error("error following user", err)
+    }
+  }
+
+  const handleUnfollow = async () => {
+    try{
+      await followersUpdate(user.email, userFollowers.filter(follower => follower !== currentUser.userName))
+      await followingUpdate(currentUser.email, currentUserFollowing.filter(following => following !== user.userName))
+    }catch(err){
+      console.error("error unfollowing user", err)
+    }
+  }
 
   const getUserByUsername = async (username) => {
     const usersRef = collection(db, 'users');
@@ -90,9 +131,13 @@ const User = () => {
                 <strong>{user.following.length}</strong> following
               </div>
             </div>
-            <Button variant="primary" className="mt-3">
+            {!followingStatus ? 
+            <Button onClick={handleFollow} variant="primary" className="mt-3">
               Follow
-            </Button>
+            </Button> :
+            <Button onClick={handleUnfollow} variant="secondary" className="mt-3">
+              Unfollow
+            </Button> }
           </div>
         </div>
       ) : (
