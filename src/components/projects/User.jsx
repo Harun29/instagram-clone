@@ -34,6 +34,8 @@ const User = () => {
   const [userFollowers, setUserFollowers] = useState([]);
   const [followingStatus, setFollowingStatus] = useState(false);
 
+/* FATCHES USER WHO IS VIEWING THE PROFILE */
+
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmail(email);
@@ -46,6 +48,8 @@ const User = () => {
       console.error(err)
     }
   }, [currentUser, getUserByEmail])
+
+/* SETS INITIAL FOLLOWING AND FOLLOWERS OF USER */
 
   useEffect(() => {
     if(user && userViewing){
@@ -62,14 +66,16 @@ const User = () => {
     }
   }, [user, currentUserFollowing])
 
+/* HANDLES FOLLOW AND UNFOLLOW UPDATE */
+
   const handleFollow = async () => {
-    const newUserFollowers = [...userFollowers, currentUser.userName]
+    const newUserFollowers = [...userFollowers, userViewing.userName]
     const newCurrentUserFollowing = [...currentUserFollowing, user.userName]
     try{
-      await followersUpdate(user.email, arrayUnion(userViewing.userName))
-      await followingUpdate(currentUser.email, arrayUnion(user.userName))
       setUserFollowers(newUserFollowers)
       setCurrentUserFollowing(newCurrentUserFollowing)
+      await followersUpdate(user.email, arrayUnion(userViewing.userName))
+      await followingUpdate(currentUser.email, arrayUnion(user.userName))
     }catch(err){
       console.error("error following user", err)
     }
@@ -79,14 +85,16 @@ const User = () => {
     const newUserFollowers = userFollowers.filter(follower => follower !== userViewing.userName)
     const newCurrentUserFollowing = currentUserFollowing.filter(following => following !== user.userName)
     try{
-      await followersUpdate(user.email, arrayRemove(userViewing.userName))
-      await followingUpdate(currentUser.email, arrayRemove(user.userName))
       setUserFollowers(newUserFollowers)
       setCurrentUserFollowing(newCurrentUserFollowing)
+      await followersUpdate(user.email, arrayRemove(userViewing.userName))
+      await followingUpdate(currentUser.email, arrayRemove(user.userName))
     }catch(err){
       console.error("error unfollowing user", err)
     }
   }
+
+  /* GETS INFO OF THE USER WHOSE PROFILE YOURE VIEWING */
 
   const getUserByUsername = async (username) => {
     const usersRef = collection(db, 'users');
@@ -116,6 +124,8 @@ const User = () => {
     }
   }, [param])
 
+/* GETS USERS PROFILE PHOTO */
+
   useEffect(() => {
     const getLink = async() => {
       if(user.pphoto){
@@ -127,10 +137,6 @@ const User = () => {
       getLink();
     }
   }, [user])
-
-  useEffect(() => {
-    console.log(currentProfilePhoto)
-  }, [currentProfilePhoto])
 
   return (  
     <div className="container mt-4">
