@@ -5,7 +5,9 @@ import {
   collection,
   query,
   where,
-  getDocs } from "firebase/firestore";
+  getDocs,
+  arrayUnion,
+  arrayRemove } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { storage } from "../../config/firebase";
 import {
@@ -18,25 +20,42 @@ import Button from "react-bootstrap/Button";
 const User = () => {
 
   const { currentUser } = useAuth();
+  const { getUserByEmail } = useAuth();
   const { followersUpdate } = useAuth();
   const { followingUpdate } = useAuth();
 
   const param = useParams();
   const [user, setUser] = useState();
+  const [userViewing, setUserViewing] = useState()
+
   const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
-  const [currentUserFollowing, setCurrentUserFollowing] = useState();
+
+  const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
   const [userFollowers, setUserFollowers] = useState([]);
   const [followingStatus, setFollowingStatus] = useState(false);
 
   useEffect(() => {
-    if(user && currentUser){
-      setCurrentUserFollowing(currentUser.following)
-      setUserFollowers(user.followers)
+    const fetchUserByEmail = async (email) => {
+      const user = await getUserByEmail(email);
+      setUserViewing(user);
     }
-  }, [user, currentUser])
+    try{
+      currentUser && fetchUserByEmail(currentUser.email)
+    }
+    catch(err){
+      console.error(err)
+    }
+  }, [currentUser, getUserByEmail])
 
   useEffect(() => {
-    if(currentUserFollowing && currentUserFollowing.includes(user.userName)){
+    if(user && userViewing){
+      setCurrentUserFollowing(userViewing.following)
+      setUserFollowers(user.followers)
+    }
+  }, [user, userViewing])
+
+  useEffect(() => {
+    if(user && currentUserFollowing && currentUserFollowing.includes(user.userName)){
       setFollowingStatus(true)
     }else{
       setFollowingStatus(false)
@@ -44,18 +63,26 @@ const User = () => {
   }, [user, currentUserFollowing])
 
   const handleFollow = async () => {
+    const newUserFollowers = [...userFollowers, currentUser.userName]
+    const newCurrentUserFollowing = [...currentUserFollowing, user.userName]
     try{
-      await followersUpdate(user.email, [...userFollowers, currentUser.userName])
-      await followingUpdate(currentUser.email, [...currentUserFollowing, user.userName])
+      await followersUpdate(user.email, arrayUnion(userViewing.userName))
+      await followingUpdate(currentUser.email, arrayUnion(user.userName))
+      setUserFollowers(newUserFollowers)
+      setCurrentUserFollowing(newCurrentUserFollowing)
     }catch(err){
       console.error("error following user", err)
     }
   }
 
   const handleUnfollow = async () => {
+    const newUserFollowers = userFollowers.filter(follower => follower !== userViewing.userName)
+    const newCurrentUserFollowing = currentUserFollowing.filter(following => following !== user.userName)
     try{
-      await followersUpdate(user.email, userFollowers.filter(follower => follower !== currentUser.userName))
-      await followingUpdate(currentUser.email, currentUserFollowing.filter(following => following !== user.userName))
+      await followersUpdate(user.email, arrayRemove(userViewing.userName))
+      await followingUpdate(currentUser.email, arrayRemove(user.userName))
+      setUserFollowers(newUserFollowers)
+      setCurrentUserFollowing(newCurrentUserFollowing)
     }catch(err){
       console.error("error unfollowing user", err)
     }
@@ -125,7 +152,7 @@ const User = () => {
                 <strong>10</strong> posts
               </div>
               <div className="me-4">
-                <strong>{user.followers.length}</strong> followers
+                <strong>{userFollowers.length}</strong> followers
               </div>
               <div>
                 <strong>{user.following.length}</strong> following
