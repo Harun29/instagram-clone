@@ -115,7 +115,6 @@ const User = () => {
       const user = await getUserByUsername(username);
       setUser(user);
     }
-    console.log(param.username)
     try{
       fetchUserByUsername(param.username)
     }
