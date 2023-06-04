@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";    
-import { 
-  collection,
-  query,
-  where,
-  getDocs,
+import {
   arrayUnion,
   arrayRemove } from "firebase/firestore";
-import { db } from "../../config/firebase";
 import { storage } from "../../config/firebase";
 import {
   ref,
@@ -23,6 +18,7 @@ const User = () => {
   const { getUserByEmail } = useAuth();
   const { followersUpdate } = useAuth();
   const { followingUpdate } = useAuth();
+  const { getUserByUsername } = useAuth();
 
   const param = useParams();
   const [user, setUser] = useState();
@@ -96,20 +92,6 @@ const User = () => {
 
   /* GETS INFO OF THE USER WHOSE PROFILE YOURE VIEWING */
 
-  const getUserByUsername = async (username) => {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('userName', '==', username));
-    const querySnapshot = await getDocs(q);
-  
-    if (querySnapshot.empty) {
-      console.error('No matching documents for username:', username);
-      return null;
-    }
-  
-    const user = querySnapshot.docs[0].data();
-    return user;
-  }
-
   useEffect(() => {
     const fetchUserByUsername = async (username) => {
       const user = await getUserByUsername(username);
@@ -121,7 +103,7 @@ const User = () => {
     catch(err){
       console.error(err)
     }
-  }, [param])
+  }, [param, getUserByUsername])
 
 /* GETS USERS PROFILE PHOTO */
 

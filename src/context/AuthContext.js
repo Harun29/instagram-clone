@@ -119,6 +119,20 @@ export function AuthProvider ({children}) {
     return user;
   }
 
+  const getUserByUsername = async (username) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('userName', '==', username));
+    const querySnapshot = await getDocs(q);
+  
+    if (querySnapshot.empty) {
+      console.error('No matching documents for username:', username);
+      return null;
+    }
+  
+    const user = querySnapshot.docs[0].data();
+    return user;
+  }
+
   /* we use unsubscribe because "return" in useeffect runs when the component is unmounted */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -138,6 +152,7 @@ export function AuthProvider ({children}) {
     emailUpdate,
     nameUpdate,
     getUserByEmail,
+    getUserByUsername,
     userNameUpdate,
     birthdayUpdate,
     profilePhotoUpdate,
