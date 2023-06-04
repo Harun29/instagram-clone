@@ -2,6 +2,12 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 
+import { storage } from "../../config/firebase";
+import {
+  ref,
+  getDownloadURL
+} from "firebase/storage";
+
 const UserFollowers = () => {
 
   const { getUserByUsername } = useAuth();
@@ -37,8 +43,8 @@ const UserFollowers = () => {
 
     const fetchFollowersPhoto = async (username) => {
       const user = await getUserByUsername(username);
-      followersObject[username] = user.pphoto;
-      console.log(followersObject)
+      const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+      followersObject[username] = url;
     }
 
     if(followers){
