@@ -10,6 +10,9 @@ const UserFollowers = () => {
   const [user, setUser] = useState();
   const [followers, setFollowers] = useState();
 
+  const [followersWithPictures, setFollowersWithPictures] = useState();
+  
+
   useEffect(() => {
     const fetchUserByUsername = async (username) => {
       const user = await getUserByUsername(username);
@@ -29,6 +32,21 @@ const UserFollowers = () => {
     }
   }, [user])
 
+  useEffect(() => {
+    const followersObject = {};
+
+    const fetchFollowersPhoto = async (username) => {
+      const user = await getUserByUsername(username);
+      followersObject[username] = user.pphoto;
+      console.log(followersObject)
+    }
+
+    if(followers){
+      followers.map(follower => fetchFollowersPhoto(follower))
+    }
+
+
+  }, [followers, getUserByUsername])
 
   return ( 
     <>
