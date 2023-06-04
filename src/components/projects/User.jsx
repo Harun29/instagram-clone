@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";    
 import { 
   collection,
@@ -157,7 +157,10 @@ const User = () => {
                 <strong>10</strong> posts
               </div>
               <div className="me-4">
-                <strong>{userFollowers.length}</strong> followers
+                <Link to='followers'>
+                  <strong>{userFollowers.length}</strong> 
+                  followers
+                </Link>
               </div>
               <div>
                 <strong>{user.following.length}</strong> following

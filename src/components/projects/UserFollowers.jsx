@@ -1,5 +1,12 @@
+import { useParams } from "react-router-dom";
+
 const UserFollowers = () => {
-  return (  
+
+  const param = useParams();
+
+  console.log(param)
+
+  return ( 
     <>
     </>
   );
