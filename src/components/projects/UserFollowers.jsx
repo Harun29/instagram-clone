@@ -43,16 +43,30 @@ const UserFollowers = () => {
 
     const fetchFollowersPhoto = async (username) => {
       const user = await getUserByUsername(username);
-      const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
-      followersObject[username] = url;
+      if(user.pphoto){
+        const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+        followersObject[username] = url;
+      }else{
+        followersObject[username] = "/blank-profile.jpg"
+      }
     }
-
-    if(followers){
-      followers.map(follower => fetchFollowersPhoto(follower))
+    try{
+      if(followers){
+        followers.map(follower => fetchFollowersPhoto(follower))
+      }else{
+        return
+      }
+    }catch(err){
+      console.error(err)
+    }finally{
+      setFollowersWithPictures(followersObject)
     }
-
 
   }, [followers, getUserByUsername])
+
+  useEffect(()=> {
+    console.log(followersWithPictures)
+  }, [followersWithPictures])
 
   return ( 
     <>
