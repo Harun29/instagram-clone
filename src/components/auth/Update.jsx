@@ -214,7 +214,7 @@ const UpdateProfile = () => {
 
           {selectedImage ?
            <img src={selectedImage} alt="Selected" className="profile-picture-settings mt-3"/>
-          : <img src={currentProfilePhoto} alt="Selected" className="profile-picture-settings mt-3"/>}
+          : <img src={currentProfilePhoto || "/blank-profile.jpg"} alt="Selected" className="profile-picture-settings mt-3"/>}
           
         </div>
         <button disabled={loading} type="submit" className="btn btn-primary">
