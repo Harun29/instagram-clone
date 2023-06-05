@@ -53,13 +53,13 @@ const UserFollowers = () => {
     try{
       if(followers){
         followers.map(follower => fetchFollowersPhoto(follower))
-      }else{
-        return
       }
     }catch(err){
       console.error(err)
     }finally{
-      setFollowersWithPictures(followersObject)
+      if(followers){
+        setFollowersWithPictures(followersObject)
+      }
     }
 
   }, [followers, getUserByUsername])
@@ -69,8 +69,28 @@ const UserFollowers = () => {
   }, [followersWithPictures])
 
   return ( 
-    <>
-    </>
+    <div className="mt-4 container">
+      <h1>User Followers</h1>
+      <div className="row">
+
+        {followersWithPictures &&
+          Object.keys(followersWithPictures).map((follower) => (
+            <div className="col-lg-3 col-md-4 col-sm-6" key={follower}>
+              <div className="card">
+                <img
+                  src={followersWithPictures[follower]}
+                  alt="Profile"
+                  className="card-img-top"
+                />
+                <div className="card-body">
+                  <p className="card-text">{follower}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+
+      </div>
+    </div>
   );
 }
  
