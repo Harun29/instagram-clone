@@ -1,22 +1,20 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-
 import { storage } from "../../config/firebase";
 import {
   ref,
   getDownloadURL
 } from "firebase/storage";
-
 import { Link } from "react-router-dom";
 
-const UserFollowers = () => {
+const UserFollowList = ({ fetchType }) => {
 
   const { getUserByUsername } = useAuth();
 
   const param = useParams();
   const [user, setUser] = useState();
-  const [followers, setFollowers] = useState();
+  const [followList, setFollowList] = useState();
   const [followersWithPictures, setFollowersWithPictures] = useState({});
 
   useEffect(() => {
@@ -34,10 +32,11 @@ const UserFollowers = () => {
 
 
   useEffect(() => {
+    console.log(fetchType)
     if (user){
-      setFollowers(user.followers)
+      (fetchType === "followers" ? setFollowList(user.followers) : setFollowList(user.following))
     }
-  }, [user])
+  }, [user, fetchType])
 
 
   useEffect(() => {
@@ -54,18 +53,18 @@ const UserFollowers = () => {
         }
       };
   
-      try {
-        if (followers) {
-          await Promise.all(followers.map((follower) => fetchFollowersPhoto(follower)));
+      try{
+        if (followList) {
+          await Promise.all(followList.map((follower) => fetchFollowersPhoto(followList)));
           setFollowersWithPictures(followersObject);
         }
-      } catch (err) {
+      }catch(err){
         console.error(err);
       }
     };
   
     fetchFollowers();
-  }, [followers, getUserByUsername]);
+  }, [followList, getUserByUsername]);
 
   return (
     <div className="mt-4 container">
@@ -101,4 +100,4 @@ const UserFollowers = () => {
     
 }
  
-export default UserFollowers;
+export default UserFollowList;

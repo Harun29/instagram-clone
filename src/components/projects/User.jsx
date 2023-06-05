@@ -145,7 +145,10 @@ const User = () => {
                 </Link>
               </div>
               <div>
-                <strong>{user.following.length}</strong> following
+                <Link to='following'>
+                  <strong>{user.following.length}</strong> 
+                  following
+                </Link>
               </div>
             </div>
             {!followingStatus ? 
