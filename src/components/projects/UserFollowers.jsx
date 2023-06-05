@@ -8,6 +8,8 @@ import {
   getDownloadURL
 } from "firebase/storage";
 
+import { Link } from "react-router-dom";
+
 const UserFollowers = () => {
 
   const { getUserByUsername } = useAuth();
@@ -15,9 +17,7 @@ const UserFollowers = () => {
   const param = useParams();
   const [user, setUser] = useState();
   const [followers, setFollowers] = useState();
-
-  const [followersWithPictures, setFollowersWithPictures] = useState();
-  
+  const [followersWithPictures, setFollowersWithPictures] = useState({});
 
   useEffect(() => {
     const fetchUserByUsername = async (username) => {
@@ -32,62 +32,71 @@ const UserFollowers = () => {
     }
   }, [param, getUserByUsername])
 
+
   useEffect(() => {
     if (user){
       setFollowers(user.followers)
     }
   }, [user])
 
+
   useEffect(() => {
-    const followersObject = {};
-
-    const fetchFollowersPhoto = async (username) => {
-      const user = await getUserByUsername(username);
-      if(user.pphoto){
-        const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
-        followersObject[username] = url;
-      }else{
-        followersObject[username] = "/blank-profile.jpg"
+    const fetchFollowers = async () => {
+      const followersObject = {};
+  
+      const fetchFollowersPhoto = async (username) => {
+        const user = await getUserByUsername(username);
+        if (user.pphoto) {
+          const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+          followersObject[username] = url;
+        } else {
+          followersObject[username] = "/blank-profile.jpg";
+        }
+      };
+  
+      try {
+        if (followers) {
+          await Promise.all(followers.map((follower) => fetchFollowersPhoto(follower)));
+          setFollowersWithPictures(followersObject);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    }
-    try{
-      if(followers){ followers.map(follower => fetchFollowersPhoto(follower)) }
-    }catch(err){
-      console.error(err)
-    }finally{
-      if(followers){ setFollowersWithPictures(followersObject) }
-    }
-
-  }, [followers, getUserByUsername])
-
-  useEffect(()=> {
-    console.log(followersWithPictures)
-  }, [followersWithPictures])
+    };
+  
+    fetchFollowers();
+  }, [followers, getUserByUsername]);
 
   return (
-
-      <div className="mt-4 container">
-        <h1>User Followers</h1>
-        <div className="row">
-
-          {followersWithPictures &&
-            Object.keys(followersWithPictures).map((follower) => (
-              <div className="col-lg-3 col-md-4 col-sm-6" key={follower}>
-                <div className="card">
-                  <img
-                    src={followersWithPictures[follower]}
-                    alt="Profile"
-                    className="card-img-top"
-                  />
-                  <div className="card-body">
-                    <p className="card-text">{follower}</p>
-                  </div>
-                </div>
+    <div className="mt-4 container">
+  <h1 className="text-center">User Followers</h1>
+  <div className="row justify-content-center">
+    {followersWithPictures &&
+      Object.keys(followersWithPictures).map((follower) => (
+        <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={follower}>
+          <div className="card text-center">
+            <div className="card-body">
+              <div className="profile-photo mx-auto">
+                <img
+                  src={followersWithPictures[follower]}
+                  alt="Profile"
+                  className="rounded-circle"
+                  style={{ width: "50px", height: "50px" }}
+                />
               </div>
-            ))}
-
+              <h5 className="card-title mt-3">{follower}</h5>
+              <Link to={`/user/${follower}`} className="btn btn-primary">
+                View Profile
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
+  </div>
+</div>
+
+
+  
     );
     
 }
