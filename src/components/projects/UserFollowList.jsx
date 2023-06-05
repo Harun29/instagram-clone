@@ -67,7 +67,9 @@ const UserFollowList = ({ fetchType }) => {
 
   return (
     <div className="mt-4 container">
-      <h1 className="text-center mb-5">{fetchType === "followers" ? "User Followers" : "User Following"}</h1>
+      <h1 className="text-center mb-5">
+        {fetchType === "followers" ? "User Followers" : "User Following"}
+      </h1>
       
       <div className="row justify-content-center">
         {followersWithPictures &&
@@ -94,10 +96,7 @@ const UserFollowList = ({ fetchType }) => {
       </div>
     </div>
 
-
-  
-    );
-    
+  );  
 }
  
 export default UserFollowList;
