@@ -25,11 +25,11 @@ const CreatePost = () => {
 
   return (
     <form 
-      className="create-post container mb-4"
-      onSubmit={handleSubmit}>
+    className="create-post container mb-4"
+    onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <h4>Create post</h4>
+          <h4 className="text-center">Create post</h4>
           <div className="form-group">
             <label htmlFor="title">Header</label>
             <input 
@@ -67,12 +67,14 @@ const CreatePost = () => {
               )}
             </div>
           </div>
-          <div className="text-right">
-            <button type="submit" className="btn btn-primary">Post</button>
+          <div className="text-center">
+            <button type="submit" className="btn btn-primary btn-instagram">Post</button>
           </div>
         </div>
       </div>
     </form>
+
+
   );
 
 }
