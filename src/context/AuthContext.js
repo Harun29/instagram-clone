@@ -103,6 +103,10 @@ export function AuthProvider ({children}) {
 
   async function followingUpdate(email, following) {
     return updateField(email, "following", following);
+  }
+
+  async function postsUpdate(email, post) {
+    return updateField(email, "following", post);
   }  
 
   const getUserByEmail = async (email) => {
@@ -158,7 +162,8 @@ export function AuthProvider ({children}) {
     profilePhotoUpdate,
     bioUpdate,
     followersUpdate,
-    followingUpdate
+    followingUpdate,
+    postsUpdate
   }
 
   return (  

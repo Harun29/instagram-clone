@@ -44,7 +44,8 @@ const SignUp = () => {
       pphoto: '',
       bio: '',
       following: [],
-      followers: []
+      followers: [],
+      posts: []
     });
   }, [email, name, userName, age])
 
