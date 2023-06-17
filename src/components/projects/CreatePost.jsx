@@ -1,5 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/PostContext";
+import { v4 } from "uuid";
 
 const CreatePost = () => {
   
@@ -7,6 +8,16 @@ const CreatePost = () => {
   const [description, setDescription] = useState('');
   const {addToPosts} = useContext(PostContext);
   const [photo, setPhoto] = useState(null);
+  const [imgName, setImgName] = useState(null);
+
+  // const addData = async (data) => {
+  //   try {
+  //     const docRef = await addDoc(collection(db, 'posts'), data);
+  //     console.log('Document written with ID: ', docRef.id);
+  //   } catch (e) {
+  //     console.error('Error adding document: ', e);
+  //   }
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,12 +27,22 @@ const CreatePost = () => {
   const handlePhotoChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
+      setImgName(e.target.files[0].name + v4());
       reader.onload = (e) => {
         setPhoto(e.target.result);
       };
       reader.readAsDataURL(e.target.files[0]);
     }
   };
+
+  useEffect(() => {
+    // setPost({
+    //   description: description,
+    //   photo: photo,
+    //   user: user
+    // })
+    console.log(imgName)
+  }, [description, photo, imgName])
 
   return (
     <form 
