@@ -11,7 +11,6 @@ import SignIn from './components/auth/SignIn';
 import User from './components/projects/User';
 import UserFollowList from './components/projects/UserFollowList';
 
-import { PostsProvider } from './context/PostContext';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -21,14 +20,13 @@ import "bootstrap/dist/js/bootstrap.min.js";
 function App() {
   return (
     <AuthProvider>
-    <PostsProvider>
       <div className="App">
           <Router>
             <Navigation />
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/post/:id' element={<PostDetails />}/>
-              <Route path='/createpost' element={<CreatePost />}/>
+              <Route path='/createpost' element={<PrivateRoute component={CreatePost}/>}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
               <Route path='/signup' element={<SignUp />}/>
               <Route path='/login' element={<SignIn />}/>
@@ -46,7 +44,6 @@ function App() {
             </Routes>
           </Router>
       </div>
-    </PostsProvider>
     </AuthProvider>
   );
 }
