@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from "react";
-// import PostContext from "../../context/PostContext";
 import AuthContext from "../../context/AuthContext";
 import { addDoc, arrayUnion, collection } from "firebase/firestore";
 import { db } from "../../config/firebase";
@@ -13,7 +12,6 @@ const CreatePost = () => {
   const [imgName, setImgName] = useState(null);
   const [post, setPost] = useState([])
 
-  // const {addToPosts} = useContext(PostContext);
   const {currentUser} = useContext(AuthContext);
   const {postsUpdate} = useContext(AuthContext);
 
