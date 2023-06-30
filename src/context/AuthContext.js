@@ -106,7 +106,7 @@ export function AuthProvider ({children}) {
   }
 
   async function postsUpdate(email, post) {
-    return updateField(email, "following", post);
+    return updateField(email, "posts", post);
   }  
 
   const getUserByEmail = async (email) => {
