@@ -1,5 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/PostContext";
+import AuthContext from "../../context/AuthContext";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../config/firebase";
 import { v4 } from "uuid";
 
 const CreatePost = () => {
@@ -9,15 +12,17 @@ const CreatePost = () => {
   const {addToPosts} = useContext(PostContext);
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
+  const {currentUser} = useContext(AuthContext);
+  const {postUpdate} = useContext(AuthContext);
 
-  // const addData = async (data) => {
-  //   try {
-  //     const docRef = await addDoc(collection(db, 'posts'), data);
-  //     console.log('Document written with ID: ', docRef.id);
-  //   } catch (e) {
-  //     console.error('Error adding document: ', e);
-  //   }
-  // }
+  const addData = async (data) => {
+    try {
+      const docRef = await addDoc(collection(db, 'posts'), data);
+      console.log('Document written with ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +46,7 @@ const CreatePost = () => {
     //   photo: photo,
     //   user: user
     // })
-    console.log(imgName)
+    console.log(imgName, currentUser.email)
   }, [description, photo, imgName])
 
   return (
@@ -94,7 +99,6 @@ const CreatePost = () => {
         </div>
       </div>
     </form>
-
 
   );
 
