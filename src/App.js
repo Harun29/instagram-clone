@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Navigation from './components/layout/Navbar';
-import Home from './components/dashboard/Home'
-import PostDetails from './components/projects/PostDetails';
+import Home from './components/dashboard/Home';
 import CreatePost from './components/projects/CreatePost';
 import ForgotPassword from './components/auth/ForgotPassword';
 import Profile from './components/projects/Profile';
@@ -25,7 +24,6 @@ function App() {
             <Navigation />
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/post/:id' element={<PostDetails />}/>
               <Route path='/createpost' element={<PrivateRoute component={CreatePost}/>}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
               <Route path='/signup' element={<SignUp />}/>
