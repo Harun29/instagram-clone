@@ -10,15 +10,18 @@ const CreatePost = () => {
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
-  const [post, setPost] = useState([])
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const {currentUser} = useContext(AuthContext);
   const {postsUpdate} = useContext(AuthContext);
 
   const addData = async (data) => {
+    setLoading(true)
     try {
       const docRef = await addDoc(collection(db, 'posts'), data);
-      await postsUpdate(currentUser.email, arrayUnion(docRef.id))
+      await postsUpdate(currentUser.email, arrayUnion(docRef.id));
+      setLoading(false)
       console.log('Document written with ID: ', docRef.id);
     } catch (e) {
       console.error('Error adding document: ', e);
@@ -99,7 +102,7 @@ const CreatePost = () => {
             </div>
           </div>
           <div className="text-center">
-            <button type="submit" className="btn btn-primary btn-instagram">Post</button>
+            <button disabled={loading} type="submit" className="btn btn-primary btn-instagram">Post</button>
           </div>
         </div>
       </div>
