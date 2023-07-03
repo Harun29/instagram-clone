@@ -3,6 +3,7 @@ import AuthContext from "../../context/AuthContext";
 import { addDoc, arrayUnion, collection } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { v4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   
@@ -11,7 +12,8 @@ const CreatePost = () => {
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
   const [post, setPost] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const {currentUser} = useContext(AuthContext);
   const {postsUpdate} = useContext(AuthContext);
@@ -21,10 +23,12 @@ const CreatePost = () => {
     try {
       const docRef = await addDoc(collection(db, 'posts'), data);
       await postsUpdate(currentUser.email, arrayUnion(docRef.id));
-      setLoading(false)
       console.log('Document written with ID: ', docRef.id);
+      navigate('/')
     } catch (e) {
       console.error('Error adding document: ', e);
+      setLoading(false)
+    } finally {
     }
   }
 
