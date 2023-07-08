@@ -6,6 +6,7 @@ import {
   ref,
   getDownloadURL
 } from "firebase/storage";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
 
@@ -39,37 +40,47 @@ const Profile = () => {
     }
   }, [user])
 
-  return user ? (
-    <div className="profile-container d-flex justify-content-center align-items-center shadow p-3 mb-5 bg-white rounded">
-      <div className="d-flex flex-column align-items-center">
-        <div className="mb-3">
-          <img
-            src={currentProfilePhoto || "/blank-profile.jpg"}
-            alt=""
-            className="rounded-circle"
-            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-          />
+  return (  
+    <div className="container mt-4">
+      {user ? (
+        <div className="profile-container d-flex justify-content-center align-items-center shadow p-3 mb-5 bg-white rounded">
+          <div className="d-flex flex-column align-items-center">
+            <div className="mb-3">
+              <img
+                src={currentProfilePhoto || "/blank-profile.jpg"}
+                alt=""
+                className="rounded-circle"
+                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+              />
+            </div>
+            <h5 className="mb-3">{user.name}</h5>
+            <p>{user.bio}</p>
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="me-4">
+                <strong>10</strong> posts
+              </div>
+              <div className="me-4">
+                <Link to='followers'>
+                  <strong>{user.followers.length}</strong> 
+                  followers
+                </Link>
+              </div>
+              <div>
+                <Link to='following'>
+                  <strong>{user.following.length}</strong> 
+                  following
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-        <h5 className="mb-3">{user.name}</h5>
-        <p>{user.bio}</p>
+      ) : (
         <div className="d-flex justify-content-center align-items-center">
-          <div className="me-4">
-            <strong>10</strong> posts
-          </div>
-          <div className="me-4">
-            <strong>{user.followers.length}</strong> followers
-          </div>
-          <div>
-            <strong>{user.following.length}</strong> following
-          </div>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
         </div>
-      </div>
-    </div>
-  ) : (
-    <div className="d-flex justify-content-center align-items-center">
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
+      )}
     </div>
   );
 

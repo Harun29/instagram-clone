@@ -37,6 +37,14 @@ function App() {
                 path="/user/:username/following"
                 element={<UserFollowList fetchType="following" />}
               />
+              <Route
+                path="/profile/following"
+                element={<UserFollowList fetchType="following" />}
+              />
+              <Route
+                path="/profile/followers"
+                element={<UserFollowList fetchType="followers" />}
+              />
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
               <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
             </Routes>
