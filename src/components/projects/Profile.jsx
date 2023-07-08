@@ -60,13 +60,13 @@ const Profile = () => {
                 <strong>10</strong> posts
               </div>
               <div className="me-4">
-                <Link to='followers'>
+                <Link to={`${user.userName}/followers`}>
                   <strong>{user.followers.length}</strong> 
                   followers
                 </Link>
               </div>
               <div>
-                <Link to='following'>
+                <Link to={`${user.userName}/following`}>
                   <strong>{user.following.length}</strong> 
                   following
                 </Link>

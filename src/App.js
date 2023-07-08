@@ -38,11 +38,11 @@ function App() {
                 element={<UserFollowList fetchType="following" />}
               />
               <Route
-                path="/profile/following"
+                path="/profile/:username/following"
                 element={<UserFollowList fetchType="following" />}
               />
               <Route
-                path="/profile/followers"
+                path="/profile/:username/followers"
                 element={<UserFollowList fetchType="followers" />}
               />
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
