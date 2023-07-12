@@ -7,6 +7,7 @@ import {
   getDownloadURL
 } from "firebase/storage";
 import { Link } from "react-router-dom";
+import PostsList from "./PostsList";
 
 const Profile = () => {
 
@@ -73,6 +74,7 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          <PostsList />
         </div>
       ) : (
         <div className="d-flex justify-content-center align-items-center">
