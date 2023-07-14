@@ -1,30 +1,40 @@
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
 
-const PostsList = ({ user }) => {
+const PostsList = ({ postsList }) => {
+  
+  const [postsPhotos, setPostsPhotos] = useState()
 
   useEffect(() => {
+    console.log("photos: ", postsPhotos)
+  }, [postsPhotos])
+
+  useEffect(() => { 
+  const posts = [];
 
    const fetchPosts = async (postId) => {
       const docRef = doc(db, 'posts', postId);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data().photo);
+        posts.push(docSnap.data().photo)
       } else {
-        // docSnap.data() will be undefined in this case
         console.log("No such document!");
       }
    }
    
    try{
-    fetchPosts('IxToa9xi2mFesn9ds7zY');
-    console.log("user: ", user)
+    postsList.map((post) => {
+      return fetchPosts(post)
+    })
    }catch(err){
     console.error(err)
+   }finally{
+    setPostsPhotos(posts);
    }
-  }, [user])
+
+  }, [postsList])
 
   return (  
     <>
