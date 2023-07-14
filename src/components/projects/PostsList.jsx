@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useEffect } from "react";
 import { db } from "../../config/firebase";
 
-const PostsList = () => {
+const PostsList = ({ user }) => {
 
   useEffect(() => {
 
@@ -11,7 +11,7 @@ const PostsList = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        console.log("Document data:", docSnap.data().photo);
       } else {
         // docSnap.data() will be undefined in this case
         console.log("No such document!");
@@ -19,11 +19,12 @@ const PostsList = () => {
    }
    
    try{
-    fetchPosts('IxToa9xi2mFesn9ds7zY')
+    fetchPosts('IxToa9xi2mFesn9ds7zY');
+    console.log("user: ", user)
    }catch(err){
     console.error(err)
    }
-  })
+  }, [user])
 
   return (  
     <>

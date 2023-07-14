@@ -74,7 +74,7 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <PostsList />
+          <PostsList user={user.posts}/>
         </div>
       ) : (
         <div className="d-flex justify-content-center align-items-center">
