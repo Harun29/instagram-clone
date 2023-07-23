@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
+import { getDownloadURL } from "firebase/storage";
 
 const PostsList = ({ postsList }) => {
   

@@ -4,6 +4,8 @@ import { addDoc, arrayUnion, collection } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { storage } from "../../config/firebase";
+import { ref, uploadBytes } from "firebase/storage";
 
 const CreatePost = () => {
   
@@ -13,6 +15,8 @@ const CreatePost = () => {
   const [imgName, setImgName] = useState(null);
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [imageUpload, setImageUpload] = useState(null);
+
   const navigate = useNavigate()
 
   const {currentUser} = useContext(AuthContext);
@@ -32,15 +36,22 @@ const CreatePost = () => {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addData(post)
+  const handleSubmit = async (e) => {
+    const imageRef = ref(storage, `posts_pictures/${imgName}`);
+    try{
+      e.preventDefault();
+      addData(post)
+      await uploadBytes(imageRef, imageUpload);
+    }catch(err){
+      console.error(err)
+    }
   };
 
   const handlePhotoChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       setImgName(e.target.files[0].name + v4());
+      setImageUpload(e.target.files[0])
       reader.onload = (e) => {
         setPhoto(e.target.result);
       };
