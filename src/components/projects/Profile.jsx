@@ -74,7 +74,6 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <PostsList postsList={user.posts}/>
         </div>
       ) : (
         <div className="d-flex justify-content-center align-items-center">
@@ -83,6 +82,7 @@ const Profile = () => {
           </Spinner>
         </div>
       )}
+      {user ? (<PostsList postsList={user.posts}/>) : null}
     </div>
   );
 
