@@ -1,7 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
-import { getDownloadURL } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../config/firebase";
 
 const PostsList = ({ postsList }) => {
   
@@ -17,9 +18,13 @@ const PostsList = ({ postsList }) => {
    const fetchPosts = async (postId) => {
       const docRef = doc(db, 'posts', postId);
       const docSnap = await getDoc(docRef);
+      const postPicture = await getDownloadURL(ref(storage, `posts_pictures/${docSnap.data().photo}`))
 
       if (docSnap.exists()) {
-        posts.push(docSnap.data().photo)
+        posts.push(
+          {picture: postPicture,
+          link: docSnap.id}
+          )
       } else {
         console.log("No such document!");
       }
