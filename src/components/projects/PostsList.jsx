@@ -10,10 +10,6 @@ const PostsList = ({ postsList }) => {
   const [postsPhotos, setPostsPhotos] = useState([]);
 
   useEffect(() => {
-    console.log("photos: ", postsPhotos);
-  }, [postsPhotos]);
-
-  useEffect(() => {
     const fetchPosts = async (postId) => {
       try {
         const docRef = doc(db, "posts", postId);
