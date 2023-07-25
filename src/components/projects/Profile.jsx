@@ -58,7 +58,8 @@ const Profile = () => {
             <p>{user.bio}</p>
             <div className="d-flex justify-content-center align-items-center">
               <div className="me-4">
-                <strong>10</strong> posts
+                <strong>{user.posts.lenght}</strong> 
+                posts
               </div>
               <div className="me-4">
                 <Link to={`${user.userName}/followers`}>
