@@ -53,7 +53,7 @@ const PostsList = ({ postsList }) => {
         <Row className="mt-5">
           {postsPhotos.map((post, index) => (
             <Col key={index} xs={12} sm={6} md={4} lg={4} xl={4}>
-              <Link to={`post/user/${post.link}`}>
+              <Link to={`/post/${post.link}`}>
                 <img
                   src={post.picture}
                   alt={`Post ${index + 1}`}

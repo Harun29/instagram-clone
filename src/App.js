@@ -9,6 +9,7 @@ import SignUp from './components/auth/SignUp';
 import SignIn from './components/auth/SignIn';
 import User from './components/projects/User';
 import UserFollowList from './components/projects/UserFollowList';
+import Post from './components/projects/Post';
 
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -29,6 +30,7 @@ function App() {
               <Route path='/signup' element={<SignUp />}/>
               <Route path='/login' element={<SignIn />}/>
               <Route path='/user/:username' element={<User />}/>
+              <Route path='/post/:postid' element={<Post />}/>
               <Route
                 path="/user/:username/followers"
                 element={<UserFollowList fetchType="followers" />}
