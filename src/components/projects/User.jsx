@@ -136,7 +136,7 @@ const User = () => {
             <p>{user.bio}</p>
             <div className="d-flex justify-content-center align-items-center">
               <div className="me-4">
-                <strong>{user.posts.lenght}</strong>  
+                <strong>{user.posts.length}</strong>  
                 posts
               </div>
               <div className="me-4">
