@@ -4,12 +4,29 @@ import { db } from "../../config/firebase";
 import { getDoc, doc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
+import { useAuth } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const Post = () => {
   
   const param = useParams();
   const [post, setPost] = useState([]);
   const [postPicture, setPostPicture] = useState();
+  const [user, setUser] = useState();
+  const { getUserByEmail } = useAuth();
+
+  useEffect(() => {
+    const fetchUserByEmail = async (email) => {
+      const user = await getUserByEmail(email);
+      setUser(user.userName);
+    }
+    try{
+      fetchUserByEmail(post.user)
+    }
+    catch(err){
+      console.error(err)
+    }
+  }, [post, getUserByEmail])
 
   useEffect(() => {
     const fetchPost = async(id) => {
@@ -41,7 +58,6 @@ const Post = () => {
     }catch(err){
       console.error(err)
     }
-
   }, [post])
   
 
@@ -53,12 +69,16 @@ const Post = () => {
             <p>Loading...</p>
           ) : (
             <div className="card">
-              <img src={postPicture} alt="Post Image" className="card-img-top" />
+              <img src={postPicture} alt="Post" className="card-img-top" />
               <div className="card-body">
                 <h5 className="card-title">{post.title}</h5>
                 <p className="card-text">{post.description}</p>
                 <p className="card-text">
-                  <small className="text-muted">Posted by {post.user}</small>
+                  <small className="text-muted">Posted by:
+                    <Link to={`/user/${user}`}>
+                      {user}
+                    </Link>
+                  </small>
                 </p>
               </div>
             </div>
