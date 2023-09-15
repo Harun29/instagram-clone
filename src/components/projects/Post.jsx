@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const Post = () => {
   
   const param = useParams();
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
   const { getUserByEmail } = useAuth();
@@ -21,7 +21,9 @@ const Post = () => {
       setUser(user.userName);
     }
     try{
-      fetchUserByEmail(post.user)
+      if (post.user){
+        fetchUserByEmail(post.user)
+      }
     }
     catch(err){
       console.error(err)
@@ -48,11 +50,10 @@ const Post = () => {
       const postPicture = await getDownloadURL(
       ref(storage, `posts_pictures/${photoName}`)
       );
-      console.log(postPicture)
       setPostPicture(postPicture);
     }
     try{
-      if (post){
+      if (post.photo){
         fetchPicture(post.photo)
       }
     }catch(err){
