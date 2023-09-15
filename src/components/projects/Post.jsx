@@ -20,6 +20,8 @@ const Post = () => {
       const user = await getUserByEmail(email);
       setUser(user.userName);
     }
+
+    /* ERROR ON LOADING */
     try{
       if (post.user){
         fetchUserByEmail(post.user)
@@ -52,6 +54,7 @@ const Post = () => {
       );
       setPostPicture(postPicture);
     }
+    /* ERROR ON LOADING */
     try{
       if (post.photo){
         fetchPicture(post.photo)
