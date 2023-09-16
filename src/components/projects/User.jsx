@@ -169,7 +169,7 @@ const User = () => {
           </Spinner>
         </div>
       )}
-      {user ? (<PostsList postsList={user.posts}/>) : <></>}
+      {user ? (<PostsList postsList={user.posts}/>) : <>Loading...</>}
     </div>
   );
 }

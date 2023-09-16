@@ -48,7 +48,7 @@ const PostsList = ({ postsList }) => {
   return (
     <>
       {!postsPhotos.length ? (
-        <div>Loading...</div>
+        <></>
       ) : (
         <Row className="mt-5">
           {postsPhotos.map((post, index) => (
