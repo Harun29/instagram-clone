@@ -83,7 +83,7 @@ const Profile = () => {
           </Spinner>
         </div>
       )}
-      {user ? (<PostsList postsList={user.posts}/>) : <>Loading...</>}
+      {user ? (<PostsList postsList={user.posts}/>) : <></>}
     </div>
   );
 

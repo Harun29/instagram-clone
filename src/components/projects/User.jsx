@@ -11,6 +11,7 @@ import {
 } from "firebase/storage";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import PostsList from "./PostsList";
 
 const User = () => {
 
@@ -168,6 +169,7 @@ const User = () => {
           </Spinner>
         </div>
       )}
+      {user ? (<PostsList postsList={user.posts}/>) : <></>}
     </div>
   );
 }
