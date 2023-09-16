@@ -12,6 +12,7 @@ import {
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import PostsList from "./PostsList";
+import { useNavigate } from "react-router-dom";
 
 const User = () => {
 
@@ -20,6 +21,7 @@ const User = () => {
   const { followersUpdate } = useAuth();
   const { followingUpdate } = useAuth();
   const { getUserByUsername } = useAuth();
+  const navigate = useNavigate();
 
   const param = useParams();
   const [user, setUser] = useState();
@@ -30,6 +32,14 @@ const User = () => {
   const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
   const [userFollowers, setUserFollowers] = useState([]);
   const [followingStatus, setFollowingStatus] = useState(false);
+
+/* REDIRECTS CURRENT USER */
+
+useEffect(() => {
+  if (user && currentUser && user.email === currentUser.email){
+    navigate('/profile')
+  }
+}, [user, currentUser, navigate])
 
 /* FATCHES USER WHO IS VIEWING THE PROFILE */
 
