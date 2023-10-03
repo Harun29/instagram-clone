@@ -6,6 +6,8 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
 
 const Post = () => {
   
@@ -14,6 +16,13 @@ const Post = () => {
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
   const { getUserByEmail } = useAuth();
+  const [liked, setLiked] = useState(false);
+
+  
+  const handleLike = () => {
+    // Toggle the liked state
+    setLiked(!liked);
+  };
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -65,7 +74,7 @@ const Post = () => {
   }, [post])
   
 
-  return (
+return (
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-4">
@@ -78,12 +87,16 @@ const Post = () => {
                 <h5 className="card-title">{post.title}</h5>
                 <p className="card-text">{post.description}</p>
                 <p className="card-text">
-                  <small className="text-muted">Posted by:
+                  <small className="text-muted">
+                    Posted by:
                     <Link to={`/user/${user}`}>
                       {user}
                     </Link>
                   </small>
                 </p>
+                <button className="btn btn-link" onClick={handleLike}>
+                  <FontAwesomeIcon size="xl" icon={liked ? faHeart : faHeartBroken} />
+                </button>
               </div>
             </div>
           )}
