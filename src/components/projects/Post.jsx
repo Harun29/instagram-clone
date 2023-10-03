@@ -95,7 +95,7 @@ return (
                   </small>
                 </p>
                 <button className="btn btn-link" onClick={handleLike}>
-                  <FontAwesomeIcon size="xl" icon={liked ? faHeart : faHeartBroken} />
+                  <FontAwesomeIcon size="xl" icon={!liked ? faHeart : faHeartBroken} />
                 </button>
               </div>
             </div>
