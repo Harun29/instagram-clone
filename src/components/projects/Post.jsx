@@ -63,8 +63,6 @@ const Post = () => {
       setPost(post.data());
     }
 
-    console.log(param.postid)
-    
     try{
       fetchPost(param.postid);
     }catch(err){
