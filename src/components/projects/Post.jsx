@@ -22,15 +22,14 @@ const Post = () => {
   const handleLike = async () => {
     setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", param.postid);
-    const post = await getDoc(docRef);
-    
+
     try {
       if (!liked) {
-        await updateDoc(post, {
+        await updateDoc(docRef, {
           likedby: arrayUnion(userEmail)
         });
       } else {
-        await updateDoc(post, {
+        await updateDoc(docRef, {
           likedby: arrayRemove(userEmail)
         });
       }
