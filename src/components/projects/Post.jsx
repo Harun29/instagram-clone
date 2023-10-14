@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../../config/firebase";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
@@ -15,19 +15,35 @@ const Post = () => {
   const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
+  const [userEmail, setUserEmail] = useState();
   const { getUserByEmail } = useAuth();
   const [liked, setLiked] = useState(false);
 
-  
-  const handleLike = () => {
-    // Toggle the liked state
-    setLiked(!liked);
+  const handleLike = async () => {
+    setLiked((prevLiked) => !prevLiked);
+    const docRef = doc(db, "posts", param.postid);
+    const post = await getDoc(docRef);
+    
+    try {
+      if (!liked) {
+        await updateDoc(post, {
+          likedby: arrayUnion(userEmail)
+        });
+      } else {
+        await updateDoc(post, {
+          likedby: arrayRemove(userEmail)
+        });
+      }
+    } catch (err) {
+      console.error("Error in handleLike: ", err);
+    }
   };
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmail(email);
       setUser(user.userName);
+      setUserEmail(user.email);
     }
 
     /* ERROR ON LOADING */
@@ -43,11 +59,13 @@ const Post = () => {
 
   useEffect(() => {
     const fetchPost = async(id) => {
-      const docRef = doc(db, "posts", id)
-      const post = await getDoc(docRef)
-      setPost(post.data())
+      const docRef = doc(db, "posts", id);
+      const post = await getDoc(docRef);
+      setPost(post.data());
     }
 
+    console.log(param.postid)
+    
     try{
       fetchPost(param.postid);
     }catch(err){
