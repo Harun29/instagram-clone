@@ -36,6 +36,12 @@ const Post = () => {
   }
 
   useEffect(() => {
+    if(userViewing && post.likedby.includes(userViewing.email)){
+      setLiked(true)
+    }
+  },[userViewing, post])
+
+  useEffect(() => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
@@ -80,10 +86,6 @@ const Post = () => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmailInPost(email);
       setUser(user.docs[0].data().userName);
-    }
-
-    if(post){
-      console.log(post.likedby)
     }
 
     /* ERROR ON LOADING */
