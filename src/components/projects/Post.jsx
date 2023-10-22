@@ -19,7 +19,10 @@ const Post = () => {
   const { getUserByEmail } = useAuth();
   const [liked, setLiked] = useState(false);
 
+// Liked by user whose photo it is not the current user
+
   const handleLike = async () => {
+      // const likedby = post.likedby
     setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", param.postid);
 
@@ -43,6 +46,10 @@ const Post = () => {
       const user = await getUserByEmail(email);
       setUser(user.userName);
       setUserEmail(user.email);
+    }
+
+    if(post){
+      console.log(post.likedby)
     }
 
     /* ERROR ON LOADING */
