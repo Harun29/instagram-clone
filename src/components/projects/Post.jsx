@@ -8,22 +8,38 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
+import { collection, query, where, getDocs} from "firebase/firestore";
+
 
 const Post = () => {
   
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
+  const [userViewingId, setUserViewingId] = useState();
   const param = useParams();
   const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
-  const { getUserByEmail } = useAuth();
   const [liked, setLiked] = useState(false);
+
+  const getUserByEmailInPost = async (email) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+  
+    if (querySnapshot.empty) {
+      console.error('No matching documents for email:', email);
+      return null;
+    }
+    const user = querySnapshot;
+    return user;
+  }
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
-      const user = await getUserByEmail(email);
-      setUserViewing(user);
+      const user = await getUserByEmailInPost(email);
+      setUserViewing(user.docs[0].data());
+      setUserViewingId(user.docs[0].id);
     }
     try{
       currentUser && fetchUserByEmail(currentUser.email)
@@ -31,21 +47,28 @@ const Post = () => {
     catch(err){
       console.error(err)
     }
-  }, [currentUser, getUserByEmail])
+  }, [currentUser])
 
   const handleLike = async () => {
       // const likedby = post.likedby
     setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", param.postid);
+    const docUserRef = doc(db, "users", userViewingId);
 
     try {
       if (!liked) {
         await updateDoc(docRef, {
           likedby: arrayUnion(userViewing.email)
         });
+        await updateDoc(docUserRef, {
+          likedPosts: arrayUnion(param.postid)
+        });
       } else {
         await updateDoc(docRef, {
           likedby: arrayRemove(userViewing.email)
+        });
+        await updateDoc(docUserRef, {
+          likedPosts: arrayRemove(param.postid)
         });
       }
     } catch (err) {
@@ -55,8 +78,8 @@ const Post = () => {
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
-      const user = await getUserByEmail(email);
-      setUser(user.userName);
+      const user = await getUserByEmailInPost(email);
+      setUser(user.docs[0].data().userName);
     }
 
     if(post){
@@ -72,7 +95,7 @@ const Post = () => {
     catch(err){
       console.error(err)
     }
-  }, [post, getUserByEmail])
+  }, [post])
 
   useEffect(() => {
     const fetchPost = async(id) => {
