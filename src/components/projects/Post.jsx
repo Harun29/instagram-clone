@@ -11,15 +11,27 @@ import { faHeart, faHeartBroken } from '@fortawesome/free-solid-svg-icons';
 
 const Post = () => {
   
+  const { currentUser } = useAuth();
+  const [userViewing, setUserViewing] = useState();
   const param = useParams();
   const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
-  const [userEmail, setUserEmail] = useState();
   const { getUserByEmail } = useAuth();
   const [liked, setLiked] = useState(false);
 
-// Liked by user whose photo it is not the current user
+  useEffect(() => {
+    const fetchUserByEmail = async (email) => {
+      const user = await getUserByEmail(email);
+      setUserViewing(user);
+    }
+    try{
+      currentUser && fetchUserByEmail(currentUser.email)
+    }
+    catch(err){
+      console.error(err)
+    }
+  }, [currentUser, getUserByEmail])
 
   const handleLike = async () => {
       // const likedby = post.likedby
@@ -29,11 +41,11 @@ const Post = () => {
     try {
       if (!liked) {
         await updateDoc(docRef, {
-          likedby: arrayUnion(userEmail)
+          likedby: arrayUnion(userViewing.email)
         });
       } else {
         await updateDoc(docRef, {
-          likedby: arrayRemove(userEmail)
+          likedby: arrayRemove(userViewing.email)
         });
       }
     } catch (err) {
@@ -45,7 +57,6 @@ const Post = () => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmail(email);
       setUser(user.userName);
-      setUserEmail(user.email);
     }
 
     if(post){
