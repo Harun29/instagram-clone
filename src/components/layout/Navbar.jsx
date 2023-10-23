@@ -17,6 +17,11 @@ const Navigation = () => {
             Blog
           </h1>
         </Link>
+        {currentUser ? 
+        <Link to='/' className="me-2 btn btn-primary">
+          Home
+        </Link>
+        :null}
         {currentUser ? <SignedInLinks /> : <SignedOutLinks />}
       </div>
     </Navbar>
