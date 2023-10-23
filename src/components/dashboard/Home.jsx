@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { getDownloadURL } from "firebase/storage";
+import { storage } from "../../config/firebase";
+import { ref } from "firebase/storage";
 
 const Home = () => {
 
@@ -12,11 +15,12 @@ useEffect(() => {
     const snapshot = await getDocs(postsRef);
 
     const postsIds = []
-    snapshot.forEach((doc) => {
+    snapshot.forEach(async(doc) => {
+      const photoUrl = await getDownloadURL(ref(storage, `posts_pictures/${doc.data().photo}`))
       postsIds.push({
         id: doc.id,
         title: doc.data().title,
-        photo: doc.data().photo,
+        photo: photoUrl,
         user: doc.data().user
       })
     })
