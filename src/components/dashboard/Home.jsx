@@ -40,11 +40,6 @@ useEffect(() => {
   fetchPosts();
 }, [getUserByEmail]);
 
-useEffect(() => {
-  console.log(posts)
-}, [posts])
-
-
 return (
   <div className="home container">
     <div className="row">
