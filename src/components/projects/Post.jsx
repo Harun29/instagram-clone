@@ -36,10 +36,13 @@ const Post = () => {
   }
 
   useEffect(() => {
-    if(userViewing && post.likedby.includes(userViewing.email)){
-      setLiked(true)
+    if(post){
+      if(userViewing && post.likedby.includes(userViewing.email)){
+        setLiked(true)
+      }
     }
   },[userViewing, post])
+
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
