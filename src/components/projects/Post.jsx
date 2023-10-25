@@ -20,6 +20,7 @@ const Post = () => {
   const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
+  const [userId, setUserId] = useState();
   const [liked, setLiked] = useState(false);
 
   const getUserByEmailInPost = async (email) => {
@@ -63,6 +64,7 @@ const Post = () => {
     setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", param.postid);
     const docUserRef = doc(db, "users", userViewingId);
+    const docNotifRef = doc(db, "users", userId);
 
     try {
       if (!liked) {
@@ -72,12 +74,24 @@ const Post = () => {
         await updateDoc(docUserRef, {
           likedPosts: arrayUnion(param.postid)
         });
+        await updateDoc(docNotifRef, {
+          likeNotif: arrayUnion({
+            postLiked: param.postid,
+            likedBy: userViewing.userName
+          })
+        });
       } else {
         await updateDoc(docRef, {
           likedby: arrayRemove(userViewing.email)
         });
         await updateDoc(docUserRef, {
           likedPosts: arrayRemove(param.postid)
+        });
+        await updateDoc(docNotifRef, {
+          likeNotif: arrayRemove({
+            postLiked: param.postid,
+            likedBy: userViewing.userName
+          })
         });
       }
     } catch (err) {
@@ -89,6 +103,7 @@ const Post = () => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmailInPost(email);
       setUser(user.docs[0].data().userName);
+      setUserId(user.docs[0].id)
     }
 
     /* ERROR ON LOADING */
