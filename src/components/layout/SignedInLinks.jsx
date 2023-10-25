@@ -5,16 +5,40 @@ import { faBell, faPerson } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const SignedInLinks = () => {
 
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const { getUserByEmail } = useAuth()
   const { logout } = useAuth();
   const [error, setError] = useState("");
+  // const [user, setUser] = useState();
+  const [notifs, setNotifs] = useState();
+
+  useEffect(() => {
+
+    const fetchUser = async (email) => {
+      const user = await getUserByEmail(email);
+      // setUser(user);
+      setNotifs(user.likeNotif);
+    }
+
+    try {
+      currentUser && fetchUser(currentUser.email);
+    } catch (err) {
+      console.error("error in fetch user: ", err)
+    }
+  }, [currentUser])
+
+  useEffect(() => {
+    console.log(notifs)
+  }, [notifs])
 
   const handleLogout = async () => {
     setError('')
-    try{
+    try {
       await logout()
       navigate('/')
     } catch (err) {
@@ -23,26 +47,38 @@ const SignedInLinks = () => {
     }
   }
 
-  useEffect(()=>{
-    if(error){
+  useEffect(() => {
+    if (error) {
       console.log(error)
     }
   }, [error])
 
-  return ( 
+  return (
     <ul className="d-flex mt-3">
 
       <div className="dropdown me-2">
         <Button className="btn dropdown-toggle" type="button" id="notif-dropdown" data-bs-toggle="dropdown">
           <FontAwesomeIcon icon={faBell} className="text-white"></FontAwesomeIcon>
         </Button>
-        <ul className="dropdown-menu" aria-labelledby="notif-dropdown">
-          <li className="dropdown-item">notification 1</li>
-          <li className="dropdown-item">notification 2</li>
-          <li className="dropdown-item">notification 3</li>
+        <ul className="dropdown-menu" style={{ minWidth: '250px' }} aria-labelledby="notif-dropdown">
+          {notifs ? (
+            notifs.map((notif, index) => (
+              <li key={index} className="list-group-item d-flex align-items-center justify-content-center">
+                <Link className="me-3" to={`/user/${notif.likedBy}`}>
+                  <strong>{notif.likedBy}</strong>
+                </Link>{' '}
+                Liked your post{' '}
+                {/* <Link to={`/post/${notif.postLiked}`}>
+                  <span className="badge badge-primary">View Post</span>
+                </Link> */}
+              </li>
+            ))
+          ) : (
+            <div>Loading...</div>
+          )}
         </ul>
       </div>
-      
+
       <NavLink to='/createpost'>
         <Button className="me-2">Post</Button>
       </NavLink>
@@ -60,5 +96,5 @@ const SignedInLinks = () => {
     </ul>
   );
 }
- 
+
 export default SignedInLinks;
