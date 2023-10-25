@@ -30,11 +30,7 @@ const SignedInLinks = () => {
     } catch (err) {
       console.error("error in fetch user: ", err)
     }
-  }, [currentUser])
-
-  useEffect(() => {
-    console.log(notifs)
-  }, [notifs])
+  }, [currentUser, getUserByEmail])
 
   const handleLogout = async () => {
     setError('')
