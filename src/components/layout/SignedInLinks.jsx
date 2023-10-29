@@ -16,6 +16,7 @@ const SignedInLinks = () => {
   const [error, setError] = useState("");
   // const [user, setUser] = useState();
   const [notifs, setNotifs] = useState();
+  const [userImg, setUserImg] = useState();
 
   useEffect(() => {
 
@@ -23,6 +24,7 @@ const SignedInLinks = () => {
       const user = await getUserByEmail(email);
       // setUser(user);
       setNotifs(user.likeNotif);
+      const userPhoto = user.pphoto;
     }
 
     try {
@@ -52,10 +54,13 @@ const SignedInLinks = () => {
   return (
     <ul className="d-flex mt-3">
 
-      <div className="dropdown me-2">
+      <div className="notif-dropdown dropdown me-2">
         <Button className="btn dropdown-toggle" type="button" id="notif-dropdown" data-bs-toggle="dropdown">
           <FontAwesomeIcon icon={faBell} className="text-white"></FontAwesomeIcon>
         </Button>
+        <div className="notif-count">
+          {notifs ? notifs.length : null}
+        </div>
         <ul className="dropdown-menu" style={{ minWidth: '250px' }} aria-labelledby="notif-dropdown">
           {notifs ? (
             notifs.map((notif, index) => (
@@ -63,10 +68,12 @@ const SignedInLinks = () => {
                 <Link className="me-3" to={`/user/${notif.likedBy}`}>
                   <strong>{notif.likedBy}</strong>
                 </Link>{' '}
-                Liked your post{' '}
-                {/* <Link to={`/post/${notif.postLiked}`}>
-                  <span className="badge badge-primary">View Post</span>
-                </Link> */}
+                <Link to={`/post/${notif.postLiked}`}>
+                  Liked your post
+                  {
+                    <img src="" alt="" />
+                  }
+                </Link>
               </li>
             ))
           ) : (

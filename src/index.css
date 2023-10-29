@@ -59,3 +59,22 @@ svg{
 	object-fit: cover;
 	border-radius: 100%;
 }
+
+.notif-dropdown{
+  position: relative;
+}
+
+.notif-count{
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 50%;
+}
+
