@@ -78,3 +78,16 @@ svg{
   border-radius: 50%;
 }
 
+.notif-by{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notif-by img{
+  height: 30px;
+  width: 30px;
+  margin: 5px;
+  object-fit: cover;
+  border-radius: 50%;
+}

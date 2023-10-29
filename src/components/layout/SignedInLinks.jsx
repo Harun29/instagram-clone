@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+// import { getDownloadURL, ref } from "firebase/storage";
+// import { storage } from "../../config/firebase";
 
 const SignedInLinks = () => {
 
@@ -16,7 +18,7 @@ const SignedInLinks = () => {
   const [error, setError] = useState("");
   // const [user, setUser] = useState();
   const [notifs, setNotifs] = useState();
-  const [userImg, setUserImg] = useState();
+  // const [userImg, setUserImg] = useState();
 
   useEffect(() => {
 
@@ -24,7 +26,11 @@ const SignedInLinks = () => {
       const user = await getUserByEmail(email);
       // setUser(user);
       setNotifs(user.likeNotif);
-      const userPhoto = user.pphoto;
+      // const userPhoto = user.pphoto;
+      // const userPhotoURL = await getDownloadURL(
+      //   ref(storage, `profile_pictures/${userPhoto}`)
+      // )
+      // setUserImg(userPhotoURL);
     }
 
     try {
@@ -65,7 +71,8 @@ const SignedInLinks = () => {
           {notifs ? (
             notifs.map((notif, index) => (
               <li key={index} className="list-group-item d-flex align-items-center justify-content-center">
-                <Link className="me-3" to={`/user/${notif.likedBy}`}>
+                <Link className="me-3 notif-by" to={`/user/${notif.likedBy}`}>
+                  {/* <img src={userImg} alt="liked" /> */}
                   <strong>{notif.likedBy}</strong>
                 </Link>{' '}
                 <Link to={`/post/${notif.postLiked}`}>
