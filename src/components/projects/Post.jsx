@@ -51,6 +51,7 @@ const Post = () => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
+      console.log(user)
     }
     try{
       currentUser && fetchUserByEmail(currentUser.email)
@@ -62,7 +63,7 @@ const Post = () => {
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const userViewingPhoto = await getDownloadURL(ref(storage, `profile_photos/${userViewing.pphoto}`))
+      const userViewingPhoto = await getDownloadURL(ref(storage, `profile_pictures/${userViewing.pphoto}`))
       setUserViewingPhoto(userViewingPhoto);
     }
     try{
@@ -71,6 +72,21 @@ const Post = () => {
       console.error(err)
     }
   }, [userViewing])
+
+  useEffect(() => {
+    const fetchPostPhoto = async () => {
+      const docRef = doc(db, 'posts', param.postid);
+      const docSnap = await getDoc(docRef)
+      const docImg = await getDownloadURL(ref(storage, `posts_pictures/${docSnap.data().photo}`))
+      setPostPicture(docImg);
+    }
+
+    try{
+      param.postid && fetchPostPhoto();
+    }catch(err){
+      console.error(err)
+    }
+  }, [param.postid])
 
   const handleLike = async () => {
       // const likedby = post.likedby
@@ -90,6 +106,7 @@ const Post = () => {
         await updateDoc(docNotifRef, {
           likeNotif: arrayUnion({
             postLiked: param.postid,
+            postLikedPhoto: postPicture,
             likedBy: userViewing.userName,
             likedByPhoto: userViewingPhoto
           })
@@ -104,6 +121,7 @@ const Post = () => {
         await updateDoc(docNotifRef, {
           likeNotif: arrayRemove({
             postLiked: param.postid,
+            postLikedPhoto: postPicture,
             likedBy: userViewing.userName,
             likedByPhoto: userViewingPhoto
           })

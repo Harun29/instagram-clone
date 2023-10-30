@@ -49,6 +49,10 @@ const SignedInLinks = () => {
     }
   }, [error])
 
+  useEffect(() => {
+    console.log(notifs)
+  }, [notifs])
+
   return (
     <ul className="d-flex mt-3">
 
@@ -64,13 +68,13 @@ const SignedInLinks = () => {
             notifs.map((notif, index) => (
               <li key={index} className="list-group-item d-flex align-items-center justify-content-center">
                 <Link className="me-3 notif-by" to={`/user/${notif.likedBy}`}>
-                  <img src={notif.likeByPhoto ? notif.likeByPhoto : '/blank-profile.jpg'} alt="liked" />
+                  <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
                   <strong>{notif.likedBy}</strong>
                 </Link>{' '}
                 <Link to={`/post/${notif.postLiked}`}>
                   Liked your post
                   {
-                    <img src="" alt="" />
+                    <img src={notif.postLikedPhoto} alt="" />
                   }
                 </Link>
               </li>
