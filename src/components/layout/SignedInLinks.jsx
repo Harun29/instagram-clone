@@ -63,19 +63,17 @@ const SignedInLinks = () => {
         <div className="notif-count">
           {notifs ? notifs.length : null}
         </div>
-        <ul className="dropdown-menu" style={{ minWidth: '250px' }} aria-labelledby="notif-dropdown">
+        <ul className="dropdown-menu" style={{ minWidth: '400px', marginLeft: '-225px', marginTop: '10px' }}>
           {notifs ? (
             notifs.map((notif, index) => (
-              <li key={index} className="list-group-item d-flex align-items-center justify-content-center">
+              <li key={index} className="px-2 list-group-item d-flex align-items-center justify-content-between">
                 <Link className="me-3 notif-by" to={`/user/${notif.likedBy}`}>
                   <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
                   <strong>{notif.likedBy}</strong>
                 </Link>{' '}
-                <Link to={`/post/${notif.postLiked}`}>
-                  Liked your post
-                  {
-                    <img src={notif.postLikedPhoto} alt="" />
-                  }
+                <Link className="post-link-notif" to={`/post/${notif.postLiked}`}>
+                  <label>Liked your post</label>
+                  <img src={notif.postLikedPhoto} alt="" />
                 </Link>
               </li>
             ))

@@ -60,7 +60,7 @@ svg{
 	border-radius: 100%;
 }
 
-.notif-dropdown{
+.dropdown-menu{
   position: relative;
 }
 
@@ -87,7 +87,19 @@ svg{
 .notif-by img{
   height: 30px;
   width: 30px;
-  margin: 5px;
+  margin: 5px 15px 5px 5px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.post-link-notif{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.post-link-notif img{
+  margin: 5px 5px 5px 15px;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
 }
