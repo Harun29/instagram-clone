@@ -64,7 +64,7 @@ const SignedInLinks = () => {
             notifs.map((notif, index) => (
               <li key={index} className="list-group-item d-flex align-items-center justify-content-center">
                 <Link className="me-3 notif-by" to={`/user/${notif.likedBy}`}>
-                  <img src={notif.likeByPhoto} alt="liked" />
+                  <img src={notif.likeByPhoto ? notif.likeByPhoto : '/blank-profile.jpg'} alt="liked" />
                   <strong>{notif.likedBy}</strong>
                 </Link>{' '}
                 <Link to={`/post/${notif.postLiked}`}>

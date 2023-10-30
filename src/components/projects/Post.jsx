@@ -15,6 +15,7 @@ const Post = () => {
   
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
+  const [userViewingPhoto, setUserViewingPhoto] = useState('');
   const [userViewingId, setUserViewingId] = useState();
   const param = useParams();
   const [post, setPost] = useState();
@@ -59,13 +60,24 @@ const Post = () => {
     }
   }, [currentUser])
 
+  useEffect(() => {
+    const fetchPhoto = async () => {
+      const userViewingPhoto = await getDownloadURL(ref(storage, `profile_photos/${userViewing.pphoto}`))
+      setUserViewingPhoto(userViewingPhoto);
+    }
+    try{
+      userViewing.pphoto && fetchPhoto()
+    }catch(err){
+      console.error(err)
+    }
+  }, [userViewing])
+
   const handleLike = async () => {
       // const likedby = post.likedby
     setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", param.postid);
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
-    const userViewingPhoto = await getDownloadURL(ref(storage, `profile_photos/${currentUser.pphoto}`))
 
     try {
       if (!liked) {
