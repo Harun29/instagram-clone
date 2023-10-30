@@ -65,6 +65,7 @@ const Post = () => {
     const docRef = doc(db, "posts", param.postid);
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
+    const userViewingPhoto = await getDownloadURL(storage, `profile_photos/${currentUser.pphoto}`)
 
     try {
       if (!liked) {
@@ -90,7 +91,8 @@ const Post = () => {
         await updateDoc(docNotifRef, {
           likeNotif: arrayRemove({
             postLiked: param.postid,
-            likedBy: userViewing.userName
+            likedBy: userViewing.userName,
+            likedByPhoto: userViewingPhoto
           })
         });
       }
