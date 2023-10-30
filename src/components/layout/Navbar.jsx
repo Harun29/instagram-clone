@@ -10,7 +10,7 @@ const Navigation = () => {
   const {currentUser} = useContext(AuthContext)
 
   return ( 
-    <Navbar className="nav-wrapper">
+    <Navbar className="nav-wrapper py-2">
       <div className="container">
         <Link to='/' className="brand-logo">
           <h1>
