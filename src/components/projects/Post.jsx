@@ -65,7 +65,7 @@ const Post = () => {
     const docRef = doc(db, "posts", param.postid);
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
-    const userViewingPhoto = await getDownloadURL(storage, `profile_photos/${currentUser.pphoto}`)
+    const userViewingPhoto = await getDownloadURL(ref(storage, `profile_photos/${currentUser.pphoto}`))
 
     try {
       if (!liked) {
