@@ -78,7 +78,8 @@ const Post = () => {
         await updateDoc(docNotifRef, {
           likeNotif: arrayUnion({
             postLiked: param.postid,
-            likedBy: userViewing.userName
+            likedBy: userViewing.userName,
+            likedByPhoto: userViewingPhoto
           })
         });
       } else {
