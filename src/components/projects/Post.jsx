@@ -108,7 +108,9 @@ const Post = () => {
             postLiked: param.postid,
             postLikedPhoto: postPicture,
             likedBy: userViewing.userName,
-            likedByPhoto: userViewingPhoto
+            likedByPhoto: userViewingPhoto,
+            opened: false,
+            notifRef: docNotifRef
           })
         });
       } else {
@@ -123,7 +125,19 @@ const Post = () => {
             postLiked: param.postid,
             postLikedPhoto: postPicture,
             likedBy: userViewing.userName,
-            likedByPhoto: userViewingPhoto
+            likedByPhoto: userViewingPhoto,
+            opened: false,
+            notifRef: docNotifRef
+          })
+        });
+        await updateDoc(docNotifRef, {
+          likeNotif: arrayRemove({
+            postLiked: param.postid,
+            postLikedPhoto: postPicture,
+            likedBy: userViewing.userName,
+            likedByPhoto: userViewingPhoto,
+            opened: true,
+            notifRef: docNotifRef
           })
         });
       }

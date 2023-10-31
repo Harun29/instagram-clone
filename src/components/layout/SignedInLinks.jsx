@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 
 const SignedInLinks = () => {
 
@@ -49,9 +50,30 @@ const SignedInLinks = () => {
     }
   }, [error])
 
-  useEffect(() => {
-    console.log(notifs)
-  }, [notifs])
+  const handleOpened = async(e) => {
+    if(!e.opened){
+      await updateDoc(e.notifRef, {
+        likeNotif: arrayRemove({
+          postLiked: e.postLiked,
+          postLikedPhoto: e.postLikedPhoto,
+          likedBy: e.likedBy,
+          likedByPhoto: e.likedByPhoto,
+          opened: false,
+          notifRef: e.notifRef
+        })
+      });
+      await updateDoc(e.notifRef, {
+        likeNotif: arrayUnion({
+          postLiked: e.postLiked,
+          postLikedPhoto: e.postLikedPhoto,
+          likedBy: e.likedBy,
+          likedByPhoto: e.likedByPhoto,
+          opened: true,
+          notifRef: e.notifRef
+        })
+      });
+    }
+  }
 
   return (
     <ul className="d-flex mt-3">
@@ -66,12 +88,12 @@ const SignedInLinks = () => {
         <ul className="dropdown-menu" style={{ minWidth: '400px', marginLeft: '-225px', marginTop: '10px' }}>
           {notifs ? (
             notifs.map((notif, index) => (
-              <li key={index} className="px-2 list-group-item d-flex align-items-center justify-content-between">
+              <li key={index} className='px-2 list-group-item d-flex align-items-center justify-content-between' id={notif.opened ? 'opened-notification' : 'notification'}>
                 <Link className="me-3 notif-by" to={`/user/${notif.likedBy}`}>
                   <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
                   <strong>{notif.likedBy}</strong>
                 </Link>{' '}
-                <Link className="post-link-notif" to={`/post/${notif.postLiked}`}>
+                <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
                   <label>Liked your post</label>
                   <img src={notif.postLikedPhoto} alt="" />
                 </Link>

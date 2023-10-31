@@ -64,6 +64,13 @@ svg{
   position: relative;
 }
 
+.dropdown-menu li{
+  margin: 5px 15px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+
 .notif-count{
   position: absolute;
   top: -5px;
@@ -102,4 +109,16 @@ svg{
   width: 45px;
   height: 45px;
   object-fit: cover;
+}
+
+#notification {
+  background-color: rgb(223, 223, 223);
+}
+
+#opened-notification {
+  background-color: none;
+}
+
+#notification:hover, #opened-notification:hover {
+  background-color: rgb(233, 233, 233);
 }
