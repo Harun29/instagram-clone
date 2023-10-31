@@ -82,9 +82,9 @@ const SignedInLinks = () => {
         <Button className="btn dropdown-toggle" type="button" id="notif-dropdown" data-bs-toggle="dropdown">
           <FontAwesomeIcon icon={faBell} className="text-white"></FontAwesomeIcon>
         </Button>
-        <div className="notif-count">
+        {notifs && notifs.length > 0 ? <div className="notif-count">
           {notifs ? notifs.length : null}
-        </div>
+        </div> : null}
         <ul className="dropdown-menu" style={{ minWidth: '400px', marginLeft: '-225px', marginTop: '10px' }}>
           {notifs ? (
             notifs.map((notif, index) => (
