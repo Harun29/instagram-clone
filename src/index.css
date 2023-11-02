@@ -122,3 +122,17 @@ svg{
 #notification:hover, #opened-notification:hover {
   background-color: rgb(233, 233, 233);
 }
+
+
+/* SIGNUP */
+.form-outline{
+  position: relative;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  position: absolute;
+  bottom: -23px;
+}

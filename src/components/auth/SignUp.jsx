@@ -119,13 +119,16 @@ const SignUp = () => {
 
       <div className="form-outline mb-4">
         <input
-        className="form-control" 
+        className={`form-control ${userNamesArray.includes(userName) ? 'invalid-input' : ''}`}
         type="text" 
         required
         value={userName}
         placeholder="User name"
         onChange={handleUserNameChange}
         />
+        {userNamesArray.includes(userName) && (
+          <div className="error-message">This username is already taken</div>
+        )}
       </div>
 
       <div className="form-outline mb-4">
