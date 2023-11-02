@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase"
 import { Link } from "react-router-dom";
 
@@ -20,6 +20,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [userNamesArray, setUserNamesArray] = useState([])
   const navigate = useNavigate()
 
   const {signup} = useAuth()
@@ -34,6 +35,22 @@ const SignUp = () => {
       console.error('Error adding document: ', e);
     }
   }
+
+  useEffect(() => {
+    const fetchUserNames = async() => {
+      const users = await getDocs(collection(db, "users"))
+      setUserNamesArray([])
+      users.forEach(doc => {
+        setUserNamesArray(userNames => [...userNames, doc.data().userName])
+      })
+    }
+    try{
+      fetchUserNames();
+    }catch(err){
+      console.error(err)
+    }
+  }, [])
+
 
   useEffect(() => {
     setUser({
@@ -160,7 +177,7 @@ const SignUp = () => {
         </button>
       </div> */}
 
-      <input className="btn btn-primary btn-block mb-4" disabled={loading} type="submit" name="" id="" value="Signup"/>
+      <input className="btn btn-primary btn-block mb-4" disabled={loading || userNamesArray.includes(userName)} type="submit" name="" id="" value="Signup"/>
 
       <div className="text-center">
         <p>Already have an account? <Link to="/login">Login</Link></p>
