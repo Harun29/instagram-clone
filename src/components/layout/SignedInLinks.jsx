@@ -17,6 +17,7 @@ const SignedInLinks = () => {
   const [error, setError] = useState("");
   // const [user, setUser] = useState();
   const [notifs, setNotifs] = useState();
+  const [notifNumber, setNotifNumber] = useState(0)
 
   useEffect(() => {
 
@@ -75,6 +76,17 @@ const SignedInLinks = () => {
     }
   }
 
+  useEffect(() => {
+    if(notifs){
+      setNotifNumber(0)
+      notifs.forEach(notif => {
+        if (!notif.opened)(
+          setNotifNumber(notifNumber+1)
+        )
+      })
+    }
+  }, [notifs])
+
   return (
     <ul className="d-flex mt-3">
 
@@ -82,8 +94,8 @@ const SignedInLinks = () => {
         <Button className="btn dropdown-toggle" type="button" id="notif-dropdown" data-bs-toggle="dropdown">
           <FontAwesomeIcon icon={faBell} className="text-white"></FontAwesomeIcon>
         </Button>
-        {notifs && notifs.length > 0 ? <div className="notif-count">
-          {notifs ? notifs.length : null}
+        {notifs && notifNumber > 0 ? <div className="notif-count">
+          {notifs ? notifNumber : null}
         </div> : null}
         <ul className="dropdown-menu" style={{ minWidth: '400px', marginLeft: '-225px', marginTop: '10px' }}>
           {notifs ? (
