@@ -77,11 +77,13 @@ const SignedInLinks = () => {
   }
 
   useEffect(() => {
+    
     if(notifs){
       setNotifNumber(0)
+      console.log(notifs)
       notifs.forEach(notif => {
         if (!notif.opened)(
-          setNotifNumber(notifNumber+1)
+          setNotifNumber(prevNotifNumber =>  prevNotifNumber + 1)
         )
       })
     }
