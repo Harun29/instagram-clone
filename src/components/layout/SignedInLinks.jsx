@@ -24,7 +24,7 @@ const SignedInLinks = () => {
     const fetchUser = async (email) => {
       const user = await getUserByEmail(email);
       // setUser(user);
-      setNotifs(user.likeNotif);
+      setNotifs(user.notif);
     }
 
     try {
@@ -59,17 +59,18 @@ const SignedInLinks = () => {
           likedBy: e.likedBy,
           likedByPhoto: e.likedByPhoto,
           opened: notifStatus,
-          notifRef: e.notifRef
+          notifRef: e.notifRef,
+          notifType: "like"
       }
       return object
     }
 
     if(!e.opened){
       await updateDoc(e.notifRef, {
-        likeNotif: arrayRemove(notifObject(false))
+        notif: arrayRemove(notifObject(false))
       });
       await updateDoc(e.notifRef, {
-        likeNotif: arrayUnion(notifObject(true))
+        notif: arrayUnion(notifObject(true))
       });
     }
   }

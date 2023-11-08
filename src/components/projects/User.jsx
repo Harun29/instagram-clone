@@ -75,6 +75,18 @@ useEffect(() => {
 
 /* HANDLES FOLLOW AND UNFOLLOW UPDATE */
 
+  const notifObject = (notifStatus) => {
+    const object = {
+      postLiked: param.postid,
+      postLikedPhoto: postPicture,
+      likedBy: userViewing.userName,
+      likedByPhoto: userViewingPhoto,
+      opened: notifStatus,
+      notifRef: docNotifRef
+    }
+    return object
+  }
+
   const handleFollow = async () => {
     const newUserFollowers = [...userFollowers, userViewing.userName]
     const newCurrentUserFollowing = [...currentUserFollowing, user.userName]
@@ -86,6 +98,10 @@ useEffect(() => {
     }catch(err){
       console.error("error following user", err)
     }
+
+    // const docRef = doc(db, "posts", param.postid);
+    // const docUserRef = doc(db, "users", userViewingId);
+    // const docNotifRef = doc(db, "users", userId);
   }
 
   const handleUnfollow = async () => {

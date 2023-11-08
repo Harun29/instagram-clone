@@ -102,7 +102,8 @@ const Post = () => {
         likedBy: userViewing.userName,
         likedByPhoto: userViewingPhoto,
         opened: notifStatus,
-        notifRef: docNotifRef
+        notifRef: docNotifRef,
+        notifType: "like"
       }
       return object
     }
@@ -116,7 +117,7 @@ const Post = () => {
           likedPosts: arrayUnion(param.postid)
         });
         await updateDoc(docNotifRef, {
-          likeNotif: arrayUnion(notifObject(false))
+          notif: arrayUnion(notifObject(false))
         });
       } else {
         await updateDoc(docRef, {
@@ -126,10 +127,10 @@ const Post = () => {
           likedPosts: arrayRemove(param.postid)
         });
         await updateDoc(docNotifRef, {
-          likeNotif: arrayRemove(notifObject(false))
+          notif: arrayRemove(notifObject(false))
         });
         await updateDoc(docNotifRef, {
-          likeNotif: arrayRemove(notifObject(true))
+          notif: arrayRemove(notifObject(true))
         });
       }
     } catch (err) {
