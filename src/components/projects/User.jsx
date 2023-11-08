@@ -3,8 +3,15 @@ import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";    
 import {
   arrayUnion,
-  arrayRemove } from "firebase/firestore";
-import { storage } from "../../config/firebase";
+  arrayRemove,
+  doc,
+  updateDoc,
+  collection, 
+  query, 
+  getDocs, 
+  where
+} from "firebase/firestore";
+import { storage, db } from "../../config/firebase";
 import {
   ref,
   getDownloadURL
@@ -13,6 +20,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import PostsList from "./PostsList";
 import { useNavigate } from "react-router-dom";
+import {  } from "firebase/firestore";
 
 const User = () => {
 
@@ -25,7 +33,9 @@ const User = () => {
 
   const param = useParams();
   const [user, setUser] = useState();
-  const [userViewing, setUserViewing] = useState()
+  const [userId, setUserId] = useState();
+  const [userViewing, setUserViewing] = useState();
+  const [userViewingPhoto, setUserViewingPhoto] = useState('');
 
   const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
 
@@ -75,14 +85,25 @@ useEffect(() => {
 
 /* HANDLES FOLLOW AND UNFOLLOW UPDATE */
 
-  const notifObject = (notifStatus) => {
+  useEffect(() => {
+    const fetchPhoto = async () => {
+      const userViewingPhoto = await getDownloadURL(ref(storage, `profile_pictures/${userViewing.pphoto}`))
+      setUserViewingPhoto(userViewingPhoto);
+    }
+    try {
+      userViewing.pphoto && fetchPhoto()
+    } catch (err) {
+      console.error(err)
+    }
+  }, [userViewing])
+
+  const notifObject = (notifStatus, notifRef) => {
     const object = {
-      postLiked: param.postid,
-      postLikedPhoto: postPicture,
-      likedBy: userViewing.userName,
+      followedBy: userViewing.userName,
       likedByPhoto: userViewingPhoto,
       opened: notifStatus,
-      notifRef: docNotifRef
+      notifRef: notifRef,
+      notifType: "follow"
     }
     return object
   }
@@ -90,39 +111,61 @@ useEffect(() => {
   const handleFollow = async () => {
     const newUserFollowers = [...userFollowers, userViewing.userName]
     const newCurrentUserFollowing = [...currentUserFollowing, user.userName]
+    const docNotifRef = doc(db, "users", userId);
     try{
       setUserFollowers(newUserFollowers)
       setCurrentUserFollowing(newCurrentUserFollowing)
       await followersUpdate(user.email, arrayUnion(userViewing.userName))
       await followingUpdate(currentUser.email, arrayUnion(user.userName))
+      await updateDoc(docNotifRef, {
+        notif: arrayUnion(notifObject(false, docNotifRef))
+      });
     }catch(err){
       console.error("error following user", err)
     }
 
-    // const docRef = doc(db, "posts", param.postid);
-    // const docUserRef = doc(db, "users", userViewingId);
-    // const docNotifRef = doc(db, "users", userId);
   }
 
   const handleUnfollow = async () => {
     const newUserFollowers = userFollowers.filter(follower => follower !== userViewing.userName)
     const newCurrentUserFollowing = currentUserFollowing.filter(following => following !== user.userName)
+    const docNotifRef = doc(db, "users", userId);
     try{
       setUserFollowers(newUserFollowers)
       setCurrentUserFollowing(newCurrentUserFollowing)
       await followersUpdate(user.email, arrayRemove(userViewing.userName))
       await followingUpdate(currentUser.email, arrayRemove(user.userName))
+      await updateDoc(docNotifRef, {
+        notif: arrayRemove(notifObject(false, docNotifRef))
+      });
+      await updateDoc(docNotifRef, {
+        notif: arrayRemove(notifObject(true, docNotifRef))
+      });
     }catch(err){
       console.error("error unfollowing user", err)
     }
   }
 
   /* GETS INFO OF THE USER WHOSE PROFILE YOURE VIEWING */
+  const getUserByEmailInUser = async (email) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+  
+    if (querySnapshot.empty) {
+      console.error('No matching documents for email:', email);
+      return null;
+    }
+    const user = querySnapshot;
+    return user;
+  }
 
   useEffect(() => {
     const fetchUserByUsername = async (username) => {
-      const user = await getUserByUsername(username);
-      setUser(user);
+      const userData = await getUserByUsername(username);
+      const user = await getUserByEmailInUser(userData.email);
+      setUser(userData);
+      setUserId(user.docs[0].id);
     }
     try{
       fetchUserByUsername(param.username)
