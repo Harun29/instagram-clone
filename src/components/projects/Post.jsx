@@ -95,6 +95,18 @@ const Post = () => {
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
 
+    const notifObject = (notifStatus) => {
+      const object = {
+        postLiked: param.postid,
+        postLikedPhoto: postPicture,
+        likedBy: userViewing.userName,
+        likedByPhoto: userViewingPhoto,
+        opened: notifStatus,
+        notifRef: docNotifRef
+      }
+      return object
+    }
+
     try {
       if (!liked) {
         await updateDoc(docRef, {
@@ -104,14 +116,7 @@ const Post = () => {
           likedPosts: arrayUnion(param.postid)
         });
         await updateDoc(docNotifRef, {
-          likeNotif: arrayUnion({
-            postLiked: param.postid,
-            postLikedPhoto: postPicture,
-            likedBy: userViewing.userName,
-            likedByPhoto: userViewingPhoto,
-            opened: false,
-            notifRef: docNotifRef
-          })
+          likeNotif: arrayUnion(notifObject(false))
         });
       } else {
         await updateDoc(docRef, {
@@ -121,24 +126,10 @@ const Post = () => {
           likedPosts: arrayRemove(param.postid)
         });
         await updateDoc(docNotifRef, {
-          likeNotif: arrayRemove({
-            postLiked: param.postid,
-            postLikedPhoto: postPicture,
-            likedBy: userViewing.userName,
-            likedByPhoto: userViewingPhoto,
-            opened: false,
-            notifRef: docNotifRef
-          })
+          likeNotif: arrayRemove(notifObject(false))
         });
         await updateDoc(docNotifRef, {
-          likeNotif: arrayRemove({
-            postLiked: param.postid,
-            postLikedPhoto: postPicture,
-            likedBy: userViewing.userName,
-            likedByPhoto: userViewingPhoto,
-            opened: true,
-            notifRef: docNotifRef
-          })
+          likeNotif: arrayRemove(notifObject(true))
         });
       }
     } catch (err) {

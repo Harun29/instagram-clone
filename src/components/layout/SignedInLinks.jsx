@@ -52,26 +52,24 @@ const SignedInLinks = () => {
   }, [error])
 
   const handleOpened = async(e) => {
+    const notifObject = (notifStatus) => {
+      const object = {
+        postLiked: e.postLiked,
+          postLikedPhoto: e.postLikedPhoto,
+          likedBy: e.likedBy,
+          likedByPhoto: e.likedByPhoto,
+          opened: notifStatus,
+          notifRef: e.notifRef
+      }
+      return object
+    }
+
     if(!e.opened){
       await updateDoc(e.notifRef, {
-        likeNotif: arrayRemove({
-          postLiked: e.postLiked,
-          postLikedPhoto: e.postLikedPhoto,
-          likedBy: e.likedBy,
-          likedByPhoto: e.likedByPhoto,
-          opened: false,
-          notifRef: e.notifRef
-        })
+        likeNotif: arrayRemove(notifObject(false))
       });
       await updateDoc(e.notifRef, {
-        likeNotif: arrayUnion({
-          postLiked: e.postLiked,
-          postLikedPhoto: e.postLikedPhoto,
-          likedBy: e.likedBy,
-          likedByPhoto: e.likedByPhoto,
-          opened: true,
-          notifRef: e.notifRef
-        })
+        likeNotif: arrayUnion(notifObject(true))
       });
     }
   }
