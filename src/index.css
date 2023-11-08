@@ -136,3 +136,22 @@ svg{
   position: absolute;
   bottom: -23px;
 }
+
+.notification-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification-container .follow-notif-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notification-container a div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
