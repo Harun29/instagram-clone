@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faPerson } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ const SignedInLinks = () => {
   // const [user, setUser] = useState();
   const [notifs, setNotifs] = useState();
   const [notifNumber, setNotifNumber] = useState(0)
+  const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
 
@@ -51,7 +52,7 @@ const SignedInLinks = () => {
     }
   }, [error])
 
-  const handleOpened = async(e) => {
+  const handleOpened = async (e) => {
     const notifLikeObject = (notifStatus) => {
       const object = {
         postLiked: e.postLiked,
@@ -75,14 +76,14 @@ const SignedInLinks = () => {
       return object
     }
 
-    if(!e.opened && e.notifType === "like"){
+    if (!e.opened && e.notifType === "like") {
       await updateDoc(e.notifRef, {
         notif: arrayRemove(notifLikeObject(false))
       });
       await updateDoc(e.notifRef, {
         notif: arrayUnion(notifLikeObject(true))
       });
-    }else{
+    } else {
       await updateDoc(e.notifRef, {
         notif: arrayRemove(notifFollowObject(false))
       });
@@ -93,77 +94,76 @@ const SignedInLinks = () => {
   }
 
   useEffect(() => {
-    
-    if(notifs){
+
+    if (notifs) {
       setNotifNumber(0)
       console.log(notifs)
       notifs.forEach(notif => {
-        if (!notif.opened)(
-          setNotifNumber(prevNotifNumber =>  prevNotifNumber + 1)
+        if (!notif.opened) (
+          setNotifNumber(prevNotifNumber => prevNotifNumber + 1)
         )
       })
     }
   }, [notifs])
 
-  return (
-    <ul className="d-flex mt-3">
+  const toggleDropdown = () => {
+    setDropdown(prevDropdown => !prevDropdown)
+  }
 
-      <div className="notif-dropdown dropdown me-2">
-        <Button className="btn dropdown-toggle" type="button" id="notif-dropdown" data-bs-toggle="dropdown">
+  return (
+    <ul>
+      <div className="notif-dropdown">
+        <button className="dropdown-toggle" onClick={toggleDropdown}>
           <FontAwesomeIcon icon={faBell} className="text-white"></FontAwesomeIcon>
-        </Button>
+        </button>
         {notifs && notifNumber > 0 ? <div className="notif-count">
           {notifs ? notifNumber : null}
         </div> : null}
-        <ul className="dropdown-menu" style={{ minWidth: '400px', marginLeft: '-225px', marginTop: '10px' }}>
-          {notifs ? (
-            notifs.map((notif, index) => (
-              <li key={index} className='px-2 list-group-item' id={notif.opened ? 'opened-notification' : 'notification'}>
-                {notif.notifType === "like" ?
-                <div className="notification-container">
-                  <Link className="me-3 notif-by" to={`/user/${notif.likedBy}`}>
-                    <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
-                    <strong>{notif.likedBy}</strong>
-                  </Link>{' '}
-                  <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
-                    <label>Liked your post</label>
-                    <img src={notif.postLikedPhoto} alt="" />
-                  </Link>
-                </div>
-                  :
-                <div className="notification-container">
-                  <Link onClick={() => handleOpened(notif)} className="me-3 notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
-                    <div>
-                      <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
-                      <strong>{notif.followedBy}</strong>
+        {dropdown ?
+          <ul className="dropdown-menu" style={{ minWidth: '400px', marginLeft: '-225px', marginTop: '10px' }}>
+            {notifs ? (
+              notifs.map((notif, index) => (
+                <li key={index} id={notif.opened ? 'opened-notification' : 'notification'}>
+                  {notif.notifType === "like" ?
+                    <div className="notification-container">
+                      <Link className="notif-by" to={`/user/${notif.likedBy}`}>
+                        <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                        <strong>{notif.likedBy}</strong>
+                      </Link>{' '}
+                      <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
+                        <label>Liked your post</label>
+                        <img src={notif.postLikedPhoto} alt="" />
+                      </Link>
                     </div>
-                    <label>Started Following You!</label>
-                  </Link>
-                </div>
-                }
-                
-              </li>
-            ))
-          ) : (
-            <div>Loading...</div>
-          )}
-        </ul>
+                    :
+                    <div className="notification-container">
+                      <Link onClick={() => handleOpened(notif)} className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
+                        <div>
+                          <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                          <strong>{notif.followedBy}</strong>
+                        </div>
+                        <label>Started Following You!</label>
+                      </Link>
+                    </div>
+                  }
+
+                </li>
+              ))
+            ) : (
+              <div>Loading...</div>
+            )}
+          </ul>
+          : null}
+
       </div>
 
       <NavLink to='/createpost'>
         <Button className="me-2">Post</Button>
       </NavLink>
 
-      <div className="dropdown">
-        <Button className="btn dropdown-toggle" type="button" id="profile-dropdown" data-bs-toggle="dropdown">
-          <FontAwesomeIcon icon={faPerson} className="text-white"></FontAwesomeIcon>
-        </Button>
-        <div className="dropdown-menu" aria-labelledby="profile-dropdown">
-          <NavLink to="profile" className="dropdown-item">Profile</NavLink>
-          <NavLink to="update-profile" className="dropdown-item">Settings</NavLink>
-          <button onClick={handleLogout} className="dropdown-item">Logout</button>
-        </div>
-      </div>
+          {/* <NavLink to="update-profile" className="dropdown-item">Settings</NavLink> */}
+          {/* <button onClick={handleLogout} className="dropdown-item">Logout</button> */}
+
     </ul>
   );
 }
