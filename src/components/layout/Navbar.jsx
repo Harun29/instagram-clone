@@ -148,7 +148,6 @@ const Navigation = () => {
           <FontAwesomeIcon icon={faPerson}></FontAwesomeIcon>
           {!dropdown ? <button>Profile</button> : null}
         </Link>
-        {/* {currentUser ? <SignedInLinks /> : null} */}
       </div>
       <footer>
         <FontAwesomeIcon icon={faList}></FontAwesomeIcon>
