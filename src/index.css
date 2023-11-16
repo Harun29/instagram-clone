@@ -59,17 +59,18 @@ svg{
   height: calc(100% - 28px);
   background-color: white;
   padding: 8px 12px 20px;
-  width: 16%;
-  border-right: 1px solid rgb(199, 199, 199);
+  border-right: 1px solid rgb(240, 240, 240);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
+
 .nav-wrapper .container{
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
 }
 
 .nav-wrapper a{
@@ -77,7 +78,12 @@ svg{
   text-decoration: none;
 }
 
-.brand-logo h1{
+.nav-wrapper a svg, .menu-bar svg {
+  width: 35px;
+  text-align: start;
+}
+
+.brand-logo h1, .brand-logo svg{
   padding: 25px 12px 16px;
   margin-bottom: 19px;
   color: black;
@@ -85,23 +91,99 @@ svg{
   font-size: 2.5rem;
 }
 
-.text-white svg {
-  border: none;
-}
-
-.container a:nth-child(n+2), .nav-wrapper footer, .search-bar{ 
+.container a:nth-child(n+2), .nav-wrapper footer, .menu-bar{ 
   padding: 12px;
   margin: 4px 0;
   font-size: 1.5rem;
   display: flex;
   justify-content: start;
   align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
 }
-.nav-wrapper footer button, .container a button, .search-bar button{ 
+
+.container a:nth-child(n+2):hover, .nav-wrapper footer:hover, .menu-bar:hover{
+  background-color: rgb(240, 240, 240);
+}
+
+.nav-wrapper footer button, .container a button, .menu-bar button{ 
   border: none;
   background-color: inherit;
   padding-left: 16px;
   font-size: 1rem;
+  cursor: pointer;
+  width: 14vw;
+  text-align: start;
+}
+
+.notif-icon{
+  position: relative;
+}
+
+.notif-count{
+  position: absolute;
+  top: 10px;
+  left: 28px;
+  background-color: red;
+  height: 1rem;
+  width: 1rem;
+  font-size: 0.8rem;
+  font-weight: 100;
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 50%;
+}
+
+.dropdown-menu {
+  position: fixed;
+  top: 0;
+  left: 84px;
+  background-color: white;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0 20px 20px 0;
+  border-right: 1px solid rgb(224, 222, 222);
+  box-shadow: 10px 0 5px -2px rgba(97, 97, 97, 0.1);
+}
+
+.dropdown-menu h1{
+  font-size: 30px;
+  font-weight: 700;
+  padding: 25px 15px 15px;
+}
+
+.notif-by{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification {
+  display: flex;
+  padding: 15px 20px 15px;
+}
+
+.notif-by img{
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: 15px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.notif-by strong{
+  margin-right: 15px;
+  font-weight: 700;
+}
+
+.notification:hover{
+  background-color: rgb(240, 240, 240);
 }
 
 /*------------------------*/
@@ -116,68 +198,7 @@ svg{
 	border-radius: 100%;
 }
 
-.dropdown-menu{
-  position: relative;
-}
 
-.dropdown-menu li{
-  margin: 5px 15px;
-  padding: 5px;
-  border-radius: 10px;
-}
-
-
-.notif-count{
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  background-color: red;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  border-radius: 50%;
-}
-
-.notif-by{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.notif-by img{
-  height: 30px;
-  width: 30px;
-  margin: 5px 15px 5px 5px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.post-link-notif{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.post-link-notif img{
-  margin: 5px 5px 5px 15px;
-  width: 45px;
-  height: 45px;
-  object-fit: cover;
-}
-
-#notification {
-  background-color: rgb(223, 223, 223);
-}
-
-#opened-notification {
-  background-color: none;
-}
-
-#notification:hover, #opened-notification:hover {
-  background-color: rgb(233, 233, 233);
-}
 
 
 /* SIGNUP */
