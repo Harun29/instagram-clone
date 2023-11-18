@@ -187,6 +187,86 @@ svg{
 }
 
 /*------------------------*/
+
+/* HOME PAGE */
+
+.home-container {
+  margin-left: calc(14vw + 85px);
+  display: flex;
+  justify-content: center;
+}
+
+.row{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.quick-message {
+  width: 20rem;
+  height: 20rem;
+  background-color: blanchedalmond;
+  margin: 25px 0 0 25px;
+}
+
+.post {
+  max-width: 468px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(224, 222, 222);
+  margin-bottom: 20px;
+}
+
+.post-header{
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-header a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-header a .profile-photo {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+.post .post-photo{
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.interactions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.interactions div svg{
+  margin-right: 15px;
+}
+
+.post-description h4{
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+
+/*------------------------*/
 .profile-setting-form{
 	max-width: 400px;
 }
