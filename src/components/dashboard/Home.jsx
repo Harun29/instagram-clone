@@ -8,6 +8,10 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import { faHeart, faComment, faShare, faSave, faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HeartIcon from "../../icons/HeartIcon";
+import MessageCircleIcon from "../../icons/MessageCircleIcon";
+import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
+import SaveIcon from "../../icons/SaveIcon";
 
 const Home = () => {
 
@@ -78,11 +82,11 @@ const Home = () => {
 
             <div className="interactions">
               <div>
-                <FontAwesomeIcon size="xl" icon={faHeart}></FontAwesomeIcon>
-                <FontAwesomeIcon size="xl" icon={faComment}></FontAwesomeIcon>
-                <FontAwesomeIcon size="xl" icon={faShare}></FontAwesomeIcon>
+                <HeartIcon></HeartIcon>
+                <MessageCircleIcon></MessageCircleIcon>
+                <ArrowForwardIcon></ArrowForwardIcon>
               </div>
-              <FontAwesomeIcon size="xl" icon={faSave}></FontAwesomeIcon>
+              <SaveIcon></SaveIcon>
             </div>
 
             <div className="post-description">

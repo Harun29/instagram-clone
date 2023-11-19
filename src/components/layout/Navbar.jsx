@@ -1,12 +1,19 @@
 import { Link } from "react-router-dom";
-// import SignedInLinks from "./SignedInLinks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPerson, faHouse, faSearch, faCompass, faMessage, faHeart, faPlusSquare, faList } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import HomeIcon from "../../icons/HomeIcon";
+import HeartIcon from "../../icons/HeartIcon";
+import SearchIcon from "../../icons/SearchIcon";
+import CompassIcon from "../../icons/CompasIcon";
+import MessageCircleIcon from "../../icons/MessageCircleIcon";
+import PlusIcon from "../../icons/PlusIcon";
+import ListIcon from "../../icons/ListIcon";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../config/firebase";
 
 const Navigation = () => {
 
@@ -15,10 +22,10 @@ const Navigation = () => {
   const { getUserByEmail } = useAuth()
   const { logout } = useAuth();
   const [error, setError] = useState("");
-  // const [user, setUser] = useState();
   const [notifs, setNotifs] = useState();
   const [notifNumber, setNotifNumber] = useState(0)
   const [dropdown, setDropdown] = useState(false);
+  const [userPhoto, setUserPhoto] = useState('blank-profile.jpg');
 
   useEffect(() => {
 
@@ -26,6 +33,10 @@ const Navigation = () => {
       const user = await getUserByEmail(email);
       // setUser(user);
       setNotifs(user.notif);
+      if(user.pphoto){
+        const userPhotoUrl = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+        setUserPhoto(userPhotoUrl);
+      }
     }
 
     try {
@@ -118,39 +129,39 @@ const Navigation = () => {
           <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>}
         </Link>
         <Link to='/'>
-          <FontAwesomeIcon icon={faHouse}></FontAwesomeIcon>
+          <HomeIcon>  </HomeIcon>
           {!dropdown ? <button>Home</button> : null}
         </Link>
         <div className="menu-bar">
-          <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+          <SearchIcon></SearchIcon>
           {!dropdown ? <button>Search</button> : null}
         </div>
         <Link to="">
-          <FontAwesomeIcon icon={faCompass}></FontAwesomeIcon>
+          <CompassIcon></CompassIcon>
           {!dropdown ? <button>Explore</button> : null}
         </Link>
         <Link to="">
-          <FontAwesomeIcon icon={faMessage}></FontAwesomeIcon>
+          <MessageCircleIcon></MessageCircleIcon>
           {!dropdown ? <button>Messages</button> : null}
         </Link>
         <div onClick={toggleDropdown} className="menu-bar notif-icon">
-          <FontAwesomeIcon icon={faHeart}></FontAwesomeIcon>
+          <HeartIcon></HeartIcon>
           {notifs && notifNumber > 0 ? <div className="notif-count">
             {notifs ? notifNumber : null}
           </div> : null}
           {!dropdown ? <button>Notifications</button> : null}
         </div>
         <Link to='/createpost'>   
-          <FontAwesomeIcon icon={faPlusSquare}></FontAwesomeIcon>
+          <PlusIcon></PlusIcon>
           {!dropdown ? <button>Create</button> : null}          
         </Link>
         <Link to='/profile'>
-          <FontAwesomeIcon icon={faPerson}></FontAwesomeIcon>
+          <img src={userPhoto} alt="user" className="profile-photo navbar"/>
           {!dropdown ? <button>Profile</button> : null}
         </Link>
       </div>
       <footer>
-        <FontAwesomeIcon icon={faList}></FontAwesomeIcon>
+        <ListIcon></ListIcon>
         {!dropdown ? <button>More</button> : null}
       </footer>
 

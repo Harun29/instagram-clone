@@ -28,6 +28,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -45,8 +46,8 @@ table {
 	border-spacing: 0;
 }
 
-svg{
-  color: black;
+.icon-tabler-heart-active{
+  color: red;
 }
 
 /* NAVBAR */
@@ -242,9 +243,10 @@ svg{
 
 .post-header label{
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
-.post-header a .profile-photo {
+.profile-photo {
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -252,10 +254,15 @@ svg{
   margin-right: 12px;
 }
 
+.profile-photo.navbar{
+  margin-right: 0;
+}
+
 .post .post-photo{
   width: 100%;
   border-radius: 5px;
   margin-bottom: 15px;
+  border: 1px solid rgb(224, 222, 222);
 }
 
 .interactions {
@@ -272,8 +279,12 @@ svg{
 .post-description h4{
   font-weight: 700;
   margin-bottom: 10px;
+  font-size: 0.9rem;
 }
 
+.post-description p{
+  font-size: 0.9rem;
+}
 
 /*------------------------*/
 .profile-setting-form{
