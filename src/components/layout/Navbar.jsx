@@ -6,12 +6,16 @@ import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import HomeIcon from "../../icons/HomeIcon";
-import HeartIcon from "../../icons/HeartIcon";
 import SearchIcon from "../../icons/SearchIcon";
+import HeartIcon from "../../icons/HeartIcon";
+import HeartIconFull from "../../icons/HeartIconFull";
 import CompassIcon from "../../icons/CompasIcon";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import PlusIcon from "../../icons/PlusIcon";
 import ListIcon from "../../icons/ListIcon";
+import HomeIconFull from "../../icons/HomeIconFull";
+import SettingsIcon from "../../icons/SettingsIcon";
+import SaveIcon from "../../icons/SaveIcon";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 
@@ -25,6 +29,7 @@ const Navigation = () => {
   const [notifs, setNotifs] = useState();
   const [notifNumber, setNotifNumber] = useState(0)
   const [dropdown, setDropdown] = useState(false);
+  const [moreDropdown, setMoreDropdown] = useState(false);
   const [userPhoto, setUserPhoto] = useState('blank-profile.jpg');
 
   useEffect(() => {
@@ -105,7 +110,6 @@ const Navigation = () => {
   }
 
   useEffect(() => {
-
     if (notifs) {
       setNotifNumber(0)
       console.log(notifs)
@@ -117,20 +121,25 @@ const Navigation = () => {
     }
   }, [notifs])
 
-  const toggleDropdown = () => {
-    setDropdown(prevDropdown => !prevDropdown)
-  }
+const handleDropdown = () =>{
+  setDropdown(prevDropdown => !prevDropdown)
+  setMoreDropdown(false)
+}
 
   return (
     <nav className='nav-wrapper'>
       <div className="container">
-        <Link to='/' className="brand-logo">
-          {!dropdown ? <h1>Blog</h1> :
+        <Link onClick={dropdown ? handleDropdown : null} to='/' className="brand-logo">
+          {!dropdown ? <h1 style={{ fontFamily: 'Oleo Script' }}>igclone</h1> :
           <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>}
         </Link>
-        <Link to='/'>
-          <HomeIcon>  </HomeIcon>
-          {!dropdown ? <button>Home</button> : null}
+        <Link onClick={dropdown ? handleDropdown : null} to='/'>
+          {
+            window.location.pathname === '/' && !dropdown ?
+            <HomeIconFull></HomeIconFull> :
+            <HomeIcon></HomeIcon>
+          }
+          {!dropdown ? <button style={window.location.pathname === '/' ? {fontWeight: '700'} : null}>Home</button> : null}
         </Link>
         <div className="menu-bar">
           <SearchIcon></SearchIcon>
@@ -144,8 +153,12 @@ const Navigation = () => {
           <MessageCircleIcon></MessageCircleIcon>
           {!dropdown ? <button>Messages</button> : null}
         </Link>
-        <div onClick={toggleDropdown} className="menu-bar notif-icon">
-          <HeartIcon></HeartIcon>
+        <div onClick={handleDropdown} className="menu-bar notif-icon">
+          {
+            dropdown ?
+            <HeartIconFull></HeartIconFull> :
+            <HeartIcon></HeartIcon>
+          }
           {notifs && notifNumber > 0 ? <div className="notif-count">
             {notifs ? notifNumber : null}
           </div> : null}
@@ -160,10 +173,29 @@ const Navigation = () => {
           {!dropdown ? <button>Profile</button> : null}
         </Link>
       </div>
-      <footer>
+      <footer onClick={() => setMoreDropdown(prevDropdown => !prevDropdown)}>
         <ListIcon></ListIcon>
         {!dropdown ? <button>More</button> : null}
       </footer>
+        {moreDropdown ?
+          <div className="more-dropdown-container">
+
+            <div className="more-dropdown-element menu-bar">
+              <SettingsIcon></SettingsIcon>
+              <label>Settings</label>
+            </div>
+            <div className="more-dropdown-element menu-bar">
+              <SaveIcon></SaveIcon>
+              <label>Saved</label>
+            </div>
+            <div className="more-dropdown-element menu-bar">
+              <label>Logout</label>
+            </div>
+
+          </div>
+          :
+          null
+        }
 
       {dropdown ?
         <ul className="dropdown-menu">
@@ -203,6 +235,7 @@ const Navigation = () => {
           )}
         </ul>
         : null}
+      
     </nav>
   );
 }

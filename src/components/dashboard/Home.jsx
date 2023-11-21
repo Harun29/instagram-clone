@@ -6,7 +6,7 @@ import { storage } from "../../config/firebase";
 import { ref } from "firebase/storage";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
-import { faHeart, faComment, faShare, faSave, faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HeartIcon from "../../icons/HeartIcon";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
