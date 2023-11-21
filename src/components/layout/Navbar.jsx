@@ -13,6 +13,7 @@ import CompassIcon from "../../icons/CompasIcon";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import PlusIcon from "../../icons/PlusIcon";
 import ListIcon from "../../icons/ListIcon";
+import ListIconBold from "../../icons/ListIconBold";
 import HomeIconFull from "../../icons/HomeIconFull";
 import SettingsIcon from "../../icons/SettingsIcon";
 import SaveIcon from "../../icons/SaveIcon";
@@ -123,7 +124,10 @@ const Navigation = () => {
 
 const handleDropdown = () =>{
   setDropdown(prevDropdown => !prevDropdown)
-  setMoreDropdown(false)
+}
+
+const handleMoreDropdown = () =>{
+  setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
 }
 
   return (
@@ -173,23 +177,27 @@ const handleDropdown = () =>{
           {!dropdown ? <button>Profile</button> : null}
         </Link>
       </div>
-      <footer onClick={() => setMoreDropdown(prevDropdown => !prevDropdown)}>
-        <ListIcon></ListIcon>
-        {!dropdown ? <button>More</button> : null}
+      <footer onClick={handleMoreDropdown}>
+        {
+          moreDropdown ?
+          <ListIconBold></ListIconBold> :
+          <ListIcon></ListIcon>
+        }
+        {!dropdown ? <button style={moreDropdown ? {fontWeight: '700'} : null}>More</button> : null}
       </footer>
         {moreDropdown ?
           <div className="more-dropdown-container">
 
-            <div className="more-dropdown-element menu-bar">
+            <Link to="/settings" className="more-dropdown-element menu-bar">
               <SettingsIcon></SettingsIcon>
               <label>Settings</label>
-            </div>
+            </Link>
             <div className="more-dropdown-element menu-bar">
               <SaveIcon></SaveIcon>
               <label>Saved</label>
             </div>
             <div className="more-dropdown-element menu-bar">
-              <label>Logout</label>
+              <button onClick={handleLogout}>Logout</button>
             </div>
 
           </div>

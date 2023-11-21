@@ -103,6 +103,7 @@ table {
 
 .container a:nth-child(n+2):hover, .nav-wrapper footer:hover, .menu-bar:hover{
   background-color: rgb(240, 240, 240);
+  font-size: 30px;
 }
 
 .nav-wrapper footer button, .container a button, .menu-bar button{ 
@@ -209,8 +210,9 @@ table {
   padding: 1rem;
 }
 
-.more-dropdown-container .menu-bar:nth-child(3) label{
+.more-dropdown-container .menu-bar:nth-child(3) button{
   margin-left: 10px;
+  padding: 0;
 }
 
 /*------------------------*/
