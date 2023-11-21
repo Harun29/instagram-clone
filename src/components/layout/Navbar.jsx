@@ -39,7 +39,7 @@ const Navigation = () => {
       const user = await getUserByEmail(email);
       // setUser(user);
       setNotifs(user.notif);
-      if(user.pphoto){
+      if (user.pphoto) {
         const userPhotoUrl = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
         setUserPhoto(userPhotoUrl);
       }
@@ -122,69 +122,70 @@ const Navigation = () => {
     }
   }, [notifs])
 
-const handleDropdown = () =>{
-  setDropdown(prevDropdown => !prevDropdown)
-}
+  const handleDropdown = () => {
+    setDropdown(prevDropdown => !prevDropdown)
+  }
 
-const handleMoreDropdown = () =>{
-  setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
-}
+  const handleMoreDropdown = () => {
+    setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
+  }
 
   return (
-    <nav className='nav-wrapper'>
-      <div className="container">
-        <Link onClick={dropdown ? handleDropdown : null} to='/' className="brand-logo">
-          {!dropdown ? <h1 style={{ fontFamily: 'Oleo Script' }}>igclone</h1> :
-          <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>}
-        </Link>
-        <Link onClick={dropdown ? handleDropdown : null} to='/'>
-          {
-            window.location.pathname === '/' && !dropdown ?
-            <HomeIconFull></HomeIconFull> :
-            <HomeIcon></HomeIcon>
-          }
-          {!dropdown ? <button style={window.location.pathname === '/' ? {fontWeight: '700'} : null}>Home</button> : null}
-        </Link>
-        <div className="menu-bar">
-          <SearchIcon></SearchIcon>
-          {!dropdown ? <button>Search</button> : null}
+    <div>
+      <nav className='nav-wrapper'>
+        <div className={`container${dropdown ? " active" : ''}`}>
+          <Link onClick={dropdown ? handleDropdown : null} to='/' className="brand-logo">
+            {!dropdown ? <h1 style={{ fontFamily: 'Oleo Script' }}>igclone</h1> :
+              <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>}
+          </Link>
+          <Link onClick={dropdown ? handleDropdown : null} to='/'>
+            {
+              window.location.pathname === '/' && !dropdown ?
+                <HomeIconFull></HomeIconFull> :
+                <HomeIcon></HomeIcon>
+            }
+            {!dropdown ? <button style={window.location.pathname === '/' ? { fontWeight: '700' } : null}>Home</button> : null}
+          </Link>
+          <div className="menu-bar">
+            <SearchIcon></SearchIcon>
+            {!dropdown ? <button>Search</button> : null}
+          </div>
+          <Link to="">
+            <CompassIcon></CompassIcon>
+            {!dropdown ? <button>Explore</button> : null}
+          </Link>
+          <Link to="">
+            <MessageCircleIcon></MessageCircleIcon>
+            {!dropdown ? <button>Messages</button> : null}
+          </Link>
+          <div onClick={handleDropdown} className="menu-bar notif-icon">
+            {
+              dropdown ?
+                <HeartIconFull></HeartIconFull> :
+                <HeartIcon></HeartIcon>
+            }
+            {notifs && notifNumber > 0 ? <div className="notif-count">
+              {notifs ? notifNumber : null}
+            </div> : null}
+            {!dropdown ? <button>Notifications</button> : null}
+          </div>
+          <Link to='/createpost'>
+            <PlusIcon></PlusIcon>
+            {!dropdown ? <button>Create</button> : null}
+          </Link>
+          <Link to='/profile'>
+            <img src={userPhoto} alt="user" className="profile-photo navbar" />
+            {!dropdown ? <button>Profile</button> : null}
+          </Link>
         </div>
-        <Link to="">
-          <CompassIcon></CompassIcon>
-          {!dropdown ? <button>Explore</button> : null}
-        </Link>
-        <Link to="">
-          <MessageCircleIcon></MessageCircleIcon>
-          {!dropdown ? <button>Messages</button> : null}
-        </Link>
-        <div onClick={handleDropdown} className="menu-bar notif-icon">
+        <footer onClick={handleMoreDropdown}>
           {
-            dropdown ?
-            <HeartIconFull></HeartIconFull> :
-            <HeartIcon></HeartIcon>
+            moreDropdown ?
+              <ListIconBold></ListIconBold> :
+              <ListIcon></ListIcon>
           }
-          {notifs && notifNumber > 0 ? <div className="notif-count">
-            {notifs ? notifNumber : null}
-          </div> : null}
-          {!dropdown ? <button>Notifications</button> : null}
-        </div>
-        <Link to='/createpost'>   
-          <PlusIcon></PlusIcon>
-          {!dropdown ? <button>Create</button> : null}          
-        </Link>
-        <Link to='/profile'>
-          <img src={userPhoto} alt="user" className="profile-photo navbar"/>
-          {!dropdown ? <button>Profile</button> : null}
-        </Link>
-      </div>
-      <footer onClick={handleMoreDropdown}>
-        {
-          moreDropdown ?
-          <ListIconBold></ListIconBold> :
-          <ListIcon></ListIcon>
-        }
-        {!dropdown ? <button style={moreDropdown ? {fontWeight: '700'} : null}>More</button> : null}
-      </footer>
+          {!dropdown ? <button style={moreDropdown ? { fontWeight: '700' } : null}>More</button> : null}
+        </footer>
         {moreDropdown ?
           <div className="more-dropdown-container">
 
@@ -204,47 +205,45 @@ const handleMoreDropdown = () =>{
           :
           null
         }
+      </nav>
 
-      {dropdown ?
-        <ul className="dropdown-menu">
-          <h1 className="notifications-heading">
-            Notifications
-          </h1>
-          {notifs ? (
-            notifs.map((notif, index) => (
-              <li key={index} className="notification">
-                {notif.notifType === "like" ?
-                  <div className="notification-container">
-                    <Link className="notif-by" to={`/user/${notif.likedBy}`}>
+      <ul className={`dropdown-menu${dropdown ? ' active' : ''}`}>
+        <h1 className="notifications-heading">
+          Notifications
+        </h1>
+        {notifs ? (
+          notifs.map((notif, index) => (
+            <li key={index} className="notification">
+              {notif.notifType === "like" ?
+                <div className="notification-container">
+                  <Link className="notif-by" to={`/user/${notif.likedBy}`}>
+                    <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                    <strong>{notif.likedBy}</strong>
+                  </Link>{' '}
+                  <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
+                    <label>Liked your post</label>
+                    <img src={notif.postLikedPhoto} alt="" />
+                  </Link>
+                </div>
+                :
+                <div className="notification-container">
+                  <Link onClick={() => handleOpened(notif)} className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
+                    <div>
                       <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
-                      <strong>{notif.likedBy}</strong>
-                    </Link>{' '}
-                    <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
-                      <label>Liked your post</label>
-                      <img src={notif.postLikedPhoto} alt="" />
-                    </Link>
-                  </div>
-                  :
-                  <div className="notification-container">
-                    <Link onClick={() => handleOpened(notif)} className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
-                      <div>
-                        <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
-                        <strong>{notif.followedBy}</strong>
-                      </div>
-                      <label>Started Following You!</label>
-                    </Link>
-                  </div>
-                }
+                      <strong>{notif.followedBy}</strong>
+                    </div>
+                    <label>Started Following You!</label>
+                  </Link>
+                </div>
+              }
 
-              </li>
-            ))
-          ) : (
-            <div>Loading...</div>
-          )}
-        </ul>
-        : null}
-      
-    </nav>
+            </li>
+          ))
+        ) : (
+          <div>Loading...</div>
+        )}
+      </ul>
+    </div>
   );
 }
 
