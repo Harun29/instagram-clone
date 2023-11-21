@@ -190,11 +190,11 @@ const handleMoreDropdown = () =>{
 
             <Link to="/settings" className="more-dropdown-element menu-bar">
               <SettingsIcon></SettingsIcon>
-              <label>Settings</label>
+              <button>Settings</button>
             </Link>
             <div className="more-dropdown-element menu-bar">
               <SaveIcon></SaveIcon>
-              <label>Saved</label>
+              <button>Saved</button>
             </div>
             <div className="more-dropdown-element menu-bar">
               <button onClick={handleLogout}>Logout</button>
