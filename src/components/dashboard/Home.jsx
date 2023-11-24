@@ -71,7 +71,7 @@ const Home = () => {
           <div className="post">
 
             <div className="post-header">
-              <Link to={`/profile/${post.user}`}>
+              <Link className="link-to-user" to={`/profile/${post.user}`}>
                 <img className="profile-photo" src={post.userPhoto} alt="profile" />
                 <label>{post.user}</label>
               </Link>

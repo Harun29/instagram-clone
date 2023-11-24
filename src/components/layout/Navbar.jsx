@@ -174,8 +174,8 @@ const Navigation = () => {
             {!dropdown ? <button>Create</button> : null}
           </Link>
           <Link to='/profile'>
-            <img src={userPhoto} alt="user" className="profile-photo navbar" />
-            {!dropdown ? <button>Profile</button> : null}
+            <img src={userPhoto} style={window.location.pathname === '/profile' ? { border: '2px solid black', width: '31px', height: '31px' } : null} alt="user" className="profile-photo navbar" />
+            {!dropdown ? <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null}>Profile</button> : null}
           </Link>
         </div>
         <footer onClick={handleMoreDropdown}>
