@@ -31,11 +31,10 @@ const Home = () => {
             ref(storage, `posts_pictures/${doc.data().photo}`)
           );
 
-          if(user.pphoto){
+          if (user.pphoto) {
             const userPhotoUrl = await getDownloadURL(
               ref(storage, `profile_pictures/${user.pphoto}`)
             );
-  
             return {
               id: doc.id,
               title: doc.data().title,
@@ -61,6 +60,7 @@ const Home = () => {
     };
 
     fetchPosts();
+
   }, [getUserByEmail]);
 
   return (
@@ -96,9 +96,34 @@ const Home = () => {
 
           </div>
         )) :
-          <div>
-            Loading...
+          <div className="post loading">
+
+            <div className="post-header loading">
+              <Link className="link-to-user loading" to="">
+                <img className="profile-photo loading" src="" alt=""/>
+                <label className="loading">-------</label>
+              </Link>
+              <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
+            </div>
+
+            <img src="" alt="" className="post-photo loading" />
+
+            <div className="interactions loading">
+              <div>
+                <HeartIcon></HeartIcon>
+                <MessageCircleIcon></MessageCircleIcon>
+                <ArrowForwardIcon></ArrowForwardIcon>
+              </div>
+              <SaveIcon></SaveIcon>
+            </div>
+
+            <div className="post-description loading">
+              <h4 className="loading">--------------</h4>
+              <p className="loading">-------------------------------------------------
+                ----------------------------- ---------------------</p>
+            </div>
           </div>}
+
       </div>
       <div className="quick-message">
 

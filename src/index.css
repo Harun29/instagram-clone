@@ -359,6 +359,7 @@ a {
 
 .post {
   max-width: 468px;
+  min-width: 468px;
   display: flex;
   flex-direction: column;
   padding-bottom: 20px;
@@ -391,6 +392,11 @@ a {
   font-size: 0.9rem;
 }
 
+.post-header label.loading{
+  color: rgb(224, 222, 222);
+  background-color: rgb(224, 222, 222);
+}
+
 .profile-photo {
   border-radius: 50%;
   width: 35px;
@@ -399,15 +405,32 @@ a {
   margin-right: 12px;
 }
 
+.profile-photo.loading{
+  background-color: rgb(224, 222, 222);
+  border: none;
+}
+
 .profile-photo.navbar {
   margin-right: 0;
 }
 
 .post .post-photo {
   width: 100%;
+  min-height: 400px;
+  object-fit: contain;
   border-radius: 5px;
   margin-bottom: 10px;
   border: 1px solid rgb(224, 222, 222);
+}
+
+.post .post-photo.loading{
+  background-color: rgb(224, 222, 222);
+  height: 600px;
+  border: none;
+}
+
+.post .post-photo.loading::before{
+  display: none;
 }
 
 .interactions {
@@ -427,8 +450,22 @@ a {
   font-size: 0.9rem;
 }
 
+.post-description h4.loading{
+  background-color: rgb(224, 222, 222);
+  color: rgb(224, 222, 222);
+}
+
 .post-description p {
   font-size: 0.9rem;
+}
+
+.post-description p.loading{
+  background-color: rgb(224, 222, 222);
+  color: rgb(224, 222, 222);
+  line-height: 20px;
+  display: inline;
+  padding: 0;
+  margin: 0;
 }
 
 /*------------------------*/
