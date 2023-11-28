@@ -100,13 +100,13 @@ const Home = () => {
 
             <div className="post-header loading">
               <Link className="link-to-user loading" to="">
-                <img className="profile-photo loading" src="" alt=""/>
+                <div className="profile-photo loading"></div>
                 <label className="loading">-------</label>
               </Link>
               <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
             </div>
 
-            <img src="" alt="" className="post-photo loading" />
+            <div className="post-photo loading"></div>
 
             <div className="interactions loading">
               <div>
