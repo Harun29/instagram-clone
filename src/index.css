@@ -133,7 +133,7 @@ table {
   border-spacing: 0;
 }
 
-.icon-tabler-heart-active {
+.icon-tabler-heart.active {
   color: red;
 }
 

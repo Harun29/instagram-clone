@@ -130,7 +130,7 @@ const Home = () => {
   }, [getUserByEmail]);
 
 
-  const handleLike = async (postid, postPhoto, userId, likedBy) => {
+  const handleLike = async (postid, postPhoto, userId, likedBy) => {   
     // const likedby = post.likedby
     // setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", postid);
@@ -164,6 +164,7 @@ const Home = () => {
         await updateDoc(docNotifRef, {
           notif: arrayRemove(notifObject(true))
         });
+        
       } else {
         await updateDoc(docRef, {
           likedby: arrayUnion(userViewing.email)
@@ -174,6 +175,15 @@ const Home = () => {
         await updateDoc(docNotifRef, {
           notif: arrayUnion(notifObject(false))
         });
+      }
+      console.log(likedBy);
+      //likeby uvijek ostaje isto od pocetka montiranja home pagea
+      if(likedBy.includes(userViewing.email)){
+        document.getElementById(postid).classList.remove('active');
+        document.getElementById(postid).setAttribute("fill", "none");
+      }else{
+        document.getElementById(postid).classList.add('active');
+        document.getElementById(postid).setAttribute("fill", "red");
       }
     } catch (err) {
       console.error("Error in handleLike: ", err);
@@ -200,11 +210,10 @@ const Home = () => {
             <div className="interactions">
               <div>
                 <div onClick={() => handleLike(post.id, post.photo, post.userId, post.likedBy)}>
-                  {post.likedBy.includes(currentUser.email) ?
-                    <HeartIconRed></HeartIconRed>
-                    : 
-                    <HeartIcon></HeartIcon>
-                  }
+                  <svg id={post.id} xmlns="http://www.w3.org/2000/svg" class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${post.likedBy.includes(userViewing.email) ? "active" : ""}`} width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill={post.likedBy.includes(userViewing.email) ? "red" : "none"} stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                  </svg>
                 </div>
                 <MessageCircleIcon></MessageCircleIcon>
                 <ArrowForwardIcon></ArrowForwardIcon>
