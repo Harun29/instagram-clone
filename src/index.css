@@ -297,6 +297,16 @@ a {
   background-color: rgb(240, 240, 240);
 }
 
+.post-link-notif{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-link-notif img{
+  width: 40px;
+}
+
 .plus-black-active path:nth-child(4) {
   color: white;
 }
