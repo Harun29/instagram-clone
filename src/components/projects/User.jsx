@@ -17,7 +17,6 @@ import {
   getDownloadURL
 } from "firebase/storage";
 import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
 import PostsList from "./PostsList";
 import { useNavigate } from "react-router-dom";
 import {  } from "firebase/firestore";

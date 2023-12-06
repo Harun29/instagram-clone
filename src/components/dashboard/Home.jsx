@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
-import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { ref } from "firebase/storage";
@@ -12,11 +11,72 @@ import HeartIcon from "../../icons/HeartIcon";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import SaveIcon from "../../icons/SaveIcon";
+import HeartIconRed from "../../icons/HeartIconRed";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 
 const Home = () => {
 
-  const [posts, setPosts] = useState()
-  const { getUserByEmail } = useAuth()
+  const [posts, setPosts] = useState();
+  const { getUserByEmail } = useAuth();
+  const { currentUser } = useAuth();
+  const [userViewing, setUserViewing] = useState();
+  const [userViewingPhoto, setUserViewingPhoto] = useState('');
+  const [userViewingId, setUserViewingId] = useState();
+
+
+  useEffect(() => {
+    console.log("posts: ", posts);
+  })
+
+  useEffect(() => {
+    console.log(currentUser.email)
+  }, [userViewing])
+
+  /* STUFF FROM POST */
+
+  const getUserByEmailInPost = async (email) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.error('No matching documents for email:', email);
+      return null;
+    }
+    const user = querySnapshot;
+    return user;
+  }
+
+  useEffect(() => {
+    const fetchUserByEmail = async (email) => {
+      const user = await getUserByEmailInPost(email);
+      setUserViewing(user.docs[0].data());
+      setUserViewingId(user.docs[0].id);
+      console.log(user)
+    }
+    try {
+      currentUser && fetchUserByEmail(currentUser.email)
+    }
+    catch (err) {
+      console.error(err)
+    }
+  }, [currentUser])
+
+  useEffect(() => {
+    const fetchPhoto = async () => {
+      const userViewingPhoto = await getDownloadURL(ref(storage, `profile_pictures/${userViewing.pphoto}`))
+      setUserViewingPhoto(userViewingPhoto);
+    }
+    try {
+      userViewing.pphoto && fetchPhoto()
+    } catch (err) {
+      console.error(err)
+    }
+  }, [userViewing])
+
+  /* ------------------------------------------------- */
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -27,6 +87,8 @@ const Home = () => {
         snapshot.docs.map(async (doc) => {
           const user = await getUserByEmail(doc.data().user)
           const nick = user.userName
+          const userIdSnap = await getUserByEmailInPost(user.email);
+          const userId = userIdSnap.docs[0].id;
           const photoUrl = await getDownloadURL(
             ref(storage, `posts_pictures/${doc.data().photo}`)
           );
@@ -39,8 +101,10 @@ const Home = () => {
               id: doc.id,
               title: doc.data().title,
               description: doc.data().description,
+              likedBy: doc.data().likedby ? doc.data().likedby : [],
               photo: photoUrl,
               user: nick,
+              userId: userId,
               userPhoto: userPhotoUrl
             };
           } else {
@@ -48,8 +112,10 @@ const Home = () => {
               id: doc.id,
               title: doc.data().title,
               description: doc.data().description,
+              likedBy: doc.data().likedby ? doc.data().likedby : [],
               photo: photoUrl,
               user: nick,
+              userId: userId,
               userPhoto: '/blank-profile.jpg'
             };
           }
@@ -63,55 +129,56 @@ const Home = () => {
 
   }, [getUserByEmail]);
 
-  const handleLike = async (postid) => {
+
+  const handleLike = async (postid, postPhoto, userId, likedBy) => {
     // const likedby = post.likedby
-  setLiked((prevLiked) => !prevLiked);
-  const docRef = doc(db, "posts", postid);
-  const docUserRef = doc(db, "users", userViewingId);
-  const docNotifRef = doc(db, "users", userId);
+    // setLiked((prevLiked) => !prevLiked);
+    const docRef = doc(db, "posts", postid);
+    const docUserRef = doc(db, "users", userViewingId);
+    const docNotifRef = doc(db, "users", userId);
 
-  const notifObject = (notifStatus) => {
-    const object = {
-      postLiked: param.postid,
-      postLikedPhoto: postPicture,
-      likedBy: userViewing.userName,
-      likedByPhoto: userViewingPhoto,
-      opened: notifStatus,
-      notifRef: docNotifRef,
-      notifType: "like"
+    const notifObject = (notifStatus) => {
+      const object = {
+        postLiked: postid,
+        postLikedPhoto: postPhoto,
+        likedBy: userViewing.userName,
+        likedByPhoto: userViewingPhoto,
+        opened: notifStatus,
+        notifRef: docNotifRef,
+        notifType: "like"
+      }
+      return object
     }
-    return object
-  }
 
-  try {
-    if (!liked) {
-      await updateDoc(docRef, {
-        likedby: arrayUnion(userViewing.email)
-      });
-      await updateDoc(docUserRef, {
-        likedPosts: arrayUnion(param.postid)
-      });
-      await updateDoc(docNotifRef, {
-        notif: arrayUnion(notifObject(false))
-      });
-    } else {
-      await updateDoc(docRef, {
-        likedby: arrayRemove(userViewing.email)
-      });
-      await updateDoc(docUserRef, {
-        likedPosts: arrayRemove(param.postid)
-      });
-      await updateDoc(docNotifRef, {
-        notif: arrayRemove(notifObject(false))
-      });
-      await updateDoc(docNotifRef, {
-        notif: arrayRemove(notifObject(true))
-      });
+    try {
+      if (likedBy.includes(userViewing.email)) {
+        await updateDoc(docRef, {
+          likedby: arrayRemove(userViewing.email)
+        });
+        await updateDoc(docUserRef, {
+          likedPosts: arrayRemove(postid)
+        });
+        await updateDoc(docNotifRef, {
+          notif: arrayRemove(notifObject(false))
+        });
+        await updateDoc(docNotifRef, {
+          notif: arrayRemove(notifObject(true))
+        });
+      } else {
+        await updateDoc(docRef, {
+          likedby: arrayUnion(userViewing.email)
+        });
+        await updateDoc(docUserRef, {
+          likedPosts: arrayUnion(postid)
+        });
+        await updateDoc(docNotifRef, {
+          notif: arrayUnion(notifObject(false))
+        });
+      }
+    } catch (err) {
+      console.error("Error in handleLike: ", err);
     }
-  } catch (err) {
-    console.error("Error in handleLike: ", err);
-  }
-};
+  };
 
   return (
     <div className="home-container">
@@ -132,8 +199,12 @@ const Home = () => {
 
             <div className="interactions">
               <div>
-                <div onClick={() => console.log(post.id)}>
-                  <HeartIcon></HeartIcon>
+                <div onClick={() => handleLike(post.id, post.photo, post.userId, post.likedBy)}>
+                  {post.likedBy.includes(currentUser.email) ?
+                    <HeartIconRed></HeartIconRed>
+                    : 
+                    <HeartIcon></HeartIcon>
+                  }
                 </div>
                 <MessageCircleIcon></MessageCircleIcon>
                 <ArrowForwardIcon></ArrowForwardIcon>
