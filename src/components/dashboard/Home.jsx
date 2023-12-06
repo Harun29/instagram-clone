@@ -11,7 +11,6 @@ import HeartIcon from "../../icons/HeartIcon";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import SaveIcon from "../../icons/SaveIcon";
-import HeartIconRed from "../../icons/HeartIconRed";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
@@ -24,15 +23,7 @@ const Home = () => {
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState('');
   const [userViewingId, setUserViewingId] = useState();
-
-
-  useEffect(() => {
-    console.log("posts: ", posts);
-  })
-
-  useEffect(() => {
-    console.log(currentUser.email)
-  }, [userViewing])
+  const [likedByArray, setLikeByArray] = useState([]);
 
   /* STUFF FROM POST */
 
@@ -93,6 +84,8 @@ const Home = () => {
             ref(storage, `posts_pictures/${doc.data().photo}`)
           );
 
+          setLikeByArray(prevLikedByArray => [...prevLikedByArray, { postid: doc.id, likedBy: doc.data().likedby }]);
+
           if (user.pphoto) {
             const userPhotoUrl = await getDownloadURL(
               ref(storage, `profile_pictures/${user.pphoto}`)
@@ -130,9 +123,7 @@ const Home = () => {
   }, [getUserByEmail]);
 
 
-  const handleLike = async (postid, postPhoto, userId, likedBy) => {   
-    // const likedby = post.likedby
-    // setLiked((prevLiked) => !prevLiked);
+  const handleLike = async (postid, postPhoto, userId, index) => {
     const docRef = doc(db, "posts", postid);
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
@@ -151,7 +142,10 @@ const Home = () => {
     }
 
     try {
-      if (likedBy.includes(userViewing.email)) {
+      if (likedByArray[index].likedBy.includes(userViewing.email)) {
+        likedByArray[index].likedBy.pop(currentUser.email)
+        document.getElementById(postid).classList.remove('active');
+        document.getElementById(postid).setAttribute("fill", "none");
         await updateDoc(docRef, {
           likedby: arrayRemove(userViewing.email)
         });
@@ -166,6 +160,9 @@ const Home = () => {
         });
         
       } else {
+        likedByArray[index].likedBy.push(currentUser.email)
+        document.getElementById(postid).classList.add('active');
+        document.getElementById(postid).setAttribute("fill", "red");
         await updateDoc(docRef, {
           likedby: arrayUnion(userViewing.email)
         });
@@ -176,15 +173,7 @@ const Home = () => {
           notif: arrayUnion(notifObject(false))
         });
       }
-      console.log(likedBy);
-      //likeby uvijek ostaje isto od pocetka montiranja home pagea
-      if(likedBy.includes(userViewing.email)){
-        document.getElementById(postid).classList.remove('active');
-        document.getElementById(postid).setAttribute("fill", "none");
-      }else{
-        document.getElementById(postid).classList.add('active');
-        document.getElementById(postid).setAttribute("fill", "red");
-      }
+      
     } catch (err) {
       console.error("Error in handleLike: ", err);
     }
@@ -209,7 +198,7 @@ const Home = () => {
 
             <div className="interactions">
               <div>
-                <div onClick={() => handleLike(post.id, post.photo, post.userId, post.likedBy)}>
+                <div onClick={() => handleLike(post.id, post.photo, post.userId, posts.indexOf(post))}>
                   <svg id={post.id} xmlns="http://www.w3.org/2000/svg" class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${post.likedBy.includes(userViewing.email) ? "active" : ""}`} width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill={post.likedBy.includes(userViewing.email) ? "red" : "none"} stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
