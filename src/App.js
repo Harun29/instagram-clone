@@ -10,12 +10,10 @@ import SignIn from './components/auth/SignIn';
 import User from './components/projects/User';
 import UserFollowList from './components/projects/UserFollowList';
 import Post from './components/projects/Post';
+import 'animate.css';
 
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
 
 function App() {
   return (
@@ -48,7 +46,7 @@ function App() {
                 element={<UserFollowList fetchType="followers" />}
               />
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
-              <Route path='/update-profile' element={<PrivateRoute component={UpdateProfile} />}/>
+              <Route path='/settings' element={<PrivateRoute component={UpdateProfile} />}/>
             </Routes>
           </Router>
       </div>
