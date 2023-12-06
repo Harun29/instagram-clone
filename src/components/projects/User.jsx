@@ -190,11 +190,12 @@ useEffect(() => {
   }, [user])
 
   return (  
-    <div className="container mt-4">
+    <div className="main-profile-container">
       {user ? (
-        <div className="profile-container d-flex justify-content-center align-items-center shadow p-3 mb-5 bg-white rounded">
-          <div className="d-flex flex-column align-items-center">
-            <div className="mb-3">
+        <div className="profile-container">
+
+          <div className="profile-data">
+            <div className="profile-picture">
               <img
                 src={currentProfilePhoto || "/blank-profile.jpg"}
                 alt=""
@@ -202,45 +203,52 @@ useEffect(() => {
                 style={{ width: '150px', height: '150px', objectFit: 'cover' }}
               />
             </div>
-            <h5 className="mb-3">{user.name}</h5>
-            <p>{user.bio}</p>
-            <div className="d-flex justify-content-center align-items-center">
-              <div className="me-4">
-                <strong>{user.posts.length}</strong>  
-                posts
+
+            <div className="main-data">
+              <div className="username-edit">
+                <h5>{user.userName}</h5>
+                {!followingStatus ? 
+                <button onClick={handleFollow} variant="primary" className="follow-button">
+                  Follow
+                </button> :
+                <button onClick={handleUnfollow} variant="secondary" className="unfollow-button">
+                  Unfollow
+                </button> }
               </div>
-              <div className="me-4">
-                <Link to='followers'>
-                  <strong>{userFollowers.length}</strong> 
-                  followers
-                </Link>
-              </div>
+
               <div>
-                <Link to='following'>
-                  <strong>{user.following.length}</strong> 
-                  following
-                </Link>
+                <div className="post-followers">
+                  <div>
+                    <strong>{user.posts.length}</strong>
+                    <label>posts</label>
+                  </div>
+                  <Link to={`${user.userName}/followers`}>
+                    <strong>{user.followers.length}</strong>
+                    followers
+                  </Link>
+                  <Link to={`${user.userName}/following`}>
+                    <strong>{user.following.length}</strong>
+                    following
+                  </Link>
+                </div>
+                <label className="profile-username">{user.name}</label>
+                <p className="profile-bio">{user.bio}</p>
               </div>
             </div>
-            {!followingStatus ? 
-            <Button onClick={handleFollow} variant="primary" className="mt-3">
-              Follow
-            </Button> :
-            <Button onClick={handleUnfollow} variant="secondary" className="mt-3">
-              Unfollow
-            </Button> }
+
           </div>
+          { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
         </div>
-      ) : (
-        <div className="d-flex justify-content-center align-items-center">
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-      )}
-      {user ? (<PostsList postsList={user.posts}/>) : <>Loading...</>}
+  ) : (
+    <div className="d-flex justify-content-center align-items-center">
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
     </div>
+  )
+}
+    </div >
   );
 }
- 
+
 export default User;

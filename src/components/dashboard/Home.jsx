@@ -63,6 +63,56 @@ const Home = () => {
 
   }, [getUserByEmail]);
 
+  const handleLike = async (postid) => {
+    // const likedby = post.likedby
+  setLiked((prevLiked) => !prevLiked);
+  const docRef = doc(db, "posts", postid);
+  const docUserRef = doc(db, "users", userViewingId);
+  const docNotifRef = doc(db, "users", userId);
+
+  const notifObject = (notifStatus) => {
+    const object = {
+      postLiked: param.postid,
+      postLikedPhoto: postPicture,
+      likedBy: userViewing.userName,
+      likedByPhoto: userViewingPhoto,
+      opened: notifStatus,
+      notifRef: docNotifRef,
+      notifType: "like"
+    }
+    return object
+  }
+
+  try {
+    if (!liked) {
+      await updateDoc(docRef, {
+        likedby: arrayUnion(userViewing.email)
+      });
+      await updateDoc(docUserRef, {
+        likedPosts: arrayUnion(param.postid)
+      });
+      await updateDoc(docNotifRef, {
+        notif: arrayUnion(notifObject(false))
+      });
+    } else {
+      await updateDoc(docRef, {
+        likedby: arrayRemove(userViewing.email)
+      });
+      await updateDoc(docUserRef, {
+        likedPosts: arrayRemove(param.postid)
+      });
+      await updateDoc(docNotifRef, {
+        notif: arrayRemove(notifObject(false))
+      });
+      await updateDoc(docNotifRef, {
+        notif: arrayRemove(notifObject(true))
+      });
+    }
+  } catch (err) {
+    console.error("Error in handleLike: ", err);
+  }
+};
+
   return (
     <div className="home-container">
       <div className="row">
@@ -82,7 +132,9 @@ const Home = () => {
 
             <div className="interactions">
               <div>
-                <HeartIcon></HeartIcon>
+                <div onClick={() => console.log(post.id)}>
+                  <HeartIcon></HeartIcon>
+                </div>
                 <MessageCircleIcon></MessageCircleIcon>
                 <ArrowForwardIcon></ArrowForwardIcon>
               </div>

@@ -440,6 +440,10 @@ a {
   margin-bottom: 15px;
 }
 
+.interactions div{
+  display: flex;
+}
+
 .interactions div svg {
   margin-right: 15px;
 }
@@ -518,7 +522,7 @@ a {
 
 .main-data div:nth-child(1) h5{
   font-size: 18px;
-  margin-right: 15px;
+  margin-right: 20px;
 }
 
 .profile-username{
@@ -531,17 +535,28 @@ a {
   font-size: 14px;
 }
 
-.edit-button{
+.edit-button, .unfollow-button, .follow-button{
   padding: 0px 16px;
   background-color: rgb(240, 240, 240);
   border-radius: 10px;
   min-width: 69px;
   height: 32px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.follow-button{
+  background-color: #0095f6;
+  color: white;
+}
+
+.follow-button:hover{
+  background-color: #0064e0;
 }
 
 .post-followers{
