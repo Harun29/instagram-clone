@@ -8,7 +8,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
   return currentUser ? (
     <Component {...rest}/>
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/signup" />
   );
 
 };

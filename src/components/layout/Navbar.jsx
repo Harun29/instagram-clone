@@ -34,7 +34,6 @@ const Navigation = () => {
   const [userPhoto, setUserPhoto] = useState('blank-profile.jpg');
 
   useEffect(() => {
-
     const fetchUser = async (email) => {
       const user = await getUserByEmail(email);
       // setUser(user);
@@ -197,10 +196,9 @@ const Navigation = () => {
               <SaveIcon></SaveIcon>
               <button>Saved</button>
             </div>
-            <div className="more-dropdown-element menu-bar">
+            <Link to="/signup" className="more-dropdown-element menu-bar">
               <button onClick={handleLogout}>Logout</button>
-            </div>
-
+            </Link>
           </div>
           :
           null

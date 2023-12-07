@@ -20,6 +20,8 @@ import Spinner from "react-bootstrap/Spinner";
 import PostsList from "./PostsList";
 import { useNavigate } from "react-router-dom";
 import {  } from "firebase/firestore";
+import BorderAll from "../../icons/BorderAll";
+import HeartIcon from "../../icons/HeartIcon";
 
 const User = () => {
 
@@ -235,6 +237,16 @@ useEffect(() => {
               </div>
             </div>
 
+          </div>
+          <div className="posts-border">
+            <div>
+              <BorderAll></BorderAll>
+              <p>POSTS</p>
+            </div>
+            <div>
+              <HeartIcon size={"18"}></HeartIcon>
+              <p>LIKED</p>
+            </div>
           </div>
           { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
         </div>

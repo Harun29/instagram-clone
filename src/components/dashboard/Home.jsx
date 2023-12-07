@@ -13,10 +13,12 @@ import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import SaveIcon from "../../icons/SaveIcon";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
 
+  const navigate = useNavigate();
   const [posts, setPosts] = useState();
   const { getUserByEmail } = useAuth();
   const { currentUser } = useAuth();
@@ -24,6 +26,12 @@ const Home = () => {
   const [userViewingPhoto, setUserViewingPhoto] = useState('');
   const [userViewingId, setUserViewingId] = useState();
   const [likedByArray, setLikeByArray] = useState([]);
+
+  useEffect(()=>{
+    if(!currentUser){
+      navigate("/signup")
+    }
+  }, [currentUser, navigate])
 
   /* STUFF FROM POST */
 
@@ -187,7 +195,7 @@ const Home = () => {
           <div className="post">
 
             <div className="post-header">
-              <Link className="link-to-user" to={`/profile/${post.user}`}>
+              <Link className="link-to-user" to={`/user/${post.user}`}>
                 <img className="profile-photo" src={post.userPhoto} alt="profile" />
                 <label>{post.user}</label>
               </Link>

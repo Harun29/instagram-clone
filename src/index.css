@@ -503,6 +503,7 @@ a {
 .profile-data{
   width: 100%;
   display: flex;
+  margin-bottom: 100px;
 }
 
 .profile-picture{
@@ -543,6 +544,24 @@ a {
 .profile-bio{
   margin-top: 20px;
   font-size: 14px;
+}
+
+.posts-border{
+  border-top: 1px solid rgb(224, 222, 222);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.posts-border div{
+  border-top: 1px solid rgba(97, 97, 97, 0.4);
+  font-size: 12px;
+  margin: 0 20px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .edit-button, .unfollow-button, .follow-button{
@@ -586,6 +605,8 @@ a {
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
 
 /*------------------------*/
 .profile-setting-form {
