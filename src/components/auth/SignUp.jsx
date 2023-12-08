@@ -23,8 +23,8 @@ const SignUp = () => {
   const [userNamesArray, setUserNamesArray] = useState([])
   const navigate = useNavigate()
 
-  const {signup} = useAuth()
-  
+  const { signup } = useAuth()
+
   const [user, setUser] = useState({})
 
   const addData = async (data) => {
@@ -37,16 +37,16 @@ const SignUp = () => {
   }
 
   useEffect(() => {
-    const fetchUserNames = async() => {
+    const fetchUserNames = async () => {
       const users = await getDocs(collection(db, "users"))
       setUserNamesArray([])
       users.forEach(doc => {
         setUserNamesArray(userNames => [...userNames, doc.data().userName])
       })
     }
-    try{
+    try {
       fetchUserNames();
-    }catch(err){
+    } catch (err) {
       console.error(err)
     }
   }, [])
@@ -68,11 +68,11 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (password !== confirmPassword){
+
+    if (password !== confirmPassword) {
       return setError('Passwords do not match')
     }
-    try{
+    try {
       setError('');
       setLoading(true);
       await signup(email, password);
@@ -103,35 +103,48 @@ const SignUp = () => {
 
   return (
     <form
-    className="form-container w-25 ms-auto me-auto mb-auto mt-5 col-10 col-md-8 col-lg-6" 
-    onSubmit={handleSubmit}>
-      
-      <div className="form-outline mb-4">
+      className="form-container"
+      onSubmit={handleSubmit}>
+
+      <h1 className="brand-logo-on-signup" style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
+      <p>Signup to see photos from your friends.</p>
+
+      <div className="form-outline">
         <input
-        className="form-control"
-        type="text" 
-        required
-        value={name}
-        placeholder="Name"
-        onChange={(e) => setName(e.target.value)}
+          className="form-control"
+          type="email"
+          required
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)} />
+      </div>
+
+      <div className="form-outline">
+        <input
+          className="form-control"
+          type="text"
+          required
+          value={name}
+          placeholder="Full Name"
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
 
-      <div className="form-outline mb-4">
+      <div className="form-outline">
         <input
-        className={`form-control ${userNamesArray.includes(userName) ? 'invalid-input' : ''}`}
-        type="text" 
-        required
-        value={userName}
-        placeholder="User name"
-        onChange={handleUserNameChange}
+          className={`form-control ${userNamesArray.includes(userName) ? 'invalid-input' : ''}`}
+          type="text"
+          required
+          value={userName}
+          placeholder="Username"
+          onChange={handleUserNameChange}
         />
         {userNamesArray.includes(userName) && (
           <div className="error-message">This username is already taken</div>
         )}
       </div>
 
-      <div className="form-outline mb-4">
+      {/* <div className="form-outline mb-4">
         <input
         className="form-control"
         type="date" 
@@ -140,36 +153,26 @@ const SignUp = () => {
         placeholder="Date of birth"
         onChange={(e) => setAge(e.target.value)}
         />
+      </div> */}
+
+      <div className="form-outline">
+        <input
+          className="form-control"
+          type="password"
+          required
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)} />
       </div>
 
-      <div className="form-outline mb-4">
+      <div className="form-outline">
         <input
-        className="form-control"
-        type="email" 
-        required
-        value={email}
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}/>
-      </div>
-
-      <div className="form-outline mb-4">
-        <input
-        className="form-control"
-        type="password" 
-        required
-        value={password}
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}/>
-      </div>
-
-      <div className="form-outline mb-4">
-        <input
-        className="form-control"
-        type="password" 
-        required
-        value={confirmPassword}
-        placeholder="Confirm password"
-        onChange={(e) => setConfirmPassword(e.target.value)}/>
+          className="form-control"
+          type="password"
+          required
+          value={confirmPassword}
+          placeholder="Confirm Password"
+          onChange={(e) => setConfirmPassword(e.target.value)} />
       </div>
 
       {/* <div className="google-signin-wrapper">
@@ -179,8 +182,9 @@ const SignUp = () => {
         <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
         </button>
       </div> */}
-
-      <input className="btn btn-primary btn-block mb-4" disabled={loading || userNamesArray.includes(userName)} type="submit" name="" id="" value="Signup"/>
+      <div className="form-outline">
+        <input className="form-control signup-button" disabled={loading || userNamesArray.includes(userName)} type="submit" name="" id="" value="Signup" />
+      </div>
 
       <div className="text-center">
         <p>Already have an account? <Link to="/login">Login</Link></p>

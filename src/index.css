@@ -655,3 +655,37 @@ a {
   align-items: center;
 }
 
+/* SIGNUP */
+
+.App{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container{
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(97, 97, 97);
+  padding: 50px 20px;
+}
+
+.form-outline{
+  width: 100%;
+  text-align: center;
+}
+
+.form-control{
+  padding: 15px;
+  width: calc(100% - 60px);
+  margin: 15px;
+}
+
+.signup-button{
+  background: #0095f6;
+  color: white;
+  border: none;
+}
