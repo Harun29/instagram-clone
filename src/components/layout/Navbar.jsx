@@ -55,7 +55,7 @@ const Navigation = () => {
     setError('')
     try {
       await logout()
-      navigate('/')
+      navigate('/signup')
     } catch (err) {
       setError('Failed to logout')
       console.log(err)
@@ -196,8 +196,8 @@ const Navigation = () => {
               <SaveIcon></SaveIcon>
               <button>Saved</button>
             </div>
-            <Link to="/signup" className="more-dropdown-element menu-bar">
-              <button onClick={handleLogout}>Logout</button>
+            <Link onClick={handleLogout} className="more-dropdown-element menu-bar">
+              <button>Logout</button>
             </Link>
           </div>
           :

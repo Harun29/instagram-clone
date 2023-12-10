@@ -102,7 +102,7 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="signup-container">
     <form
       className="form-container"
       onSubmit={handleSubmit}>

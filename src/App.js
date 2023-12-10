@@ -17,17 +17,19 @@ import PrivateRoute from './components/PrivateRoute';
 
 function App() {
 
+
+  
   return (
     <AuthProvider>
       <div className="App">
           <Router>
-          <PrivateRoute component={Navigation}/>
+            <PrivateRoute component={Navigation}/>
             <Routes>
+              <Route path='/signup' element={<SignUp />}/>
+              <Route path='/login' element={<SignIn />}/>
               <Route path='/' element={<PrivateRoute component={Home}/>} />
               <Route path='/createpost' element={<PrivateRoute component={CreatePost}/>}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
-              <Route path='/signup' element={<SignUp />}/>
-              <Route path='/login' element={<SignIn />}/>
               <Route path='/user/:username' element={<PrivateRoute component={User}/>}/>
               <Route path='/post/:postid' element={<Post />}/>
               <Route
