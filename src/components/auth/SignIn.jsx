@@ -43,9 +43,12 @@ const SignIn = () => {
   };
 
   return (
+    <div>
     <form 
-    className="form-container w-25 ms-auto me-auto mb-auto mt-5 col-10 col-md-8 col-lg-6"
+    className="form-container"
     onSubmit={handleSubmit}>
+      <h1 className="brand-logo-on-signup" style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
+      <p>Sign in to see photos from your friends.</p>
     
       <div className="form-outline mb-4">
         <input 
@@ -75,18 +78,19 @@ const SignIn = () => {
         </button>
       </div> */}
 
+      <input className="form-control signup-button" disabled={loading} type="submit" name="" id="" value="Login"/>
+      
       <div className="mb-4">
         <Link to="/forgot-password">Forgot password?</Link>
       </div>
 
-      <input className="btn btn-primary btn-block mb-4" disabled={loading} type="submit" name="" id="" value="Login"/>
-
-      <div className="text-center">
-        <p>Not a member? <Link to="/signup">Register</Link></p>
-      </div>
 
       {error && <p>{error}</p>}
     </form>
+      <div className="form-container alt-login">
+        <p>Not a member? <Link to="/signup">Register</Link></p>
+      </div>
+    </div>
   );
 }
 
