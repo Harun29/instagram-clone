@@ -23,10 +23,10 @@ function App() {
     <AuthProvider>
       <div className="App">
           <Router>
-            <PrivateRoute component={Navigation}/>
             <Routes>
               <Route path='/signup' element={<SignUp />}/>
               <Route path='/login' element={<SignIn />}/>
+              <Route element={<PrivateRoute component={Navigation}/>}/>
               <Route path='/' element={<PrivateRoute component={Home}/>} />
               <Route path='/createpost' element={<PrivateRoute component={CreatePost}/>}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
