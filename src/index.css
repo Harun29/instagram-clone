@@ -657,6 +657,11 @@ a {
 
 /* SIGNUP */
 
+.brand-logo-on-signup{
+  font-size: 45px;
+  margin: 0px 25px 25px;
+}
+
 .App{
   height: 100vh;
   display: flex;
@@ -669,8 +674,13 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid rgb(97, 97, 97);
-  padding: 50px 20px;
+  border: 1px solid rgb(228, 228, 228);
+  padding: 20px 20px 50px;
+}
+
+.form-container p{
+  font: 16px;
+  margin: 10px;
 }
 
 .form-outline{
@@ -682,10 +692,26 @@ a {
   padding: 15px;
   width: calc(100% - 60px);
   margin: 15px;
+  border: 1px solid rgb(228, 228, 228);
+  background-color: rgb(252, 252, 252);
+}
+
+.alt-login{
+  padding: 20px 0;
+  margin-top: 10px;
+}
+
+.alt-login p{
+  font-weight: 700;
+}
+
+.alt-login p a{
+  font-weight: 500;
 }
 
 .signup-button{
   background: #0095f6;
   color: white;
   border: none;
+  width: calc(100% - 30px);
 }

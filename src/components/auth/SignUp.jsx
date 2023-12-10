@@ -102,6 +102,7 @@ const SignUp = () => {
   };
 
   return (
+    <div>
     <form
       className="form-container"
       onSubmit={handleSubmit}>
@@ -186,12 +187,13 @@ const SignUp = () => {
         <input className="form-control signup-button" disabled={loading || userNamesArray.includes(userName)} type="submit" name="" id="" value="Signup" />
       </div>
 
-      <div className="text-center">
-        <p>Already have an account? <Link to="/login">Login</Link></p>
-      </div>
 
       {error && <p>{error}</p>}
     </form>
+    <div className="form-container alt-login">
+      <p>Have an account? <Link to="/login">Login</Link></p>
+    </div>
+    </div>
   );
 }
 
