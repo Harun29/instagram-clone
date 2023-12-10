@@ -183,12 +183,11 @@ const SignUp = () => {
         <FontAwesomeIcon icon={faGoogle} size='2x'></FontAwesomeIcon>
         </button>
       </div> */}
-      <div className="form-outline">
-        <input className="form-control signup-button" disabled={loading || userNamesArray.includes(userName)} type="submit" name="" id="" value="Signup" />
-      </div>
+      
+      <input className="form-control signup-button" disabled={loading || userNamesArray.includes(userName)} type="submit" name="" id="" value="Sign up" />
+      
+      {error && <p className="login-error">{error}</p>}
 
-
-      {error && <p>{error}</p>}
     </form>
     <div className="form-container alt-login">
       <p>Have an account? <Link to="/login">Login</Link></p>

@@ -36,7 +36,7 @@ const SignIn = () => {
       navigate('/');
     } catch (err) {
       setLoading(false);
-      setError('Failed to login')
+      setError('Incorrect email or password!')
       console.log(err);
     }
 
@@ -50,7 +50,7 @@ const SignIn = () => {
       <h1 className="brand-logo-on-signup" style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
       <p>Sign in to see photos from your friends.</p>
     
-      <div className="form-outline mb-4">
+      <div className="form-outline">
         <input 
         className="form-control"
         type="email"
@@ -60,7 +60,7 @@ const SignIn = () => {
         onChange={(e) => setEmail(e.target.value)}/>
       </div>
 
-      <div className="form-outline mb-4">
+      <div className="form-outline">
         <input 
         className="form-control"
         type="password" 
@@ -79,13 +79,13 @@ const SignIn = () => {
       </div> */}
 
       <input className="form-control signup-button" disabled={loading} type="submit" name="" id="" value="Login"/>
+      {error && <p className="login-error">{error}</p>}
       
-      <div className="mb-4">
+      <div>
         <Link to="/forgot-password">Forgot password?</Link>
       </div>
 
 
-      {error && <p>{error}</p>}
     </form>
     <div className="form-container alt-login">
       <p>Not a member? <Link to="/signup">Register</Link></p>

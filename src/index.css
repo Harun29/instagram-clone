@@ -665,7 +665,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column;  
 }
 
 .form-container{
@@ -675,6 +675,7 @@ a {
   align-items: center;
   border: 1px solid rgb(228, 228, 228);
   padding: 20px 20px 50px;
+  width: 350px;
 }
 
 .form-container p{
@@ -698,7 +699,7 @@ a {
 .alt-login{
   padding: 20px 0;
   margin-top: 10px;
-  width: 100%;
+  width: 392px;
 }
 
 .alt-login p{
@@ -714,4 +715,15 @@ a {
   color: white;
   border: none;
   width: calc(100% - 30px);
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signup-button:hover{
+  background: #0064e0;
+}
+
+.login-error{
+  color: red;
 }
