@@ -43,7 +43,7 @@ const SignIn = () => {
   };
 
   return (
-    <div>
+    <div className="signup-container">
     <form 
     className="form-container"
     onSubmit={handleSubmit}>
@@ -87,9 +87,9 @@ const SignIn = () => {
 
       {error && <p>{error}</p>}
     </form>
-      <div className="form-container alt-login">
-        <p>Not a member? <Link to="/signup">Register</Link></p>
-      </div>
+    <div className="form-container alt-login">
+      <p>Not a member? <Link to="/signup">Register</Link></p>
+    </div>
     </div>
   );
 }

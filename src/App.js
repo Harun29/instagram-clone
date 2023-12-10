@@ -11,22 +11,30 @@ import User from './components/projects/User';
 import UserFollowList from './components/projects/UserFollowList';
 import Post from './components/projects/Post';
 import 'animate.css';
-
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
+import { auth } from './config/firebase';
+import { useState, useEffect } from 'react';
 
 function App() {
 
+  const [currentUser, setCurrentUser] = useState()
 
-  
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    })
+    return unsubscribe
+  }, [])
+
   return (
     <AuthProvider>
       <div className="App">
           <Router>
+            {currentUser && <Navigation />}
             <Routes>
               <Route path='/signup' element={<SignUp />}/>
               <Route path='/login' element={<SignIn />}/>
-              <Route element={<PrivateRoute component={Navigation}/>}/>
               <Route path='/' element={<PrivateRoute component={Home}/>} />
               <Route path='/createpost' element={<PrivateRoute component={CreatePost}/>}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
