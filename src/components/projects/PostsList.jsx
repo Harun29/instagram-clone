@@ -4,7 +4,6 @@ import { db } from "../../config/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
 
 const PostsList = ({ postsList }) => {
   const [postsPhotos, setPostsPhotos] = useState([]);
@@ -50,19 +49,18 @@ const PostsList = ({ postsList }) => {
       {!postsPhotos.length ? (
         <></>
       ) : (
-        <Row className="mt-5">
+        <div className="posts-list">
           {postsPhotos.map((post, index) => (
-            <Col key={index} xs={12} sm={6} md={4} lg={4} xl={4}>
+            <div key={index} className="post-on-profile">
               <Link to={`/post/${post.link}`}>
                 <img
                   src={post.picture}
                   alt={`Post ${index + 1}`}
-                  style={{ width: "300px", height: "auto" }}
                 />
               </Link>
-            </Col>
+            </div>
           ))}
-        </Row>
+        </div>
       )}
     </>
   );

@@ -456,6 +456,10 @@ a {
   margin-right: 15px;
 }
 
+.post-description{
+  white-space: wrap;
+}
+
 .post-description h4 {
   font-weight: 700;
   margin-bottom: 10px;
@@ -467,9 +471,26 @@ a {
   color: rgb(224, 222, 222);
 }
 
-.post-description p {
+.description-paragraph {
   font-size: 0.9rem;
+  overflow: hidden;
+  max-height: 40px;
+  max-width: 100%;
+  line-height: 20px;
 }
+
+.description-paragraph.more{
+  max-height: none;
+}
+
+.more-button{
+  border: none;
+  background-color: inherit;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 
 .post-description p.loading{
   background-color: rgb(224, 222, 222);
@@ -548,7 +569,7 @@ a {
   border-top: 1px solid rgb(224, 222, 222);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
 }
 
@@ -561,6 +582,25 @@ a {
   justify-content: center;
   align-items: center;
 }
+
+.posts-border div p{
+  margin-left: 5px;
+}
+
+/* POSTS ON PROFILE */
+
+.posts-list{
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  grid-template-rows: 300px 300px 300px;
+}
+
+.post-on-profile{
+  width: 10%;
+  height: 10%;
+}
+
+/* -------------------- */
 
 .edit-button, .unfollow-button, .follow-button{
   padding: 0px 16px;
@@ -631,7 +671,8 @@ a {
   font-size: 14px;
   margin-top: 5px;
   position: absolute;
-  bottom: -23px;
+  bottom: 0;
+  left: 15px;
 }
 
 .notification-container {

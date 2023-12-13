@@ -187,6 +187,19 @@ const Home = () => {
     }
   };
 
+  const handleMore = (postid) => {
+    const id = postid + "description";
+    const buttonId = postid + "button";
+    if (document.getElementById(id).classList.contains("more")){
+      document.getElementById(id).classList.remove('more');
+      document.getElementById(buttonId).innerHTML = "...more";
+    }else{
+      document.getElementById(id).classList.add('more');
+      document.getElementById(buttonId).innerHTML = "less";  
+    }
+  }
+
+
   return (
     <div className="home-container">
       <div className="row">
@@ -220,7 +233,9 @@ const Home = () => {
 
             <div className="post-description">
               <h4>{post.title}</h4>
-              <p>{post.description}</p>
+              <p id={post.id + "description"} className="description-paragraph">{post.description}
+              </p>
+              <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">...more</button>
             </div>
 
           </div>

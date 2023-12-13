@@ -251,7 +251,7 @@ useEffect(() => {
           { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
         </div>
   ) : (
-    <div className="d-flex justify-content-center align-items-center">
+    <div>
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
