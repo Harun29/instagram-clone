@@ -169,7 +169,7 @@ a {
 
 .notif-button{
   width: 14vw;
-  transition: all 0.5s ease;
+  transition: width 0.5s ease;
 }
 
 .notif-button.active{
@@ -522,7 +522,13 @@ a {
   background-color: inherit;
   padding: 0;
   cursor: pointer;
-  font-weight: 700;
+  color: rgb(150, 150, 150);
+  margin-bottom: 10px;
+}
+
+.view-all-comments{
+  font-size: 0.8rem;
+  color: rgb(150, 150, 150);
 }
 
 

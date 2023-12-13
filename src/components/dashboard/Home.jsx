@@ -126,6 +126,7 @@ const Home = () => {
               likedBy: doc.data().likedby ? doc.data().likedby : [],
               likedByPhoto: await getLikedByPhoto(),
               likedByUsername: await getLikedByUsername(),
+              comments: doc.data().comments,
               photo: photoUrl,
               user: nick,
               userId: userId,
@@ -139,6 +140,7 @@ const Home = () => {
               likedBy: doc.data().likedby ? doc.data().likedby : [],
               likedByPhoto: await getLikedByPhoto(),
               likedByUsername: await getLikedByUsername(),
+              comments: doc.data().comments,
               photo: photoUrl,
               user: nick,
               userId: userId,
@@ -174,7 +176,7 @@ const Home = () => {
 
     try {
       await updateDoc(docRef, {
-        comment: arrayUnion({
+        comments: arrayUnion({
           user: userViewing.email,
           comment: comment
         }
@@ -184,7 +186,7 @@ const Home = () => {
         notif: arrayUnion(notifObject(false))
       });
     } catch (err) {
-      console.error("Error in handleLike: ", err);
+      console.error("Error in handleComment: ", err);
     }
   };
 
@@ -249,7 +251,7 @@ const Home = () => {
     const buttonId = postid + "button";
     if (document.getElementById(id).classList.contains("more")){
       document.getElementById(id).classList.remove('more');
-      document.getElementById(buttonId).innerHTML = "...more";
+      document.getElementById(buttonId).innerHTML = "more";
     }else{
       document.getElementById(id).classList.add('more');
       document.getElementById(buttonId).innerHTML = "less";  
@@ -303,17 +305,19 @@ const Home = () => {
               <h4>{post.title}</h4>
               <p id={post.id + "description"} className="description-paragraph">{post.description}
               </p>
-              <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">...more</button>
+              <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">more</button>
             </div>
+            
+            {post.comments ? <div className="view-all-comments">
+              <p>View all {post.comments.length} comments</p>
+            </div>:null}
 
             <div className="add-comment-container">
               <input className="add-comment" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
-              <button onClick={() => handleComment(post.id, post.photo, post.user, document.getElementById(post.id + "comment").value)}>post</button>
+              <button onClick={() => handleComment(post.id, post.photo, post.userId, document.getElementById(post.id + "comment").value)}>post</button>
             </div>
 
           </div>
-
-
 
         )) :
           <div className="post loading">
