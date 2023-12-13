@@ -8,6 +8,8 @@ import {
 } from "firebase/storage";
 import { Link } from "react-router-dom";
 import PostsList from "./PostsList";
+import BorderAll from "../../icons/BorderAll";
+import HeartIcon from "../../icons/HeartIcon";
 
 const Profile = () => {
 
@@ -41,7 +43,7 @@ const Profile = () => {
     }
   }, [user])
 
-  return (
+  return (  
     <div className="main-profile-container">
       {user ? (
         <div className="profile-container">
@@ -85,10 +87,20 @@ const Profile = () => {
             </div>
 
           </div>
+          <div className="posts-border">
+            <div>
+              <BorderAll></BorderAll>
+              <p>POSTS</p>
+            </div>
+            <div>
+              <HeartIcon size={"18"}></HeartIcon>
+              <p>LIKED</p>
+            </div>
+          </div>
           { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
         </div>
   ) : (
-    <div className="d-flex justify-content-center align-items-center">
+    <div>
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
@@ -101,3 +113,5 @@ const Profile = () => {
 }
 
 export default Profile;
+
+
