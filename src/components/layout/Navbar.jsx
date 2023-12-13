@@ -47,7 +47,7 @@ const Navigation = () => {
         setUserPhoto(userPhotoUrl);
       }
     }
-    
+
     try {
       currentUser && fetchUser(currentUser.email);
     } catch (err) {
@@ -139,7 +139,7 @@ const Navigation = () => {
         <div className="container">
           <Link onClick={dropdown ? handleDropdown : null} to='/' className={`brand-logo logo-on-top ${!dropdown ? "active" : ''}`}>
             <h1 className={`logo-name ${dropdown ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
-            <FontAwesomeIcon  icon={faInstagram}></FontAwesomeIcon>
+            <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Link>
           <Link onClick={dropdown ? handleDropdown : null} to='/'>
             {
@@ -221,23 +221,38 @@ const Navigation = () => {
                   <Link className="notif-by" to={`/user/${notif.likedBy}`}>
                     <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
                     <strong>{notif.likedBy}</strong>
+                    <label>Liked your post</label>
                   </Link>{' '}
                   <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
-                    <label>Liked your post</label>
                     <img src={notif.postLikedPhoto} alt="" />
                   </Link>
                 </div>
-                :
+                : null}
+              {notif.notifType === "follow" ?
                 <div className="notification-container">
                   <Link onClick={() => handleOpened(notif)} className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
                     <div>
                       <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
                       <strong>{notif.followedBy}</strong>
+                      <label>Started Following You!</label>
                     </div>
-                    <label>Started Following You!</label>
                   </Link>
                 </div>
-              }
+                : null}
+              {notif.notifType === "comment" ?
+                <div className="notification-container">
+                  <Link className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
+                    <div>
+                      <img src={notif.commentedByPhoto ? notif.commentedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                      <strong>{notif.commentedBy}</strong>
+                      <label>Commented your photo</label>
+                    </div>
+                  </Link>
+                  <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postCommented}`}>
+                    <img src={notif.postCommentedPhoto} alt="" />
+                  </Link>
+                </div>
+                : null}
 
             </li>
           ))
