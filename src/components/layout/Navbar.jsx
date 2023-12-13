@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../config/firebase";
 import HomeIcon from "../../icons/HomeIcon";
 import SearchIcon from "../../icons/SearchIcon";
 import HeartIcon from "../../icons/HeartIcon";
@@ -17,8 +19,6 @@ import ListIconBold from "../../icons/ListIconBold";
 import HomeIconFull from "../../icons/HomeIconFull";
 import SettingsIcon from "../../icons/SettingsIcon";
 import SaveIcon from "../../icons/SaveIcon";
-import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "../../config/firebase";
 
 const Navigation = () => {
 
