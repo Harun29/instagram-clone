@@ -91,18 +91,41 @@ const Home = () => {
           const photoUrl = await getDownloadURL(
             ref(storage, `posts_pictures/${doc.data().photo}`)
           );
+          
+          const getLikedByUsername = async () => {
+            if(doc.data().likedby[0]){
+              const likedBy = await getUserByEmail(doc.data().likedby[0])
+              return likedBy.userName;
+            }else{
+              return null
+            }
+          }
+          
+          const getLikedByPhoto = async () => {
+            if(doc.data().likedby[0]){
+              const likedBy = await getUserByEmail(doc.data().likedby[0])
+              if(likedBy.pphoto){
+                const likedByPhoto = await getDownloadURL(ref(storage, `profile_pictures/${likedBy.pphoto}`));
+                return likedByPhoto
+              }else{
+                const likedByPhotoBlank = "/blank-profile.jpg"
+                return likedByPhotoBlank
+              }
+          }}
 
           setLikeByArray(prevLikedByArray => [...prevLikedByArray, { postid: doc.id, likedBy: doc.data().likedby }]);
-
+          
           if (user.pphoto) {
             const userPhotoUrl = await getDownloadURL(
               ref(storage, `profile_pictures/${user.pphoto}`)
-            );
+              );
             return {
               id: doc.id,
               title: doc.data().title,
               description: doc.data().description,
               likedBy: doc.data().likedby ? doc.data().likedby : [],
+              likedByPhoto: await getLikedByPhoto(),
+              likedByUsername: await getLikedByUsername(),
               photo: photoUrl,
               user: nick,
               userId: userId,
@@ -114,6 +137,8 @@ const Home = () => {
               title: doc.data().title,
               description: doc.data().description,
               likedBy: doc.data().likedby ? doc.data().likedby : [],
+              likedByPhoto: await getLikedByPhoto(),
+              likedByUsername: await getLikedByUsername(),
               photo: photoUrl,
               user: nick,
               userId: userId,
@@ -162,10 +187,6 @@ const Home = () => {
       console.error("Error in handleLike: ", err);
     }
   };
-
-
-
-
 
   const handleLike = async (postid, postPhoto, userId, index) => {
     const docRef = doc(db, "posts", postid);
@@ -251,7 +272,7 @@ const Home = () => {
               <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
             </div>
 
-            <img className="post-photo" src={post.photo} alt="couldnt load image" />
+            <img className="post-photo" src={post.photo} alt="post" />
 
             <div className="interactions">
               <div>
@@ -267,6 +288,17 @@ const Home = () => {
               <SaveIcon></SaveIcon>
             </div>
 
+            {post.likedBy.length !== 0 &&
+              <div className="liked-by">
+              <Link to={`/user/${post.likedByUsername}`}>
+                <img src={post.likedByPhoto} alt="user" />
+              </Link>
+              <p>Liked by</p>
+              <Link to={`/user/${post.likedByUsername}`}>{post.likedByUsername}</Link>
+              <p>and</p>
+              <Link to="">others</Link>
+            </div>}
+
             <div className="post-description">
               <h4>{post.title}</h4>
               <p id={post.id + "description"} className="description-paragraph">{post.description}
@@ -274,8 +306,8 @@ const Home = () => {
               <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">...more</button>
             </div>
 
-            <div>
-              <input placeholder="Add a comment..." id={post.id + "comment"} type="text" />
+            <div className="add-comment-container">
+              <input className="add-comment" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
               <button onClick={() => handleComment(post.id, post.photo, post.user, document.getElementById(post.id + "comment").value)}>post</button>
             </div>
 
