@@ -130,6 +130,42 @@ const Home = () => {
 
   }, [getUserByEmail]);
 
+  const handleComment = async (postid, postPhoto, userId, comment) => {
+    const docRef = doc(db, "posts", postid);
+    const docNotifRef = doc(db, "users", userId);
+
+    const notifObject = (notifStatus) => {
+      const object = {
+        postCommented: postid,
+        postCommentedPhoto: postPhoto,
+        commentedBy: userViewing.userName,
+        commentedByPhoto: userViewingPhoto,
+        opened: notifStatus,
+        notifRef: docNotifRef,
+        notifType: "comment"
+      }
+      return object
+    }
+
+    try {
+      await updateDoc(docRef, {
+        comment: arrayUnion({
+          user: userViewing.email,
+          comment: comment
+        }
+        )
+      });
+      await updateDoc(docNotifRef, {
+        notif: arrayUnion(notifObject(false))
+      });
+    } catch (err) {
+      console.error("Error in handleLike: ", err);
+    }
+  };
+
+
+
+
 
   const handleLike = async (postid, postPhoto, userId, index) => {
     const docRef = doc(db, "posts", postid);
@@ -238,7 +274,15 @@ const Home = () => {
               <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">...more</button>
             </div>
 
+            <div>
+              <input placeholder="Add a comment..." id={post.id + "comment"} type="text" />
+              <button onClick={() => handleComment(post.id, post.photo, post.user, document.getElementById(post.id + "comment").value)}>post</button>
+            </div>
+
           </div>
+
+
+
         )) :
           <div className="post loading">
 
