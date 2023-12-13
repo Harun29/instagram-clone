@@ -511,8 +511,8 @@ a {
 
 .profile-container{
   padding: 30px 20px 0;
-  margin:0 114px;
-  width: calc(100% - 268px);
+  margin:0 15%;
+  width: calc(100% - 30%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -593,7 +593,7 @@ a {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 5px;
 }
 
 .post-on-profile {

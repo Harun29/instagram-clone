@@ -31,7 +31,11 @@ const Navigation = () => {
   const [notifNumber, setNotifNumber] = useState(0)
   const [dropdown, setDropdown] = useState(false);
   const [moreDropdown, setMoreDropdown] = useState(false);
-  const [userPhoto, setUserPhoto] = useState('blank-profile.jpg');
+  const [userPhoto, setUserPhoto] = useState('/blank-profile.jpg');
+
+  useEffect(() => {
+    console.log("user photo: ", userPhoto)
+  }, [userPhoto])
 
   useEffect(() => {
     const fetchUser = async (email) => {
@@ -43,7 +47,7 @@ const Navigation = () => {
         setUserPhoto(userPhotoUrl);
       }
     }
-
+    
     try {
       currentUser && fetchUser(currentUser.email);
     } catch (err) {
