@@ -53,10 +53,13 @@ const PostsList = ({ postsList }) => {
           {postsPhotos.map((post, index) => (
             <div key={index} className="post-on-profile">
               <Link to={`/post/${post.link}`}>
-                <img
-                  src={post.picture}
-                  alt={`Post ${index + 1}`}
-                />
+                <div className="grid-item">
+                  <img
+                    src={post.picture}
+                    alt={`Post ${index + 1}`}
+                    className="grid-item-image"
+                  />
+                </div>
               </Link>
             </div>
           ))}
