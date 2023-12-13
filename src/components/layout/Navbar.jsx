@@ -136,30 +136,30 @@ const Navigation = () => {
   return (
     <div>
       <nav className='nav-wrapper'>
-        <div className={`container${dropdown ? " active" : ''}`}>
-          <Link onClick={dropdown ? handleDropdown : null} to='/' className="brand-logo">
-            {!dropdown ? <h1 style={{ fontFamily: 'Oleo Script' }}>igclone</h1> :
-              <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>}
+        <div className="container">
+          <Link onClick={dropdown ? handleDropdown : null} to='/' className={`brand-logo logo-on-top ${!dropdown ? "active" : ''}`}>
+            <h1 className={`logo-name ${dropdown ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
+            <FontAwesomeIcon  icon={faInstagram}></FontAwesomeIcon>
           </Link>
           <Link onClick={dropdown ? handleDropdown : null} to='/'>
             {
               window.location.pathname === '/' && !dropdown ?
-                <HomeIconFull></HomeIconFull> :
-                <HomeIcon></HomeIcon>
+                <HomeIconFull /> :
+                <HomeIcon />
             }
-            {!dropdown ? <button style={window.location.pathname === '/' ? { fontWeight: '700' } : null}>Home</button> : null}
+            <button className={`notif-button ${dropdown && " active"}`} style={window.location.pathname === '/' ? { fontWeight: '700' } : null}>Home</button>
           </Link>
           <div className="menu-bar">
             <SearchIcon></SearchIcon>
-            {!dropdown ? <button>Search</button> : null}
+            <button className={`notif-button ${dropdown && " active"}`}>Search</button>
           </div>
           <Link to="">
             <CompassIcon></CompassIcon>
-            {!dropdown ? <button>Explore</button> : null}
+            <button className={`notif-button ${dropdown && " active"}`}>Explore</button>
           </Link>
           <Link to="">
             <MessageCircleIcon></MessageCircleIcon>
-            {!dropdown ? <button>Messages</button> : null}
+            <button className={`notif-button ${dropdown && " active"}`}>Messages</button>
           </Link>
           <div onClick={handleDropdown} className="menu-bar notif-icon">
             {
@@ -170,15 +170,15 @@ const Navigation = () => {
             {notifs && notifNumber > 0 ? <div className="notif-count">
               {notifs ? notifNumber : null}
             </div> : null}
-            {!dropdown ? <button>Notifications</button> : null}
+            <button className={`notif-button ${dropdown && " active"}`}>Notifications</button>
           </div>
           <Link to='/createpost'>
             <PlusIcon></PlusIcon>
-            {!dropdown ? <button>Create</button> : null}
+            <button className={`notif-button ${dropdown && " active"}`}>Create</button>
           </Link>
           <Link to='/profile'>
             <img src={userPhoto} style={window.location.pathname === '/profile' ? { border: '2px solid black', width: '31px', height: '31px' } : null} alt="user" className="profile-photo navbar" />
-            {!dropdown ? <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null}>Profile</button> : null}
+            <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null} className={`notif-button ${dropdown && " active"}`}>Profile</button>
           </Link>
         </div>
         <footer onClick={handleMoreDropdown}>
@@ -187,7 +187,7 @@ const Navigation = () => {
               <ListIconBold></ListIconBold> :
               <ListIcon></ListIcon>
           }
-          {!dropdown ? <button style={moreDropdown ? { fontWeight: '700' } : null}>More</button> : null}
+          <button className={`notif-button ${dropdown && " active"}`} style={moreDropdown ? { fontWeight: '700' } : null}>More</button>
         </footer>
         {moreDropdown ?
           <div className="more-dropdown-container">

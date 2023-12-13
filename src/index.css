@@ -164,27 +164,61 @@ a {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: 16vw;
   transition: all 0.5s ease;
 }
 
-.nav-wrapper .container.active {
-  width: 59px;
+.notif-button{
+  width: 14vw;
+  transition: all 0.5s ease;
 }
 
-.nav-wrapper a svg,
-.menu-bar svg {
-  width: 35px;
-  text-align: start;
+.notif-button.active{
+  width: 0;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.brand-logo h1,
-.brand-logo svg {
+.logo-on-top{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-name {
   padding: 25px 12px 16px;
   margin-bottom: 19px;
   color: black;
   font-size: 2rem;
+  transition: all 0.5s ease;
 }
+
+.logo-name.active{
+  width: 0;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.fa-instagram{
+  padding: 25px 0 16px;
+  margin: 0 2px;
+  margin-bottom: 19px;
+  font-size: 2rem;
+  transition: all 0.5s ease;
+  width: 50px;
+}
+
+.logo-on-top.active svg{
+  width: 0;
+}
+
+.nav-wrapper a svg,
+.menu-bar svg {
+  text-align: start;
+}
+
 
 .container a:nth-child(n+2),
 .nav-wrapper footer,
@@ -193,7 +227,7 @@ a {
   margin: 4px 0;
   font-size: 1.5rem;
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
   border-radius: 15px;
   cursor: pointer;
