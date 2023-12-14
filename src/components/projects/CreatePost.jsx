@@ -6,44 +6,43 @@ import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
+import PhotoIcon from "../../icons/PhotoIcon"
 
 const CreatePost = () => {
-  
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageUpload, setImageUpload] = useState(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const {currentUser} = useContext(AuthContext);
-  const {postsUpdate} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
+  const { postsUpdate } = useContext(AuthContext);
 
   const addData = async (data) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const docRef = await addDoc(collection(db, 'posts'), data);
+      const docRef = await addDoc(collection(db, "posts"), data);
       await postsUpdate(currentUser.email, arrayUnion(docRef.id));
-      console.log('Document written with ID: ', docRef.id);
-      navigate('/')
+      console.log("Document written with ID: ", docRef.id);
+      navigate("/");
     } catch (e) {
-      console.error('Error adding document: ', e);
-      setLoading(false)
-    } finally {
+      console.error("Error adding document: ", e);
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     const imageRef = ref(storage, `posts_pictures/${imgName}`);
-    try{
+    try {
       e.preventDefault();
-      addData(post)
+      addData(post);
       await uploadBytes(imageRef, imageUpload);
-    }catch(err){
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -51,7 +50,7 @@ const CreatePost = () => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       setImgName(e.target.files[0].name + v4());
-      setImageUpload(e.target.files[0])
+      setImageUpload(e.target.files[0]);
       reader.onload = (e) => {
         setPhoto(e.target.result);
       };
@@ -64,67 +63,79 @@ const CreatePost = () => {
       title: title,
       description: description,
       photo: imgName,
-      user: currentUser.email
-    })
-  }, [title, description, imgName, currentUser])
+      user: currentUser.email,
+    });
+  }, [title, description, imgName, currentUser]);
 
   useEffect(() => {
-    console.log(post)
-  }, [post])
+    console.log(post);
+  }, [post]);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+
+    const droppedFiles = e.dataTransfer.files;
+
+    if (droppedFiles.length > 0) {
+      const file = droppedFiles[0];
+      setImgName(file.name + v4());
+      setImageUpload(file);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhoto(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
-    <form 
-    className="create-post container mb-4"
-    onSubmit={handleSubmit}>
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h4 className="text-center">Create post</h4>
-          <div className="form-group">
-            <label htmlFor="title">Header</label>
-            <input 
-              type="text" 
-              className="form-control"
-              id="title"
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea 
-              id="description"
-              className="form-control"
-              required
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}></textarea>
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="photo">Upload photo</label>
-            <div className="input-group">
-              <input 
-                type="file" 
-                className="form-control-file"
+    <form
+      className="create-post"
+      onSubmit={handleSubmit}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
+      <div className="create-post-container">
+        <h4 className="text-center">Create new post</h4>
+        <div className="upload-photo">
+          {!photo && 
+          <div className="drag-info">
+            <PhotoIcon></PhotoIcon>
+            <p>Drag photos here</p>
+          </div>}
+          {!photo && (
+            <div
+              className="file-upload-container"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+            >
+              <input
+                type="file"
                 id="photo"
+                className="file-upload-input"
                 accept="image/*"
-                onChange={handlePhotoChange}/>
-              {photo && (
-                <div className="input-group-prepend">
-                  <div className="photo-preview">
-                    <img src={photo} alt="preview" />
-                  </div>
-                </div>
-              )}
+                onChange={handlePhotoChange}
+              />
+              <label htmlFor="photo" className="file-upload-label">
+                Select from computer
+              </label>
             </div>
+          )}
+          {photo && 
+          <div className="photo-preview">
+            <img src={photo} alt="preview" />
           </div>
-          <div className="text-center">
-            <button disabled={loading} type="submit" className="btn btn-primary btn-instagram">Post</button>
-          </div>
+          }
         </div>
       </div>
+      <p className="close-create">x</p>
     </form>
-
   );
-
-}
+};
 
 export default CreatePost;

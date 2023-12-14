@@ -884,3 +884,108 @@ a {
 .login-error{
   color: red;
 }
+
+/* CreatePost */
+
+.create-post{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: rgba(97, 97, 97, 0.8);
+}
+
+.create-post-container{
+  background-color: white;
+  height: 80%;
+  width: 700px;
+  border-radius: 25px;
+}
+
+.text-center{
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+  border-bottom: 1px solid rgb(150, 150, 150);
+}
+
+.upload-photo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 40px);
+  width: 100%;
+}
+
+.drag-info{
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-info svg{
+  margin-bottom: 25px;
+}
+
+.input-group{
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-preview{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-preview img{
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Add this CSS to hide the default file input and style the label */
+.file-upload-container {
+  position: relative;
+}
+
+.file-upload-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-upload-label {
+  display: inline-block;
+  padding: 12px 16px;
+  cursor: pointer;
+  background-color: #0095f6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  outline: none;
+  margin-top: 25px;
+}
+
+/* Optionally style the label when hovering over the drop area */
+.file-upload-label:hover {
+  background-color: #0064e0;
+}
+

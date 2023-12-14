@@ -19,6 +19,7 @@ import ListIconBold from "../../icons/ListIconBold";
 import HomeIconFull from "../../icons/HomeIconFull";
 import SettingsIcon from "../../icons/SettingsIcon";
 import SaveIcon from "../../icons/SaveIcon";
+import CreatePost from "../projects/CreatePost";
 
 const Navigation = () => {
 
@@ -32,10 +33,7 @@ const Navigation = () => {
   const [dropdown, setDropdown] = useState(false);
   const [moreDropdown, setMoreDropdown] = useState(false);
   const [userPhoto, setUserPhoto] = useState('/blank-profile.jpg');
-
-  useEffect(() => {
-    console.log("user photo: ", userPhoto)
-  }, [userPhoto])
+  const [createPost, setCreatePost] = useState(false);
 
   useEffect(() => {
     const fetchUser = async (email) => {
@@ -134,7 +132,7 @@ const Navigation = () => {
   }
 
   return (
-    <div>
+    <div className="navigation-container">
       <nav className='nav-wrapper'>
         <div className="container">
           <Link onClick={dropdown ? handleDropdown : null} to='/' className={`brand-logo logo-on-top ${!dropdown ? "active" : ''}`}>
@@ -172,10 +170,10 @@ const Navigation = () => {
             </div> : null}
             <button className={`notif-button ${dropdown && " active"}`}>Notifications</button>
           </div>
-          <Link to='/createpost'>
+          <div onClick={() => setCreatePost(!createPost)} className="menu-bar">
             <PlusIcon></PlusIcon>
             <button className={`notif-button ${dropdown && " active"}`}>Create</button>
-          </Link>
+          </div>
           <Link to='/profile'>
             <img src={userPhoto} style={window.location.pathname === '/profile' ? { border: '2px solid black', width: '31px', height: '31px' } : null} alt="user" className="profile-photo navbar" />
             <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null} className={`notif-button ${dropdown && " active"}`}>Profile</button>
@@ -260,6 +258,7 @@ const Navigation = () => {
           <div>Loading...</div>
         )}
       </ul>
+      {createPost ? <CreatePost></CreatePost>:null}
     </div>
   );
 }
