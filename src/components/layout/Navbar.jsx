@@ -34,6 +34,8 @@ const Navigation = () => {
   const [moreDropdown, setMoreDropdown] = useState(false);
   const [userPhoto, setUserPhoto] = useState('/blank-profile.jpg');
   const [createPost, setCreatePost] = useState(false);
+  const [searchDropdown, setSearchDropdown] = useState(false);
+  const [hide, setHide] = useState(false);
 
   useEffect(() => {
     const fetchUser = async (email) => {
@@ -125,58 +127,64 @@ const Navigation = () => {
 
   const handleDropdown = () => {
     setDropdown(prevDropdown => !prevDropdown)
+    setHide(prevHide => !prevHide)
   }
 
   const handleMoreDropdown = () => {
     setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
   }
 
+  const handleSearchDropdown = () => {
+    setSearchDropdown(prevSearchDropdown => !prevSearchDropdown)
+    setHide(prevHide => !prevHide)
+  }
+
   return (
     <div className="navigation-container">
       <nav className='nav-wrapper'>
         <div className="container">
-          <Link onClick={dropdown ? handleDropdown : null} to='/' className={`brand-logo logo-on-top ${!dropdown ? "active" : ''}`}>
-            <h1 className={`logo-name ${dropdown ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
+          <Link onClick={hide ? handleDropdown : null} to='/' className={`brand-logo logo-on-top ${!hide ? "active" : ''}`}>
+            <h1 className={`logo-name ${hide ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
             <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Link>
-          <Link onClick={dropdown ? handleDropdown : null} to='/'>
+          <Link onClick={hide ? handleDropdown : null} to='/'>
             {
-              window.location.pathname === '/' && !dropdown ?
+              window.location.pathname === '/' && !hide ?
                 <HomeIconFull /> :
                 <HomeIcon />
             }
-            <button className={`notif-button ${dropdown && " active"}`} style={window.location.pathname === '/' ? { fontWeight: '700' } : null}>Home</button>
+            <button className={`notif-button ${hide && " active"}`} style={window.location.pathname === '/' ? { fontWeight: '700' } : null}>Home</button>
           </Link>
-          <div className="menu-bar">
+          <div onClick={handleSearchDropdown} className="menu-bar">
             <SearchIcon></SearchIcon>
-            <button className={`notif-button ${dropdown && " active"}`}>Search</button>
+            <button className={`notif-button ${hide && " active"}`}>Search</button>
           </div>
           <Link to="">
             <CompassIcon></CompassIcon>
-            <button className={`notif-button ${dropdown && " active"}`}>Explore</button>
+            <button className={`notif-button ${hide && " active"}`}>Explore</button>
           </Link>
           <Link to="">
             <MessageCircleIcon></MessageCircleIcon>
-            <button className={`notif-button ${dropdown && " active"}`}>Messages</button>
+            <button className={`notif-button ${hide && " active"}`}>Messages</button>
           </Link>
           <div onClick={handleDropdown} className="menu-bar notif-icon">
             {
-              dropdown ?
+              hide ?
                 <HeartIconFull></HeartIconFull> :
                 <HeartIcon></HeartIcon>
             }
             {notifs && notifNumber > 0 ? <div className="notif-count">
               {notifs ? notifNumber : null}
             </div> : null}
-            <button className={`notif-button ${dropdown && " active"}`}>Notifications</button>
+            <button className={`notif-button ${hide && " active"}`}>Notifications</button>
           </div>
           <div onClick={() => setCreatePost(!createPost)} className="menu-bar">
             <PlusIcon></PlusIcon>
-            <button className={`notif-button ${dropdown && " active"}`}>Create</button>
+            <button className={`notif-button ${hide && " active"}`}>Create</button>
           </div>
           <Link to='/profile'>
             <img src={userPhoto} style={window.location.pathname === '/profile' ? { border: '2px solid black', width: '31px', height: '31px' } : null} alt="user" className="profile-photo navbar" />
-            <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null} className={`notif-button ${dropdown && " active"}`}>Profile</button>
+            <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null} className={`notif-button ${hide && " active"}`}>Profile</button>
           </Link>
         </div>
         <footer onClick={handleMoreDropdown}>
@@ -185,7 +193,7 @@ const Navigation = () => {
               <ListIconBold></ListIconBold> :
               <ListIcon></ListIcon>
           }
-          <button className={`notif-button ${dropdown && " active"}`} style={moreDropdown ? { fontWeight: '700' } : null}>More</button>
+          <button className={`notif-button ${hide && " active"}`} style={moreDropdown ? { fontWeight: '700' } : null}>More</button>
         </footer>
         {moreDropdown ?
           <div className="more-dropdown-container">
@@ -207,7 +215,7 @@ const Navigation = () => {
         }
       </nav>
 
-      <ul className={`dropdown-menu${dropdown ? ' active' : ''}`}>
+      <ul className={`dropdown-menu${hide ? ' active' : ''}`}>
         <h1 className="notifications-heading">
           Notifications
         </h1>
@@ -251,13 +259,25 @@ const Navigation = () => {
                   </Link>
                 </div>
                 : null}
-
             </li>
           ))
         ) : (
           <div>Loading...</div>
         )}
       </ul>
+
+
+      <ul className={`dropdown-menu${searchDropdown ? ' active' : ''}`}>
+        <div className="search-box">
+          <h1 className="notifications-heading">
+            Search
+          </h1>
+          <input placeholder="Search" className="search-input" type="text" />
+          <div className="hr"></div>
+        </div>
+      </ul>
+
+
       {createPost ? <CreatePost></CreatePost>:null}
     </div>
   );

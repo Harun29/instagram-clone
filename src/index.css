@@ -955,7 +955,6 @@ a {
   overflow: hidden;
 }
 
-/* Add this CSS to hide the default file input and style the label */
 .file-upload-container {
   position: relative;
 }
@@ -984,8 +983,34 @@ a {
   margin-top: 25px;
 }
 
-/* Optionally style the label when hovering over the drop area */
 .file-upload-label:hover {
   background-color: #0064e0;
 }
 
+
+/* Navbar - Search bar */
+
+.search-box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-input{
+  font-size: 1rem;
+  margin: 25px;
+  padding: 13px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(240, 240, 240);
+}
+
+.search-input:focus{
+  outline: none;
+}
+
+.hr{
+  display: flex;
+  height: 1px;
+  border-bottom: 1px solid rgb(224, 222, 222);
+}
