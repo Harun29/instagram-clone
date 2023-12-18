@@ -93,6 +93,10 @@ const CreatePost = () => {
     }
   };
 
+  const handleDiscard = () => {
+    setPhoto(null)
+  }
+
   return (
     <form
       className="create-post"
@@ -101,7 +105,11 @@ const CreatePost = () => {
       onDrop={handleDrop}
     >
       <div className="create-post-container">
-        <h4 className="text-center">Create new post</h4>
+        {!photo ? <h4 className="text-center">Create new post</h4>
+        : <div className="text-center continue-with-creating">
+            <span onClick={handleDiscard}>discard</span>
+            <span>next</span>
+          </div>}
         <div className="upload-photo">
           {!photo && 
           <div className="drag-info">

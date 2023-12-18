@@ -903,7 +903,7 @@ a {
   background-color: white;
   height: 80%;
   width: 700px;
-  border-radius: 25px;
+  border-radius: 15px;
 }
 
 .text-center{
@@ -913,7 +913,7 @@ a {
   align-items: center;
   justify-content: center;
   padding: 15px 0;
-  border-bottom: 1px solid rgb(150, 150, 150);
+  border-bottom: 1px solid rgb(228, 228, 228);
 }
 
 .upload-photo{
@@ -985,6 +985,25 @@ a {
 
 .file-upload-label:hover {
   background-color: #0064e0;
+}
+
+.continue-with-creating{
+  display: flex;
+  justify-content: space-between;
+}
+
+.continue-with-creating span {
+  margin: 0 25px;
+  cursor: pointer;
+  color: #0095f6;
+}
+
+.continue-with-creating span:nth-child(1){
+  color: red;
+}
+
+.continue-with-creating span:hover{
+  color: black;
 }
 
 
