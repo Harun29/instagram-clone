@@ -126,17 +126,29 @@ const Navigation = () => {
   }, [notifs])
 
   const handleDropdown = () => {
+    const stateCheck = dropdown
+    setSearchDropdown(false)
     setDropdown(prevDropdown => !prevDropdown)
-    setHide(prevHide => !prevHide)
-  }
-
-  const handleMoreDropdown = () => {
-    setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
+    if (!stateCheck) {
+      setHide(true)
+    } else (
+      setHide(false)
+    )
   }
 
   const handleSearchDropdown = () => {
+    const stateCheck = searchDropdown
+    setDropdown(false);
     setSearchDropdown(prevSearchDropdown => !prevSearchDropdown)
-    setHide(prevHide => !prevHide)
+    if(!stateCheck){
+      setHide(true)
+    }else{
+      setHide(false)
+    }
+  }
+  
+  const handleMoreDropdown = () => {
+    setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
   }
 
   return (
@@ -215,7 +227,7 @@ const Navigation = () => {
         }
       </nav>
 
-      <ul className={`dropdown-menu${hide ? ' active' : ''}`}>
+      <ul className={`dropdown-menu${dropdown ? ' active' : ''}`}>
         <h1 className="notifications-heading">
           Notifications
         </h1>
