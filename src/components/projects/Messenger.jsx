@@ -1,16 +1,13 @@
-import { useParams } from "react-router-dom";
-import Chats from "./Chats";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
 import { db, storage } from "../../config/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 
-const Messenger = () => {
+const Messenger = ({user}) => {
 
-  const param = useParams()
+  const param = user;
   const [userData, setUserData] = useState();
-
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState();
@@ -24,9 +21,7 @@ const Messenger = () => {
         setChatId(param.userid + userViewing.docs[0].id)
       }
     }
-  }, [param.userid])
-
-  /* STUFF FROM POST */
+  }, [param.userid, userViewing])
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, 'users');
@@ -68,7 +63,7 @@ const Messenger = () => {
     }
     getUserByEmailInPost(currentUser.email)
     fetchUserPhoto();
-  }, [currentUser.email])
+  }, [currentUser.email, param.userid])
 
 
   useEffect(() => {
@@ -78,7 +73,9 @@ const Messenger = () => {
         const chatSnap = await getDoc(chatRef);
         if (!chatSnap.exists()) {
           const userViewingRef = doc(db, "users", userViewing.docs[0].id)
+          console.log(userViewingRef)
           const userRef = doc(db, "users", param.userid)
+          console.log(userRef)
           await setDoc(doc(db, "chats", chatId), {
             messages: []
           })
@@ -87,6 +84,7 @@ const Messenger = () => {
               chatId,
               myPhoto: userViewingPhoto,
               myUserName: userViewing.docs[0].data().userName,
+              friendsId: param.userid,
               friendsPhoto: userData.userPhoto,
               friendsUserName: userData.userName
             })
@@ -96,6 +94,7 @@ const Messenger = () => {
               chatId,
               myPhoto: userData.userPhoto,
               myUserName: userData.userName,
+              friendsId: userViewing.docs[0].id,
               friendsPhoto: userViewingPhoto,
               friendsUserName: userViewing.docs[0].data().userName
             })
@@ -107,12 +106,13 @@ const Messenger = () => {
       }
     };
 
-    chatId && checkChatExists();
-  }, [chatId, param, userViewing]);
+    if(userViewing && chatId && userData && param){
+      checkChatExists();
+    }
+  }, [chatId, param, userViewing, userViewingPhoto, userData]);
 
   return (
     <div className="messenger">
-      <Chats />
       <div className="chat-container">
       </div>
     </div>

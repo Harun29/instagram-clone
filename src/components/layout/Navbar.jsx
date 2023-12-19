@@ -39,7 +39,7 @@ const Navigation = () => {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
-    if(location.pathname === "/messenger"){
+    if(location.pathname.includes("/messenger")){
       setHide(true)
     }
   }, [location])
@@ -123,7 +123,6 @@ const Navigation = () => {
   useEffect(() => {
     if (notifs) {
       setNotifNumber(0)
-      console.log(notifs)
       notifs.forEach(notif => {
         if (!notif.opened) (
           setNotifNumber(prevNotifNumber => prevNotifNumber + 1)
@@ -138,7 +137,7 @@ const Navigation = () => {
     setDropdown(prevDropdown => !prevDropdown)
     if (!stateCheck) {
       setHide(true)
-    }else if(location.pathname !== "/messenger")(
+    }else if(!location.pathname.includes("/messenger"))(
       setHide(false)
     )
   }
@@ -149,7 +148,7 @@ const Navigation = () => {
     setSearchDropdown(prevSearchDropdown => !prevSearchDropdown)
     if(!stateCheck){
       setHide(true)
-    }else if(location.pathname !== "/messenger"){
+    }else if(!location.pathname.includes("/messenger")){
       setHide(false)
     }
   }

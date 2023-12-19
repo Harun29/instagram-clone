@@ -15,7 +15,7 @@ import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import { auth } from './config/firebase';
 import { useState, useEffect } from 'react';
-import Messenger from './components/projects/Messsenger';
+import Chats from './components/projects/Chats';
 
 function App() {
 
@@ -59,7 +59,8 @@ function App() {
               />
               <Route path='/profile' element={<PrivateRoute component={Profile} />}/>
               <Route path='/settings' element={<PrivateRoute component={UpdateProfile} />}/>
-              <Route path='/messenger/:userid' element={<PrivateRoute component={Messenger} />}/>
+              <Route path='/messenger/:userid' element={<PrivateRoute component={Chats} />}/>
+              <Route path='/messenger' element={<PrivateRoute component={Chats} />}/>
             </Routes>
           </Router>
       </div>
