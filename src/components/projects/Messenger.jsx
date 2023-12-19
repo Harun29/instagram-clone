@@ -73,9 +73,7 @@ const Messenger = ({user}) => {
         const chatSnap = await getDoc(chatRef);
         if (!chatSnap.exists()) {
           const userViewingRef = doc(db, "users", userViewing.docs[0].id)
-          console.log(userViewingRef)
           const userRef = doc(db, "users", param.userid)
-          console.log(userRef)
           await setDoc(doc(db, "chats", chatId), {
             messages: []
           })

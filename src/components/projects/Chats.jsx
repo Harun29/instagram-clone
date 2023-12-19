@@ -13,10 +13,6 @@ const Chats = () => {
   const [chats, setChats] = useState();
 
   useEffect(() => {
-    param && console.log(param)
-  }, [param])
-
-  useEffect(() => {
     const fetchUser = async () => {
       const user = await getUserByEmail(currentUser.email)
       const userName = user.userName;
