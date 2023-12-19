@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
@@ -23,6 +23,7 @@ import CreatePost from "../projects/CreatePost";
 
 const Navigation = () => {
 
+  const location = useLocation();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { getUserByEmail } = useAuth()
@@ -36,6 +37,12 @@ const Navigation = () => {
   const [createPost, setCreatePost] = useState(false);
   const [searchDropdown, setSearchDropdown] = useState(false);
   const [hide, setHide] = useState(false);
+
+  useEffect(() => {
+    if(location.pathname === "/messenger"){
+      setHide(true)
+    }
+  }, [location])
 
   useEffect(() => {
     const fetchUser = async (email) => {
@@ -131,7 +138,7 @@ const Navigation = () => {
     setDropdown(prevDropdown => !prevDropdown)
     if (!stateCheck) {
       setHide(true)
-    } else (
+    }else if(location.pathname !== "/messenger")(
       setHide(false)
     )
   }
@@ -142,9 +149,15 @@ const Navigation = () => {
     setSearchDropdown(prevSearchDropdown => !prevSearchDropdown)
     if(!stateCheck){
       setHide(true)
-    }else{
+    }else if(location.pathname !== "/messenger"){
       setHide(false)
     }
+  }
+
+  const handleHide = () => {
+    setDropdown(false)
+    setSearchDropdown(false)
+    setHide(false)
   }
   
   const handleMoreDropdown = () => {
@@ -155,11 +168,11 @@ const Navigation = () => {
     <div className="navigation-container">
       <nav className='nav-wrapper'>
         <div className="container">
-          <Link onClick={hide ? handleDropdown : null} to='/' className={`brand-logo logo-on-top ${!hide ? "active" : ''}`}>
+          <Link onClick={hide ? handleHide : null} to='/' className={`brand-logo logo-on-top ${!hide ? "active" : ''}`}>
             <h1 className={`logo-name ${hide ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
             <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Link>
-          <Link onClick={hide ? handleDropdown : null} to='/'>
+          <Link onClick={hide ? handleHide : null} to='/'>
             {
               window.location.pathname === '/' && !hide ?
                 <HomeIconFull /> :
@@ -175,7 +188,7 @@ const Navigation = () => {
             <CompassIcon></CompassIcon>
             <button className={`notif-button ${hide && " active"}`}>Explore</button>
           </Link>
-          <Link to="">
+          <Link to="/messenger">
             <MessageCircleIcon></MessageCircleIcon>
             <button className={`notif-button ${hide && " active"}`}>Messages</button>
           </Link>

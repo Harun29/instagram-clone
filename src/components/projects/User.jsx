@@ -215,6 +215,11 @@ useEffect(() => {
                 <button onClick={handleUnfollow} variant="secondary" className="unfollow-button">
                   Unfollow
                 </button> }
+                <Link to={`/messenger/${userId}`}>
+                  <button className="unfollow-button">
+                      Message
+                  </button>
+                </Link>
               </div>
 
               <div>
