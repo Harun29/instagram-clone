@@ -1036,12 +1036,47 @@ a {
 }
 
 
-/* Messenger */
+/* Messenger - Chats */
 
 .chat-box{
   z-index: -10;
   border-radius: 0;
   box-shadow: none;
+  display: flex;
+  flex-direction: row;
+  width: 100%!important;
+}
+
+.chats-box{
+  height: 100%;
+  width: 33%;
+  border-right: 1px solid rgb(224, 222, 222);
+}
+
+.empty-messages{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.empty-messages svg{
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 15px;
+  transform: scale(2);
+}
+
+.empty-messages span{
+  margin-top: 40px;
+  font-size: 1.2rem;
+}
+
+.empty-messages p{
+  margin: 15px 0;
+  color: rgb(150, 150, 150);
 }
 
 .messages-heading{
@@ -1098,4 +1133,95 @@ a {
 
 .friends-info span:nth-child(2){
   color: rgb(150, 150, 150);
+}
+
+.messenger{
+  display: flex;
+  flex-direction: column;
+  margin-right: 85px;
+}
+
+.friend-info{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid rgb(224, 222, 222);
+}
+
+.friend-info img{
+  width: 50px;
+  margin: 15px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.friend-info{
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.messages-container{
+  height: 100%;
+  padding: 15px;
+}
+
+.messenger input{
+  margin: 15px;
+  padding: 15px;
+  border-radius: 30px;
+  width: calc(100% - 70px);
+  border: 1px solid rgb(224, 222, 222);
+}
+
+.messenger input:focus{
+  outline: none;
+}
+
+.send-message{
+  position: relative;
+}
+
+.send-button{
+  position: absolute;
+  right: 120px;
+  top: 32px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #0064e0;
+}
+
+.send-button:hover{
+  color: black;
+}
+
+.message{
+  width: 100%;
+  display: flex;
+}
+
+
+.my-message-container{
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.friends-message-container{
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.my-message, .friends-message{
+  padding: 10px;
+  margin: 1px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+.friends-message{
+  background-color: #efefef;
+  color: black;
+}
+
+.my-message{
+  color: white;
+  background-color: #0064e0;
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayUnion, setDoc, onSnapshot } from "firebase/firestore";
 import { db, storage } from "../../config/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 
-const Messenger = ({user}) => {
+const Messenger = ({ user }) => {
 
   const param = user;
   const [userData, setUserData] = useState();
@@ -12,12 +12,37 @@ const Messenger = ({user}) => {
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState();
   const [chatId, setChatId] = useState();
+  const [message, setMessage] = useState("");
+  const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    if(userViewing){
-      if(userViewing.docs[0].id > param.userid){
+    if (chatId) {
+      const unsubscribe = onSnapshot(doc(db, 'chats', chatId), (doc) => {
+        const messages = doc.data()?.messages || [];
+        const lastIndex = messages.length - 1;
+        if (lastIndex >= 0) {
+          setChat((prevChat) => [...prevChat, messages[lastIndex]]);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [chatId]);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      const chatDoc = doc(db, "chats", chatId);
+      const chatRef = await getDoc(chatDoc)
+      setChat(chatRef.data().messages)
+    }
+    chatId && fetchChats()
+  }, [chatId])
+
+  useEffect(() => {
+    if (userViewing) {
+      if (userViewing.docs[0].id > param.userid) {
         setChatId(userViewing.docs[0].id + param.userid)
-      }else{
+      } else {
         setChatId(param.userid + userViewing.docs[0].id)
       }
     }
@@ -34,27 +59,27 @@ const Messenger = ({user}) => {
     }
     const user = querySnapshot;
     setUserViewing(user);
-    let userViewingPhoto = 'blank-profile.jpg';
-    if(user.docs[0].data().pphoto){
+    let userViewingPhoto = '/blank-profile.jpg';
+    if (user.docs[0].data().pphoto) {
       userViewingPhoto = await getDownloadURL(ref(storage, `profile_pictures/${user.docs[0].data().pphoto}`));
       setUserViewingPhoto(userViewingPhoto);
-    }else{
+    } else {
       setUserViewingPhoto(userViewingPhoto);
     }
   }
 
   useEffect(() => {
-    const fetchUserPhoto = async() => {
+    const fetchUserPhoto = async () => {
       const userRef = doc(db, "users", param.userid)
       const user = await getDoc(userRef)
-      let userPhoto = 'blank-profile.jpg';
-      if(user.data().pphoto){
+      let userPhoto = '/blank-profile.jpg';
+      if (user.data().pphoto) {
         userPhoto = await getDownloadURL(ref(storage, `profile_pictures/${user.docs[0].data().pphoto}`));
         setUserData({
           userPhoto,
           userName: user.data().userName
         })
-      }else{
+      } else {
         setUserData({
           userPhoto,
           userName: user.data().userName
@@ -104,14 +129,49 @@ const Messenger = ({user}) => {
       }
     };
 
-    if(userViewing && chatId && userData && param){
+    if (userViewing && chatId && userData && param) {
       checkChatExists();
     }
   }, [chatId, param, userViewing, userViewingPhoto, userData]);
 
+  const handleSend = async () => {
+    const messageToSend = message;
+    setMessage("");
+    const docRef = doc(db, "chats", chatId);
+    message && await updateDoc(docRef, {
+      messages: arrayUnion({
+        message: messageToSend,
+        sentBy: userViewing.docs[0].data().userName,
+        time: new Date()
+      })
+    })
+  }
+
   return (
     <div className="messenger">
-      <div className="chat-container">
+      <div className="friend-info">
+        <img src={userData && userData.userPhoto} alt="friend" />
+        <span>{userData && userData.userName}</span>
+      </div>
+      <div className="messages-container">
+        {chat.map((message, index) => (
+          message.sentBy === userViewing.docs[0].data().userName ? (
+            <div className="my-message-container message" key={index}>
+              <div className="my-message">
+              {message.message}
+              </div>
+            </div>
+          ) :
+          (<div className="friends-message-container message" key={index}>
+          <div className="friends-message">
+          {message.message}
+          </div>
+        </div>)
+        ))}
+      </div>
+      <div className="send-message">
+        <input value={message} onChange={e => setMessage(e.target.value)} placeholder="Message..." type="text" />
+        <span onClick={handleSend} className="send-button">Send</span>
       </div>
     </div>
   );

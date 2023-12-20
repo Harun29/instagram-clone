@@ -3,6 +3,7 @@ import Messenger from "./Messenger";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import MessageCircleIcon from "../../icons/MessageCircleIcon"
 
 const Chats = () => {
 
@@ -11,6 +12,10 @@ const Chats = () => {
   const { getUserByEmail } = useAuth();
   const [userName, setUserName] = useState();
   const [chats, setChats] = useState();
+
+  useEffect(() => {
+    chats && console.log(chats)
+  })
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -23,9 +28,8 @@ const Chats = () => {
   }, [currentUser, getUserByEmail])
 
   return (
-    <div>
       <ul className="dropdown-menu active chat-box">
-        <div className="search-box">
+        <div className="search-box chats-box">
           <h1 className="messages-heading">
             {userName}
           </h1>
@@ -42,9 +46,14 @@ const Chats = () => {
             ))}
           </div>
         </div>
+      {param.userid ? <Messenger user={param} />:
+      <div className="empty-messages">
+        <MessageCircleIcon></MessageCircleIcon>
+        <span>Your messages</span>
+        <p>Send private messages to a friend</p>
+        <button className="follow-button">Send message</button>
+      </div>}
       </ul>
-      {param.userid && <Messenger user={param} />}
-    </div>
   );
 }
 
