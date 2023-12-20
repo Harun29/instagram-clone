@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import MessageCircleIcon from "../../icons/MessageCircleIcon"
+import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayUnion, setDoc, onSnapshot } from "firebase/firestore";
+import { db, storage } from "../../config/firebase";
 
 const Chats = () => {
 
@@ -12,25 +14,65 @@ const Chats = () => {
   const { getUserByEmail } = useAuth();
   const [userName, setUserName] = useState();
   const [chats, setChats] = useState();
-
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getUserByEmail(currentUser.email)
-      const userName = user.userName;
-      setUserName(userName);
-      setChats(user.chats);
+    userId && console.log(userId)
+  }, [userId])
+
+  useEffect(() => {
+    try{
+      if (userId) {
+        const unsubscribe = onSnapshot(doc(db, 'users', userId), (doc) => {
+          const chats = doc.data()?.chats || [];
+          const lastIndex = chats.length - 1;
+          if (lastIndex >= 0) {
+            setChats((prevChat) => [...prevChat, chats[lastIndex]]);
+          }
+        });
+  
+        return () => unsubscribe();
+      }
+    }catch(err){
+      console.error(err);
     }
-    currentUser && fetchUser()
+  }, [userId]);
+
+  const getUserByEmailInPost = async (email) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+  
+    if (querySnapshot.empty) {
+      console.error('No matching documents for email:', email);
+      return null;
+    }
+    const user = querySnapshot;
+    return user;
+  }
+
+  useEffect(() => {
+    try{
+      const fetchUser = async () => {
+        const user = await getUserByEmailInPost(currentUser.email)
+        const userName = user.docs[0].data().userName;
+        setUserId(user.docs[0].id)
+        setUserName(userName);
+        setChats(user.docs[0].data().chats);
+      }
+      currentUser && fetchUser()
+    }catch(err){
+      console.error(err)
+    }
   }, [currentUser, getUserByEmail])
 
   return (
       <ul className="dropdown-menu active chat-box">
         <div className="search-box chats-box">
-          <h1 className="messages-heading">
+          <h1 className="chats-heading">
             {userName}
           </h1>
-          <span className="messages-span">Messages</span>
+          <span className="chats-span">Messages</span>
           <div className="chats">
             {chats && chats.map(chat => (
               <Link to={chat.friendsId} className="chat">
@@ -46,8 +88,8 @@ const Chats = () => {
       {param.userid ? <Messenger user={param} />:
       <div className="empty-messages">
         <MessageCircleIcon></MessageCircleIcon>
-        <span>Your messages</span>
-        <p>Send private messages to a friend</p>
+        <span>Your chats</span>
+        <p>Send private chats to a friend</p>
         <button className="follow-button">Send message</button>
       </div>}
       </ul>
