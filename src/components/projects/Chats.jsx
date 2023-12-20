@@ -13,9 +13,6 @@ const Chats = () => {
   const [userName, setUserName] = useState();
   const [chats, setChats] = useState();
 
-  useEffect(() => {
-    chats && console.log(chats)
-  })
 
   useEffect(() => {
     const fetchUser = async () => {

@@ -16,16 +16,20 @@ const Messenger = ({ user }) => {
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    if (chatId) {
-      const unsubscribe = onSnapshot(doc(db, 'chats', chatId), (doc) => {
-        const messages = doc.data()?.messages || [];
-        const lastIndex = messages.length - 1;
-        if (lastIndex >= 0) {
-          setChat((prevChat) => [...prevChat, messages[lastIndex]]);
-        }
-      });
-
-      return () => unsubscribe();
+    try{
+      if (chatId) {
+        const unsubscribe = onSnapshot(doc(db, 'chats', chatId), (doc) => {
+          const messages = doc.data()?.messages || [];
+          const lastIndex = messages.length - 1;
+          if (lastIndex >= 0) {
+            setChat((prevChat) => [...prevChat, messages[lastIndex]]);
+          }
+        });
+  
+        return () => unsubscribe();
+      }
+    }catch(err){
+      console.error(err);
     }
   }, [chatId]);
 
@@ -33,9 +37,15 @@ const Messenger = ({ user }) => {
     const fetchChats = async () => {
       const chatDoc = doc(db, "chats", chatId);
       const chatRef = await getDoc(chatDoc)
-      setChat(chatRef.data().messages)
+      if(chatRef.exists()){
+        setChat(chatRef.data().messages)
+      }
     }
-    chatId && fetchChats()
+    try{
+      chatId && fetchChats()
+    }catch(err){
+      console.error(err)
+    }
   }, [chatId])
 
   useEffect(() => {
@@ -74,7 +84,7 @@ const Messenger = ({ user }) => {
       const user = await getDoc(userRef)
       let userPhoto = '/blank-profile.jpg';
       if (user.data().pphoto) {
-        userPhoto = await getDownloadURL(ref(storage, `profile_pictures/${user.docs[0].data().pphoto}`));
+        userPhoto = await getDownloadURL(ref(storage, `profile_pictures/${user.data().pphoto}`));
         setUserData({
           userPhoto,
           userName: user.data().userName
@@ -154,7 +164,7 @@ const Messenger = ({ user }) => {
         <span>{userData && userData.userName}</span>
       </div>
       <div className="messages-container">
-        {chat.map((message, index) => (
+        {chat[0] && chat.map((message, index) => (
           message.sentBy === userViewing.docs[0].data().userName ? (
             <div className="my-message-container message" key={index}>
               <div className="my-message">
