@@ -4,7 +4,7 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { updateDoc, arrayRemove, arrayUnion, collection, where, query, getDocs, or, and } from "firebase/firestore";
+import { updateDoc, arrayRemove, arrayUnion, collection, where, query, getDocs, or} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import HomeIcon from "../../icons/HomeIcon";
@@ -43,22 +43,31 @@ const Navigation = () => {
   const [searchResults, setSearchResults] = useState([])
   
   useEffect(() => {
-    searchInput && console.log(searchInput)
-  }, [searchInput])
+    searchResults && console.log(searchResults)
+  }, [searchResults])
   
   useEffect(() => {
     const fetchUsers = async (input) => {
       const q = query(
         collection(db, 'users'),
-        and(
+        or(
           where("name", "==", input),
           or(where("userName", "==", input))
         )
       );
       try {
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
+        querySnapshot.forEach(async(doc) => {
+          const newDocument = doc.data()
+          const imgUrl = await getDownloadURL(ref(storage, `profile_pictures/${doc.data().pphoto}`))
+          newDocument.pphoto = imgUrl;
+          let found = false
+          searchResults.forEach(result => {
+            if(result.userName === doc.data().userName){
+              found = true
+            }
+          })
+          !found && setSearchResults((prevResults) => [...prevResults, newDocument]);
         });
       } catch (err) {
         console.error(err);
@@ -69,7 +78,7 @@ const Navigation = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [searchInput]);
+  }, [searchInput, searchResults]);
   
 
   useEffect(() => {
@@ -191,6 +200,15 @@ const Navigation = () => {
     setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
   }
 
+  useEffect(() => {
+    location.pathname.includes("/messenger") && setHide(true)
+  }, [location])
+
+  const downloadUrl = async (name) => {
+    const imgUrl = await getDownloadURL(ref(storage, `profile_pictures/${name}`))
+    return imgUrl;
+  }
+
   return (
     <div className="navigation-container">
       <nav className='nav-wrapper'>
@@ -245,7 +263,7 @@ const Navigation = () => {
         </div>
         <footer onClick={handleMoreDropdown}>
           {
-            moreDropdown ?
+            dropdown ?
               <ListIconBold></ListIconBold> :
               <ListIcon></ListIcon>
           }
@@ -329,12 +347,15 @@ const Navigation = () => {
             Search
           </h1>
           <input onChange={e => setSearchInput(e.target.value)} placeholder="Search" className="search-input" type="text" />
-
-          <div className="search-results">
-            
-          </div>
-
           <div className="hr"></div>
+          <div className="search-result">
+            {searchResults.map((result, index) => (
+              <Link to={`/user/${result.userName}`} key={index} className="result-box">
+                <img src={result.pphoto} alt="" />
+                <span>{result.userName}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </ul>
 

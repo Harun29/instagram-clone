@@ -1035,6 +1035,33 @@ a {
   border-bottom: 1px solid rgb(224, 222, 222);
 }
 
+.search-result{
+  width: calc(100% -30px);
+  padding: 10px;
+}
+
+.search-result:hover{
+  background-color: rgb(240, 240, 240);
+}
+
+.result-box{
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.result-box img{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.result-box span{
+  margin-left: 15px;
+}
 
 /* Messenger - Chats */
 
@@ -1237,3 +1264,4 @@ a {
   color: white;
   background-color: #0064e0;
 }
+
