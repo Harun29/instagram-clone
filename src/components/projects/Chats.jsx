@@ -16,18 +16,15 @@ const Chats = () => {
   const [chats, setChats] = useState();
   const [userId, setUserId] = useState();
 
-  useEffect(() => {
-    userId && console.log(userId)
-  }, [userId])
-
+  
   useEffect(() => {
     try{
       if (userId) {
         const unsubscribe = onSnapshot(doc(db, 'users', userId), (doc) => {
-          const chats = doc.data()?.chats || [];
-          const lastIndex = chats.length - 1;
-          if (lastIndex >= 0) {
-            setChats((prevChat) => [...prevChat, chats[lastIndex]]);
+          const chatsRef = doc.data()?.chats || [];
+          const lastIndex = chatsRef.length - 1;
+          if (lastIndex >= 0 && !chats[lastIndex].chatId === chatsRef[lastIndex].chatId) {
+            setChats((prevChat) => [...prevChat, chatsRef[lastIndex]]);
           }
         });
   
