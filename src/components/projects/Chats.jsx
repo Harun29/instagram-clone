@@ -36,7 +36,7 @@ const Chats = () => {
     }catch(err){
       console.error(err);
     }
-  }, [userId, chats]);
+  }, [userId, chats, loadingChats]);
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, 'users');

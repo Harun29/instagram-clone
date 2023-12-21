@@ -4,7 +4,7 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { updateDoc, arrayRemove, arrayUnion, collection, where, query, getDocs, or, and } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import HomeIcon from "../../icons/HomeIcon";
@@ -13,6 +13,7 @@ import HeartIcon from "../../icons/HeartIcon";
 import HeartIconFull from "../../icons/HeartIconFull";
 import CompassIcon from "../../icons/CompasIcon";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
+import MessageCircleIconFull from "../../icons/MessageCircleIconFull";
 import PlusIcon from "../../icons/PlusIcon";
 import ListIcon from "../../icons/ListIcon";
 import ListIconBold from "../../icons/ListIconBold";
@@ -20,6 +21,7 @@ import HomeIconFull from "../../icons/HomeIconFull";
 import SettingsIcon from "../../icons/SettingsIcon";
 import SaveIcon from "../../icons/SaveIcon";
 import CreatePost from "../projects/CreatePost";
+import { db } from "../../config/firebase";
 
 const Navigation = () => {
 
@@ -37,12 +39,38 @@ const Navigation = () => {
   const [createPost, setCreatePost] = useState(false);
   const [searchDropdown, setSearchDropdown] = useState(false);
   const [hide, setHide] = useState(false);
-
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState([])
+  
   useEffect(() => {
-    if(location.pathname.includes("/messenger")){
-      setHide(true)
+    searchInput && console.log(searchInput)
+  }, [searchInput])
+  
+  useEffect(() => {
+    const fetchUsers = async (input) => {
+      const q = query(
+        collection(db, 'users'),
+        and(
+          where("name", "==", input),
+          or(where("userName", "==", input))
+        )
+      );
+      try {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
-  }, [location])
+    try {
+      fetchUsers(searchInput);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [searchInput]);
+  
 
   useEffect(() => {
     const fetchUser = async (email) => {
@@ -188,12 +216,16 @@ const Navigation = () => {
             <button className={`notif-button ${hide && " active"}`}>Explore</button>
           </Link>
           <Link to="/messenger">
-            <MessageCircleIcon></MessageCircleIcon>
+          {
+              window.location.pathname === '/messenger' ?
+                <MessageCircleIconFull /> :
+                <MessageCircleIcon />
+            }
             <button className={`notif-button ${hide && " active"}`}>Messages</button>
           </Link>
           <div onClick={handleDropdown} className="menu-bar notif-icon">
             {
-              hide ?
+              dropdown ?
                 <HeartIconFull></HeartIconFull> :
                 <HeartIcon></HeartIcon>
             }
@@ -296,7 +328,12 @@ const Navigation = () => {
           <h1 className="notifications-heading">
             Search
           </h1>
-          <input placeholder="Search" className="search-input" type="text" />
+          <input onChange={e => setSearchInput(e.target.value)} placeholder="Search" className="search-input" type="text" />
+
+          <div className="search-results">
+            
+          </div>
+
           <div className="hr"></div>
         </div>
       </ul>
