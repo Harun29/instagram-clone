@@ -703,6 +703,7 @@ a {
   height: 100%; 
   position: relative;
   overflow: hidden;
+  z-index: -20;
 }
 
 .grid-item-image {
@@ -710,9 +711,6 @@ a {
   height: 100%;
   object-fit: cover;
 }
-
-
-
 
 /* -------------------- */
 
