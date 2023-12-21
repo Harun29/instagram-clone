@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import MessageCircleIcon from "../../icons/MessageCircleIcon"
-import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayUnion, setDoc, onSnapshot } from "firebase/firestore";
-import { db, storage } from "../../config/firebase";
+import { doc, getDoc, collection, query, where, getDocs, onSnapshot } from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 const Chats = () => {
 
@@ -13,17 +13,20 @@ const Chats = () => {
   const param = useParams();
   const { getUserByEmail } = useAuth();
   const [userName, setUserName] = useState();
-  const [chats, setChats] = useState();
+  const [chats, setChats] = useState([]);
   const [userId, setUserId] = useState();
+  const [loadingChats, setLoadingChats] = useState(true);
 
-  
   useEffect(() => {
     try{
-      if (userId) {
-        const unsubscribe = onSnapshot(doc(db, 'users', userId), (doc) => {
-          const chatsRef = doc.data()?.chats || [];
+      if (userId && loadingChats) {
+        const unsubscribe = onSnapshot(doc(db, 'users', userId), async (document) => {
+          const chatsRef = document.data()?.chats || [];
           const lastIndex = chatsRef.length - 1;
-          if (lastIndex >= 0 && !chats[lastIndex].chatId === chatsRef[lastIndex].chatId) {
+          const chatSnap  = await getDoc(doc(db, 'chats', chatsRef[lastIndex].chatId));
+          console.log(chats[lastIndex])
+          console.log(chatsRef[lastIndex])
+          if (lastIndex >= 0 && !chats[lastIndex].chatId === chatsRef[lastIndex].chatId && chatSnap.data().messages[0]) {
             setChats((prevChat) => [...prevChat, chatsRef[lastIndex]]);
           }
         });
@@ -33,7 +36,7 @@ const Chats = () => {
     }catch(err){
       console.error(err);
     }
-  }, [userId]);
+  }, [userId, chats]);
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, 'users');
@@ -55,7 +58,12 @@ const Chats = () => {
         const userName = user.docs[0].data().userName;
         setUserId(user.docs[0].id)
         setUserName(userName);
-        setChats(user.docs[0].data().chats);
+        user.docs[0].data().chats.map(async (chat) => {
+          const chatSnap  = await getDoc(doc(db, 'chats', chat.chatId));
+          console.log(chatSnap.data())
+          chatSnap.data()?.messages[0] && setChats((prevChat) => [...prevChat, chat]);
+        })
+        setLoadingChats(false)
       }
       currentUser && fetchUser()
     }catch(err){
@@ -72,7 +80,7 @@ const Chats = () => {
           <span className="chats-span">Messages</span>
           <div className="chats">
             {chats && chats.map(chat => (
-              <Link to={chat.friendsId} className="chat">
+              <Link to={`/messenger/${chat.friendsId}`} className="chat">
                 <img className="friends-photo" src={chat.friendsPhoto} alt="" />
                 <div className="friends-info">
                   <span>{chat.friendsUserName}</span>
