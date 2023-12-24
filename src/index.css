@@ -1044,11 +1044,12 @@ a {
 
 .result-box{
   width: 100%;
-  padding: 15px;
+  padding: 0 15px;
   display: flex;
   cursor: pointer;
   align-items: center;
   justify-content: flex-start;
+  transition: all 0.5s ease;
 }
 
 .result-box img{
@@ -1059,6 +1060,20 @@ a {
 
 .result-box span{
   margin-left: 15px;
+  font-size: 0.8rem;
+}
+
+.result-names{
+  display: flex;
+  flex-direction: column;
+}
+
+.result-names span:nth-child(1){
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.result-names span:nth-child(2){
+  color: rgb(150, 150, 150);
 }
 
 /* Messenger - Chats */

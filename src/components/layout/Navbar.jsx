@@ -352,7 +352,10 @@ const Navigation = () => {
             {searchResults.map((result, index) => (
               <Link to={`/user/${result.userName}`} key={index} className="result-box">
                 <img src={result.pphoto} alt="" />
-                <span>{result.userName}</span>
+                <div className="result-names">
+                  <span>{result.userName}</span>
+                  <span>{result.name}</span>
+                </div>
               </Link>
             ))}
           </div>
