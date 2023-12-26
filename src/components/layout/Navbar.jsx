@@ -204,11 +204,6 @@ const Navigation = () => {
     location.pathname.includes("/messenger") && setHide(true)
   }, [location])
 
-  const downloadUrl = async (name) => {
-    const imgUrl = await getDownloadURL(ref(storage, `profile_pictures/${name}`))
-    return imgUrl;
-  }
-
   return (
     <div className="navigation-container">
       <nav className='nav-wrapper'>
@@ -293,7 +288,7 @@ const Navigation = () => {
         <h1 className="notifications-heading">
           Notifications
         </h1>
-        {notifs ? (
+        {notifs && (
           notifs.map((notif, index) => (
             <li key={index} className="notification">
               {notif.notifType === "like" ?
@@ -335,8 +330,6 @@ const Navigation = () => {
                 : null}
             </li>
           ))
-        ) : (
-          <div>Loading...</div>
         )}
       </ul>
 
