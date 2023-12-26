@@ -757,22 +757,7 @@ a {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-
 /*------------------------*/
-.profile-setting-form {
-  max-width: 400px;
-}
-
-.profile-picture-settings {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 100%;
-}
-
-
-
 
 /* SIGNUP */
 .form-outline {
@@ -846,8 +831,6 @@ a {
 
 .form-control{
   padding: 15px;
-  width: calc(100% - 60px);
-  margin: 15px;
   border: 1px solid rgb(228, 228, 228);
   background-color: rgb(252, 252, 252);
 }
@@ -1278,3 +1261,123 @@ a {
   background-color: #0064e0;
 }
 
+/* Update */
+
+.edit-profile{
+  margin-bottom: 35px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.profile-setting-form {
+  max-width: 400px;
+}
+
+.profile-picture-settings {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 100%;
+}
+
+.settings-container{
+  margin-left: calc(14vw + 85px);
+  padding: 0 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.settings-container form{
+  width: 50%;
+  padding: 50px;
+}
+
+
+
+.picture-update{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #efefef;
+  padding: 16px;
+  margin-bottom: 25px;
+  border-radius: 20px;
+}
+
+.picture-update div{
+  display: flex;
+}
+
+.picture-update-spans{
+  margin-left: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+
+.picture-update-spans span:nth-child(1){
+  color: black;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.picture-update-spans span:nth-child(2){
+  color: #737373;
+}
+
+.update-form{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 35px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.update-form label{
+  margin-bottom: 15px;
+}
+
+.update-form input, .update-form textarea{
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgb(204, 208, 213);
+}
+
+.update-form input:focus, .update-form textarea:focus{
+  outline: 1px solid black;
+}
+
+.update-submit{
+  color: white;
+  border-radius: 8px;
+  padding: 15px 100px;
+  background-color: #0095f6;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+.update-submit:hover{
+  background-color: #0064e0;
+}
+
+.send-password-button{
+  margin-bottom: 15px;
+}
+
+.resend-email{
+  margin-bottom: 15px;
+}
+
+.resend-email button{
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: inherit;
+  color: #0064e0;
+}
+.resend-email button:hover{
+  color: black;
+}

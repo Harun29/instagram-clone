@@ -168,60 +168,73 @@ const UpdateProfile = () => {
   };
 
   return user ? (
-    <div className="settings-container d-flex justify-content-center align-items-start shadow p-3 mb-5 bg-white rounded">
+    <div className="settings-container">
       <form 
-        className="me-5 profile-setting-form"
         onSubmit={handleChanges}>
-        <h3 className="mb-3">Settings</h3>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Name
-          </label>
-          <input onChange={(e) => setName(e.target.value)} type="text" className="form-control" id="name" defaultValue={user.name} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="userName" className="form-label">
-            Username
-          </label>
-          <input onChange={handleUserNameChange} type="text" className="form-control" id="userName" value={userName}/>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
-          <input onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" id="email" defaultValue={user.email} />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="bio" className="form-label">
-            Bio
-          </label>
-          <textarea onChange={(e) => setBio(e.target.value)} className="form-control" id="bio" rows="3" defaultValue={user.bio}></textarea>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="bio" className="form-label">
-            Birthday
-          </label>
-          <input type="date" onChange={(e) => setBirthday(e.target.value)} className="form-control" id="birthday" rows="3" defaultValue={user.age}></input>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="photo" className="form-label">
-            Profile Photo
-          </label>
-          <input 
+
+      <h2 className="edit-profile">Edit profile</h2>
+        <div className="picture-update">
+          <div>
+            {selectedImage ?
+            <img src={selectedImage} alt="Selected" className="profile-picture-settings"/>
+            : <img src={currentProfilePhoto || "/blank-profile.jpg"} alt="Selected" className="profile-picture-settings"/>}
+            
+            <div className="picture-update-spans">
+              <span>{userName}</span>
+              <span>{name}</span>
+            </div>
+          </div>
+
+          <button className="follow-button">Change photo</button>
+
+          {/* <input 
           type="file" 
           className="form-control" 
           id="photo"
           accept="image/*"
-          onChange={handleImageChange} 
-          />
+          onChange={handleImageChange}
+          /> */}
 
-          {selectedImage ?
-           <img src={selectedImage} alt="Selected" className="profile-picture-settings mt-3"/>
-          : <img src={currentProfilePhoto || "/blank-profile.jpg"} alt="Selected" className="profile-picture-settings mt-3"/>}
           
         </div>
-        <button disabled={loading} type="submit" className="btn btn-primary">
-          Save Changes
+
+        <div className="update-form">
+          <label htmlFor="name">
+            Name
+          </label>
+          <input onChange={(e) => setName(e.target.value)} type="text" id="name" defaultValue={user.name} />
+        </div>
+
+        <div className="update-form">
+          <label htmlFor="userName">
+            Username
+          </label>
+          <input onChange={handleUserNameChange} type="text" id="userName" value={userName}/>
+        </div>
+
+        <div className="update-form">
+          <label htmlFor="email">
+            Email
+          </label>
+          <input onChange={(e) => setEmail(e.target.value)} type="email" id="email" defaultValue={user.email} />
+        </div>
+
+        <div className="update-form">
+          <label htmlFor="bio">
+            Bio
+          </label>
+          <textarea onChange={(e) => setBio(e.target.value)} id="bio" rows="3" defaultValue={user.bio}></textarea>
+        </div>
+
+        <div className="update-form">
+          <label htmlFor="bio">
+            Birthday
+          </label>
+          <input type="date" onChange={(e) => setBirthday(e.target.value)} className="form-control" id="birthday" rows="3" defaultValue={user.age}></input>
+        </div>
+
+        <button className="update-submit" disabled={loading} type="submit">
+          Submit
         </button>
       </form>
 
@@ -229,15 +242,17 @@ const UpdateProfile = () => {
 
       <form
       onSubmit={handlePasswordChange}>
-        <h4 className="mb-3">Change Password</h4>
-        <div className="mb-3">
-          <label htmlFor="newPassword" className="form-label">
+        <h2 className="edit-profile">Change Password</h2>
+
+        <div className="update-form">
+          <label htmlFor="newPassword">
             New Password
           </label>
-          <input required onChange={(e) => {setPassword(e.target.value)}} type="password" className="form-control" id="newPassword" />
+          <input required onChange={(e) => {setPassword(e.target.value)}} type="password" id="newPassword" />
         </div>
-        <div className="mb-3">
-          <label htmlFor="confirmNewPassword" className="form-label">
+
+        <div className="update-form">
+          <label htmlFor="confirmNewPassword">
             Confirm New Password
           </label>
           <input 
@@ -247,21 +262,23 @@ const UpdateProfile = () => {
             className={`form-control ${passwordLoading ? " is-invalid" : ""} ${confirmPassword && !passwordLoading ? " is-valid" : ""}`} 
             id="confirmNewPassword" />
         </div>
+
         {!confirmation ?
-          <div className="text-center">
-            <button onClick={handlePasswordEmail} className="btn btn-link mb-3">Send password reset email</button>
+          <div>
+            <button onClick={handlePasswordEmail} className="send-password-button follow-button">Send password reset email</button>
           </div> :
-          <p className="d-flex align-items-center">Check your email. Dont see the email: 
-            <button onClick={handlePasswordEmail} className="btn btn-link py-0">resend</button>
+          <p className="resend-email">Check your email. Dont see the email? 
+            <button onClick={handlePasswordEmail}>Resend</button>
           </p>
         }
-        <button disabled={passwordLoading || passwordUpdating} type="submit" className="btn btn-primary">
+
+        <button className="follow-button" disabled={passwordLoading || passwordUpdating} type="submit">
           Change Password
         </button>
       </form>
     </div>
   ) : (
-    <div className="d-flex justify-content-center align-items-center">
+    <div>
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
