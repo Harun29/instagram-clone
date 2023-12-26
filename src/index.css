@@ -408,7 +408,6 @@ a {
   display: flex;
   flex-direction: column;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgb(224, 222, 222);
   margin-bottom: 20px;
 }
 
