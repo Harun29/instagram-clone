@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { updateDoc, arrayRemove, arrayUnion, collection, where, query, getDocs, or} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
+import { useRef } from "react";
 import HomeIcon from "../../icons/HomeIcon";
 import SearchIcon from "../../icons/SearchIcon";
 import HeartIcon from "../../icons/HeartIcon";
@@ -41,10 +42,22 @@ const Navigation = () => {
   const [hide, setHide] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([])
-  
+  const moreDropdownRef = useRef(null);
+
   useEffect(() => {
-    searchResults && console.log(searchResults)
-  }, [searchResults])
+    const handleClickOutside = (event) => {
+      const isClickInsideDropdown = moreDropdownRef.current && moreDropdownRef.current.contains(event.target);
+      const isClickInsideBottomExcludedRegion = event.clientY > window.innerHeight - 55;
+
+      if (!isClickInsideDropdown && !isClickInsideBottomExcludedRegion) {
+        setMoreDropdown(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   
   useEffect(() => {
     const fetchUsers = async (input) => {
@@ -265,7 +278,7 @@ const Navigation = () => {
           <button className={`notif-button ${hide && " active"}`} style={moreDropdown ? { fontWeight: '700' } : null}>More</button>
         </footer>
         {moreDropdown ?
-          <div className="more-dropdown-container">
+          <div ref={moreDropdownRef} className="more-dropdown-container">
 
             <Link to="/settings" className="more-dropdown-element menu-bar">
               <SettingsIcon></SettingsIcon>

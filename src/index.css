@@ -531,6 +531,7 @@ a {
 .view-all-comments{
   font-size: 0.8rem;
   color: rgb(150, 150, 150);
+  cursor: pointer;
 }
 
 
@@ -1380,4 +1381,74 @@ a {
 }
 .resend-email button:hover{
   color: black;
+}
+
+/* Post */
+
+.post-container{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(97, 97, 97, 0.5);
+  z-index: 1005;
+}
+
+.see-post{
+  z-index: 1002;
+  height: 90%;
+}
+
+.see-post .card{
+  display: flex;
+  background-color: white;
+  height: 100%;
+}
+
+.see-post .card .card-body{
+  background-color: white;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  height: 100%;
+}
+
+.post-header-description .card-text{
+  display: flex;
+}
+
+.add-comment.in-post{
+  border: none;
+}
+
+.opis-sekcija{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.comments.in-post{
+  overflow-y: scroll;
+  height: 400px;
+  max-height: 400px;
+  margin-top: 10px;
+}
+
+.comment-button-in-post{
+  border: none!important;
+}
+
+.interactions.in-post{
+  margin-bottom: 5px;
+  padding-top: 10px;
+  border-top: 1px solid rgb(228, 228, 228);
+}
+
+.card-img-top{
+  max-height: 100%;
+  object-fit: contain;
+  max-width: 700px;
 }
