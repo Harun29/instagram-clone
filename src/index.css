@@ -1393,6 +1393,11 @@ a {
   align-items: center;
   background-color: rgba(97, 97, 97, 0.5);
   z-index: 1005;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
 }
 
 .card{
@@ -1405,6 +1410,7 @@ a {
 .card-img-top{
   max-width: 60%;
   object-fit: contain;
+  background-color: black;
 }
 
 .card-body{
@@ -1416,8 +1422,13 @@ a {
   padding: 15px;
 }
 
+.post-header-description{
+  padding: 15px;
+}
+
 .comments-in-post{
   overflow-y: scroll;
+  margin: 15px;
 }
 
 .interactions.in-post{

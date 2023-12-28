@@ -40,7 +40,6 @@ function App() {
               <Route path='/createpost' element={<PrivateRoute component={CreatePost}/>}/>
               <Route path='/forgot-password' element={<ForgotPassword />}/>
               <Route path='/user/:username' element={<PrivateRoute component={User}/>}/>
-              <Route path='/post/:postid' element={<Post />}/>
               <Route
                 path="/user/:username/followers"
                 element={<UserFollowList fetchType="followers" />}

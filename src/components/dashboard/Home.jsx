@@ -14,6 +14,7 @@ import SaveIcon from "../../icons/SaveIcon";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Post from "../projects/Post";
 
 
 const Home = () => {
@@ -26,6 +27,8 @@ const Home = () => {
   const [userViewingPhoto, setUserViewingPhoto] = useState('');
   const [userViewingId, setUserViewingId] = useState();
   const [likedByArray, setLikeByArray] = useState([]);
+  const [postid, setPostid] = useState();
+  const [seePost, setSeePost] = useState(false);
 
   useEffect(()=>{
     if(!currentUser){
@@ -258,13 +261,17 @@ const Home = () => {
     }
   }
 
+  const handleSeePost = (postid) => {
+    setPostid(postid);
+    setSeePost(true)
+  }
+
 
   return (
     <div className="home-container">
       <div className="row">
-        <div className="stories"></div>
         {posts ? posts.map((post) => (
-          <div className="post">
+          <div id="post" className="post">
 
             <div className="post-header">
               <Link className="link-to-user" to={`/user/${post.user}`}>
@@ -308,7 +315,7 @@ const Home = () => {
               <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">more</button>
             </div>
             
-            {post.comments ? <div className="view-all-comments">
+            {post.comments ? <div onClick={() => handleSeePost(post.id)} className="view-all-comments">
               <p>View all {post.comments.length} comments</p>
             </div>:null}
 
@@ -316,6 +323,10 @@ const Home = () => {
               <input className="add-comment" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
               <button onClick={() => handleComment(post.id, post.photo, post.userId, document.getElementById(post.id + "comment").value)}>post</button>
             </div>
+
+            {seePost &&
+              <Post param={postid}></Post>
+            }
 
           </div>
 
@@ -352,6 +363,7 @@ const Home = () => {
       <div className="quick-message">
 
       </div>
+
     </div>
   );
 }

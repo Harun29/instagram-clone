@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { db } from "../../config/firebase";
 import { getDoc, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -14,19 +13,22 @@ import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import SaveIcon from "../../icons/SaveIcon";
 
 
-const Post = () => {
+const Post = ({param}) => {
 
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState('');
   const [userViewingId, setUserViewingId] = useState();
-  const param = useParams();
   const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
   const [userId, setUserId] = useState();
   const [userPhoto, setUserPhoto] = useState();
   const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    currentUser && console.log(currentUser.email)
+  }, [currentUser])
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, 'users');
@@ -79,28 +81,28 @@ const Post = () => {
 
   useEffect(() => {
     const fetchPostPhoto = async () => {
-      const docRef = doc(db, 'posts', param.postid);
+      const docRef = doc(db, 'posts', param);
       const docSnap = await getDoc(docRef)
       const docImg = await getDownloadURL(ref(storage, `posts_pictures/${docSnap.data().photo}`))
       setPostPicture(docImg);
     }
 
     try {
-      param.postid && fetchPostPhoto();
+      param && fetchPostPhoto();
     } catch (err) {
       console.error(err)
     }
-  }, [param.postid])
+  }, [param])
 
   const handleLike = async () => {
     setLiked((prevLiked) => !prevLiked);
-    const docRef = doc(db, "posts", param.postid);
+    const docRef = doc(db, "posts", param);
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
 
     const notifObject = (notifStatus) => {
       const object = {
-        postLiked: param.postid,
+        postLiked: param,
         postLikedPhoto: postPicture,
         likedBy: userViewing.userName,
         likedByPhoto: userViewingPhoto,
@@ -117,7 +119,7 @@ const Post = () => {
           likedby: arrayUnion(userViewing.email)
         });
         await updateDoc(docUserRef, {
-          likedPosts: arrayUnion(param.postid)
+          likedPosts: arrayUnion(param)
         });
         await updateDoc(docNotifRef, {
           notif: arrayUnion(notifObject(false))
@@ -127,7 +129,7 @@ const Post = () => {
           likedby: arrayRemove(userViewing.email)
         });
         await updateDoc(docUserRef, {
-          likedPosts: arrayRemove(param.postid)
+          likedPosts: arrayRemove(param)
         });
         await updateDoc(docNotifRef, {
           notif: arrayRemove(notifObject(false))
@@ -174,7 +176,7 @@ const Post = () => {
     }
 
     try {
-      fetchPost(param.postid);
+      fetchPost(param);
     } catch (err) {
       console.error("error: ", err)
     }
