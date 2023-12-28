@@ -28,8 +28,6 @@ const Post = () => {
   const [userPhoto, setUserPhoto] = useState();
   const [liked, setLiked] = useState(false);
 
-
-
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, 'users');
     const q = query(usersRef, where('email', '==', email));
@@ -238,17 +236,16 @@ const Post = () => {
   };
 
   return (
-    <div className="post-container">
-      <div className="see-post">
-        {!post ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="card">
-            <img src={postPicture} alt="Post" className="card-img-top" />
-            <div className="card-body">
-              
-              <div className="opis-sekcija">
-              <div className="post-header">
+    <div className="post-background">
+      {!post ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="card">
+          <img src={postPicture} alt="Post" className="card-img-top" />
+
+          <div className="card-body">
+
+              <div className="post-header in-post">
                 <Link className="link-to-user" to={`/user/${user}`}>
                   <img className="profile-photo" src={userPhoto} alt="profile" />
                   <label>{user}</label>
@@ -267,12 +264,10 @@ const Post = () => {
                 </Link>
               </div>
 
-              <div className="comments in-post">
+              <div className="comments-in-post">
                 <p>comment</p>
               </div>
-              </div>
 
-              <div>
               <div className="interactions in-post">
                 <div>
                   <div onClick={handleLike}>
@@ -287,17 +282,14 @@ const Post = () => {
                 <SaveIcon></SaveIcon>
               </div>
 
-              <div className="add-comment-container">
+              <div className="add-comment-container in-post">
                 <input className="add-comment in-post" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
                 <button className="comment-button-in-post" onClick={() => handleComment(post.id, post.photo, post.userId, document.getElementById(post.id + "comment").value)}>post</button>
               </div>
-              </div>
-
-
             </div>
-          </div>
-        )}
-      </div>
+
+        </div>
+      )}
     </div>
   );
 }

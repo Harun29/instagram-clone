@@ -1385,7 +1385,7 @@ a {
 
 /* Post */
 
-.post-container{
+.post-background{
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -1395,60 +1395,39 @@ a {
   z-index: 1005;
 }
 
-.see-post{
-  z-index: 1002;
+.card{
+  display: flex;
+  background-color: white;
+  max-width: 85%;
   height: 90%;
 }
 
-.see-post .card{
-  display: flex;
-  background-color: white;
-  height: 100%;
+.card-img-top{
+  max-width: 60%;
+  object-fit: contain;
 }
 
-.see-post .card .card-body{
-  background-color: white;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 400px;
-  height: 100%;
+.card-body{
+  display: grid;
+  grid-template-rows: 60px 1fr 5fr 50px 50px;
 }
 
-.post-header-description .card-text{
-  display: flex;
+.post-header.in-post{
+  padding: 15px;
 }
 
-.add-comment.in-post{
-  border: none;
-}
-
-.opis-sekcija{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.comments.in-post{
+.comments-in-post{
   overflow-y: scroll;
-  height: 400px;
-  max-height: 400px;
-  margin-top: 10px;
-}
-
-.comment-button-in-post{
-  border: none!important;
 }
 
 .interactions.in-post{
-  margin-bottom: 5px;
-  padding-top: 10px;
-  border-top: 1px solid rgb(228, 228, 228);
+  padding: 15px;
 }
 
-.card-img-top{
-  max-height: 100%;
-  object-fit: contain;
-  max-width: 700px;
+.add-comment-container.in-post{
+  padding: 0 15px;
+  margin-bottom: 15px;
+  width: calc(100% - 30px);
 }
+
+
