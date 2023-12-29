@@ -253,13 +253,13 @@ const Post = ({ param, postRef }) => {
 
           <div className="post-header-description">
             <Link className="link-to-user" to={`/user/${user}`}>
+              <img className="profile-photo" src={userPhoto} alt="profile" />
+            </Link>
               <p className="card-text">
-                <img className="profile-photo" src={userPhoto} alt="profile" />
-                {user} {" "}
+                <Link to={`/user/${user}`} className="bold">{user}</Link> {" "}
                 {post.title} {" "}
                 {post.description}
               </p>
-            </Link>
           </div>
 
           <div className="comments-in-post">

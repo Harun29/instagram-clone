@@ -1398,6 +1398,8 @@ a {
   left: 0;
   right: 0;
   top: 0;
+  font-size: 0.9rem;
+
 }
 
 .card{
@@ -1421,6 +1423,7 @@ a {
 
 .post-header.in-post{
   padding: 15px;
+  margin-top: 10px;
 }
 
 .post-header-description{
@@ -1449,3 +1452,10 @@ a {
   z-index: 2000;
 }
 
+.post-header-description{
+  display: flex;
+}
+
+.bold{
+  font-weight: 700;
+}
