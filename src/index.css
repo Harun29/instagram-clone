@@ -1414,6 +1414,7 @@ a {
 }
 
 .card-body{
+  max-width: 500px;
   display: grid;
   grid-template-rows: 60px 1fr 5fr 50px 50px;
 }
@@ -1441,4 +1442,10 @@ a {
   width: calc(100% - 30px);
 }
 
+.show-post .icon-tabler-x{
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2000;
+}
 

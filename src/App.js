@@ -9,7 +9,6 @@ import SignUp from './components/auth/SignUp';
 import SignIn from './components/auth/SignIn';
 import User from './components/projects/User';
 import UserFollowList from './components/projects/UserFollowList';
-import Post from './components/projects/Post';
 import 'animate.css';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';

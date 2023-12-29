@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { db } from "../../config/firebase";
 import { getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebase";
@@ -16,7 +16,6 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Post from "../projects/Post";
 
-
 const Home = () => {
 
   const navigate = useNavigate();
@@ -29,9 +28,25 @@ const Home = () => {
   const [likedByArray, setLikeByArray] = useState([]);
   const [postid, setPostid] = useState();
   const [seePost, setSeePost] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const postRef = useRef(null);
 
-  useEffect(()=>{
-    if(!currentUser){
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInsidePost = postRef.current && postRef.current.contains(event.target);
+
+      if (!isClickInsidePost && !buttonClicked) {
+         setSeePost(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [seePost, buttonClicked]);
+
+  useEffect(() => {
+    if (!currentUser) {
       navigate("/signup")
     }
   }, [currentUser, navigate])
@@ -94,34 +109,35 @@ const Home = () => {
           const photoUrl = await getDownloadURL(
             ref(storage, `posts_pictures/${doc.data().photo}`)
           );
-          
+
           const getLikedByUsername = async () => {
-            if(doc.data().likedby[0]){
+            if (doc.data().likedby[0]) {
               const likedBy = await getUserByEmail(doc.data().likedby[0])
               return likedBy.userName;
-            }else{
+            } else {
               return null
             }
           }
-          
+
           const getLikedByPhoto = async () => {
-            if(doc.data().likedby[0]){
+            if (doc.data().likedby[0]) {
               const likedBy = await getUserByEmail(doc.data().likedby[0])
-              if(likedBy.pphoto){
+              if (likedBy.pphoto) {
                 const likedByPhoto = await getDownloadURL(ref(storage, `profile_pictures/${likedBy.pphoto}`));
                 return likedByPhoto
-              }else{
+              } else {
                 const likedByPhotoBlank = "/blank-profile.jpg"
                 return likedByPhotoBlank
               }
-          }}
+            }
+          }
 
           setLikeByArray(prevLikedByArray => [...prevLikedByArray, { postid: doc.id, likedBy: doc.data().likedby }]);
-          
+
           if (user.pphoto) {
             const userPhotoUrl = await getDownloadURL(
               ref(storage, `profile_pictures/${user.pphoto}`)
-              );
+            );
             return {
               id: doc.id,
               title: doc.data().title,
@@ -228,7 +244,7 @@ const Home = () => {
         await updateDoc(docNotifRef, {
           notif: arrayRemove(notifObject(true))
         });
-        
+
       } else {
         likedByArray[index].likedBy.push(currentUser.email)
         document.getElementById(postid).classList.add('active');
@@ -243,7 +259,7 @@ const Home = () => {
           notif: arrayUnion(notifObject(false))
         });
       }
-      
+
     } catch (err) {
       console.error("Error in handleLike: ", err);
     }
@@ -252,20 +268,24 @@ const Home = () => {
   const handleMore = (postid) => {
     const id = postid + "description";
     const buttonId = postid + "button";
-    if (document.getElementById(id).classList.contains("more")){
+    if (document.getElementById(id).classList.contains("more")) {
       document.getElementById(id).classList.remove('more');
       document.getElementById(buttonId).innerHTML = "more";
-    }else{
+    } else {
       document.getElementById(id).classList.add('more');
-      document.getElementById(buttonId).innerHTML = "less";  
+      document.getElementById(buttonId).innerHTML = "less";
     }
   }
 
   const handleSeePost = (postid) => {
     setPostid(postid);
-    setSeePost(true)
+    setSeePost(true);
+    setButtonClicked(true);
   }
 
+  useEffect(() => {
+    seePost && setButtonClicked(false)
+  }, [seePost])
 
   return (
     <div className="home-container">
@@ -299,14 +319,14 @@ const Home = () => {
 
             {post.likedBy.length !== 0 &&
               <div className="liked-by">
-              <Link to={`/user/${post.likedByUsername}`}>
-                <img src={post.likedByPhoto} alt="user" />
-              </Link>
-              <p>Liked by</p>
-              <Link to={`/user/${post.likedByUsername}`}>{post.likedByUsername}</Link>
-              <p>and</p>
-              <Link to="">others</Link>
-            </div>}
+                <Link to={`/user/${post.likedByUsername}`}>
+                  <img src={post.likedByPhoto} alt="user" />
+                </Link>
+                <p>Liked by</p>
+                <Link to={`/user/${post.likedByUsername}`}>{post.likedByUsername}</Link>
+                <p>and</p>
+                <Link to="">others</Link>
+              </div>}
 
             <div className="post-description">
               <h4>{post.title}</h4>
@@ -314,10 +334,10 @@ const Home = () => {
               </p>
               <button id={post.id + "button"} onClick={() => handleMore(post.id)} className="more-button">more</button>
             </div>
-            
+
             {post.comments ? <div onClick={() => handleSeePost(post.id)} className="view-all-comments">
               <p>View all {post.comments.length} comments</p>
-            </div>:null}
+            </div> : null}
 
             <div className="add-comment-container">
               <input className="add-comment" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
@@ -325,7 +345,11 @@ const Home = () => {
             </div>
 
             {seePost &&
-              <Post param={postid}></Post>
+              <div className="show-post">
+                <div className="post-background">
+                  <Post param={postid} postRef={postRef}></Post>
+                </div>
+              </div>
             }
 
           </div>

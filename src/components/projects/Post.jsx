@@ -13,7 +13,7 @@ import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import SaveIcon from "../../icons/SaveIcon";
 
 
-const Post = ({param}) => {
+const Post = ({ param, postRef }) => {
 
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
@@ -237,63 +237,58 @@ const Post = ({param}) => {
     }
   };
 
-  return (
-    <div className="post-background">
-      {!post ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="card">
-          <img src={postPicture} alt="Post" className="card-img-top" />
+    return post ? (
+      <div className="card" ref={postRef}>
+        <img src={postPicture} alt="Post" className="card-img-top" />
 
-          <div className="card-body">
+        <div className="card-body">
 
-              <div className="post-header in-post">
-                <Link className="link-to-user" to={`/user/${user}`}>
-                  <img className="profile-photo" src={userPhoto} alt="profile" />
-                  <label>{user}</label>
-                </Link>
-                <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
+          <div className="post-header in-post">
+            <Link className="link-to-user" to={`/user/${user}`}>
+              <img className="profile-photo" src={userPhoto} alt="profile" />
+              <label>{user}</label>
+            </Link>
+            <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
+          </div>
+
+          <div className="post-header-description">
+            <Link className="link-to-user" to={`/user/${user}`}>
+              <p className="card-text">
+                <img className="profile-photo" src={userPhoto} alt="profile" />
+                {user} {" "}
+                {post.title} {" "}
+                {post.description}
+              </p>
+            </Link>
+          </div>
+
+          <div className="comments-in-post">
+            <p>comment</p>
+          </div>
+
+          <div className="interactions in-post">
+            <div>
+              <div onClick={handleLike}>
+                <svg id={post.id} xmlns="http://www.w3.org/2000/svg" class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${post.likedby.includes(currentUser.email) ? "active" : ""}`} width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill={post.likedby.includes(userViewing.email) ? "red" : "none"} stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                </svg>
               </div>
-
-              <div className="post-header-description">
-                <Link className="link-to-user" to={`/user/${user}`}>
-                  <p className="card-text">
-                    <img className="profile-photo" src={userPhoto} alt="profile" />
-                    {user} {" "}
-                    {post.title} {" "}
-                    {post.description}
-                  </p>
-                </Link>
-              </div>
-
-              <div className="comments-in-post">
-                <p>comment</p>
-              </div>
-
-              <div className="interactions in-post">
-                <div>
-                  <div onClick={handleLike}>
-                    <svg id={post.id} xmlns="http://www.w3.org/2000/svg" class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${post.likedby.includes(currentUser.email) ? "active" : ""}`} width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill={post.likedby.includes(userViewing.email) ? "red" : "none"} stroke-linecap="round" stroke-linejoin="round">
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                    </svg>
-                  </div>
-                  <MessageCircleIcon></MessageCircleIcon>
-                  <ArrowForwardIcon></ArrowForwardIcon>
-                </div>
-                <SaveIcon></SaveIcon>
-              </div>
-
-              <div className="add-comment-container in-post">
-                <input className="add-comment in-post" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
-                <button className="comment-button-in-post" onClick={() => handleComment(post.id, post.photo, post.userId, document.getElementById(post.id + "comment").value)}>post</button>
-              </div>
+              <MessageCircleIcon></MessageCircleIcon>
+              <ArrowForwardIcon></ArrowForwardIcon>
             </div>
+            <SaveIcon></SaveIcon>
+          </div>
 
+          <div className="add-comment-container in-post">
+            <input className="add-comment in-post" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
+            <button className="comment-button-in-post" onClick={() => handleComment(post.id, post.photo, post.userId, document.getElementById(post.id + "comment").value)}>post</button>
+          </div>
         </div>
-      )}
-    </div>
-  );
+
+      </div>
+    ) : <p>Loading...</p>
+
 }
 
 export default Post;
