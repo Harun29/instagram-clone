@@ -200,10 +200,6 @@ const Post = ({ param, postRef }) => {
     }
   }, [post])
 
-  useEffect(() => {
-    post && console.log("post: ", post)
-  }, [post])
-
   const handleComment = async (postid, postPhoto, userId, comment) => {
     const docRef = doc(db, "posts", postid);
     const docNotifRef = doc(db, "users", userId);
@@ -263,7 +259,18 @@ const Post = ({ param, postRef }) => {
           </div>
 
           <div className="comments-in-post">
-            <p>comment</p>
+            {post.comments.map((comment) => (
+              <div className="comment">
+                <Link to={`/user/${comment.userName}`}>
+                  <img src={comment.userPhoto} />
+                </Link>
+                <p>
+                  <Link to={`/user/${comment.userName}`}>{comment.userName}</Link>
+                  {" "}
+                  {comment.comment}
+                </p>
+              </div>
+            ))}
           </div>
 
           <div className="interactions in-post">

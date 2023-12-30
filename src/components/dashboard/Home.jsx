@@ -197,7 +197,9 @@ const Home = () => {
       await updateDoc(docRef, {
         comments: arrayUnion({
           user: userViewing.email,
-          comment: comment
+          comment: comment,
+          userPhoto: userViewingPhoto,
+          userName: userViewing.userName
         }
         )
       });
