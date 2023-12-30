@@ -221,11 +221,11 @@ const Navigation = () => {
     <div className="navigation-container">
       <nav className='nav-wrapper'>
         <div className="container">
-          <Link onClick={hide ? handleHide : null} to='/' className={`brand-logo logo-on-top ${!hide ? "active" : ''}`}>
+          <Link onClick={hide && handleHide} to='/' className={`brand-logo logo-on-top ${!hide ? "active" : ''}`}>
             <h1 className={`logo-name ${hide ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
             <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Link>
-          <Link onClick={hide ? handleHide : null} to='/'>
+          <Link onClick={hide && handleHide} to='/'>
             {
               window.location.pathname === '/' && !hide ?
                 <HomeIconFull /> :
@@ -241,7 +241,7 @@ const Navigation = () => {
             <CompassIcon></CompassIcon>
             <button className={`notif-button ${hide && " active"}`}>Explore</button>
           </Link>
-          <Link to="/messenger">
+          <Link onClick={hide && handleHide} to="/messenger">
           {
               window.location.pathname === '/messenger' ?
                 <MessageCircleIconFull /> :
@@ -264,7 +264,7 @@ const Navigation = () => {
             <PlusIcon></PlusIcon>
             <button className={`notif-button ${hide && " active"}`}>Create</button>
           </div>
-          <Link to='/profile'>
+          <Link onClick={hide && handleHide} to='/profile'>
             <img src={userPhoto} style={window.location.pathname === '/profile' ? { border: '2px solid black', width: '31px', height: '31px' } : null} alt="user" className="profile-photo navbar" />
             <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null} className={`notif-button ${hide && " active"}`}>Profile</button>
           </Link>

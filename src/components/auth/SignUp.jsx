@@ -14,7 +14,7 @@ const SignUp = () => {
 
   const [name, setName] = useState('')
   const [userName, setUserName] = useState('')
-  const [age, setAge] = useState('')
+  // const [age, setAge] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -57,7 +57,7 @@ const SignUp = () => {
       email: email,
       name: name,
       userName: userName,
-      age: age,
+      // age: age,
       pphoto: '',
       bio: '',
       following: [],
@@ -66,7 +66,7 @@ const SignUp = () => {
       chats: [],
       saved: []
     });
-  }, [email, name, userName, age])
+  }, [email, name, userName])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

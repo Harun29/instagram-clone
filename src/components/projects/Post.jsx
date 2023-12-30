@@ -262,7 +262,7 @@ const Post = ({ param, postRef }) => {
             {post.comments.map((comment) => (
               <div className="comment">
                 <Link to={`/user/${comment.userName}`}>
-                  <img src={comment.userPhoto} />
+                  <img src={comment.userPhoto} alt="commented by"/>
                 </Link>
                 <p>
                   <Link to={`/user/${comment.userName}`}>{comment.userName}</Link>

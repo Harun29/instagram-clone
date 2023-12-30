@@ -492,6 +492,10 @@ a {
   margin-right: 15px;
 }
 
+.interactions div:nth-child(2) svg{
+  margin: 0;
+}
+
 .post-description{
   white-space: wrap;
 }
