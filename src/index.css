@@ -1432,13 +1432,14 @@ a {
 
 .comments-in-post{
   overflow-y: scroll;
-  margin: 15px;
+  margin: 0 15px 15px;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  width: calc(100% - 30px);
 }
 
-.comments::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
+.comments-in-post::-webkit-scrollbar {
+  display: none;
 }
 
 .interactions.in-post{
@@ -1466,13 +1467,9 @@ a {
   font-weight: 700;
 }
 
-.comments-in-post{
-  width: calc(100% - 30px);
-}
-
 .comment {
   display: flex;
-  width: calc(100% - 30px);
+  width: 100%;
   text-wrap: wrap;
   margin-bottom: 10px;
 }
