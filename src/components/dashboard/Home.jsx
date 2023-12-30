@@ -26,6 +26,7 @@ const Home = () => {
   const [userViewingPhoto, setUserViewingPhoto] = useState('');
   const [userViewingId, setUserViewingId] = useState();
   const [likedByArray, setLikeByArray] = useState([]);
+  const [savedArray, setSavedArray] = useState([]);
   const [postid, setPostid] = useState();
   const [seePost, setSeePost] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -36,7 +37,7 @@ const Home = () => {
       const isClickInsidePost = postRef.current && postRef.current.contains(event.target);
 
       if (!isClickInsidePost && !buttonClicked) {
-         setSeePost(false);
+        setSeePost(false);
       }
     };
     window.addEventListener("click", handleClickOutside);
@@ -71,6 +72,7 @@ const Home = () => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
+      setSavedArray(user.docs[0].data().savedIds)
       console.log(user)
     }
     try {
@@ -267,6 +269,48 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(savedArray)
+  }, [savedArray])
+
+  const handleSave = async (postId, postPhoto) => {
+    const docUserRef = doc(db, "users", userViewingId);
+    const postid = postId + 'save'
+
+    try {
+      if (savedArray.includes(postId)) {
+        savedArray.pop(postId);
+        document.getElementById(postid).setAttribute("fill", "none");
+        await updateDoc(docUserRef, {
+          saved: arrayRemove({
+            postId,
+            postPhoto
+          })
+        });
+        await updateDoc(docUserRef, {
+          savedIds: arrayRemove(postId)
+        });
+        
+      } else {
+        console.log('im here')
+        savedArray.push(postId);
+        document.getElementById(postid).setAttribute("fill", "full");
+        await updateDoc(docUserRef, {
+          saved: arrayUnion({
+            postId,
+            postPhoto
+          })
+        });
+        await updateDoc(docUserRef, {
+          savedIds: arrayUnion(postId)
+        });
+      }
+
+    } catch (err) {
+      console.error("Error in handleSave: ", err);
+    }
+  };
+
   const handleMore = (postid) => {
     const id = postid + "description";
     const buttonId = postid + "button";
@@ -316,7 +360,12 @@ const Home = () => {
                 <MessageCircleIcon></MessageCircleIcon>
                 <ArrowForwardIcon></ArrowForwardIcon>
               </div>
-              <SaveIcon></SaveIcon>
+              <div key={`${posts.indexOf(post)}save`} onClick={() => handleSave(post.id, post.photo, posts.indexOf(post))}>
+                <svg id={`${post.id}save`} xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" />
+                </svg>
+              </div>
             </div>
 
             {post.likedBy.length !== 0 &&

@@ -63,7 +63,8 @@ const SignUp = () => {
       following: [],
       followers: [],
       posts: [],
-      chats: []
+      chats: [],
+      saved: []
     });
   }, [email, name, userName, age])
 
