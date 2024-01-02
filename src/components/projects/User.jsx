@@ -44,6 +44,9 @@ const User = () => {
   const [userFollowers, setUserFollowers] = useState([]);
   const [followingStatus, setFollowingStatus] = useState(false);
 
+  const [posts, setPosts] = useState(true);
+  const [liked, setLiked] = useState(false);
+
 /* REDIRECTS CURRENT USER */
 
 useEffect(() => {
@@ -190,6 +193,15 @@ useEffect(() => {
     }
   }, [user])
 
+  const handlePosts = () => {
+    setPosts(true)
+    setLiked(false)
+  }
+  const handleLiked = () => {
+    setLiked(true)
+    setPosts(false)
+  }
+
   return (  
     <div className="main-profile-container">
       {user ? (
@@ -244,12 +256,17 @@ useEffect(() => {
 
           </div>
           <div className="posts-border">
-            <div>
+          <div onClick={handlePosts} className={posts && `active`}>
               <BorderAll></BorderAll>
               <p>POSTS</p>
             </div>
+            <div onClick={handleLiked} className={liked && `active`}>
+              <HeartIcon size={"18"}></HeartIcon>
+              <p>LIKED</p>
+            </div>
           </div>
-          { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
+          { (user && posts) && (<PostsList postsList={user.posts} />)}
+          { (user && liked) && (<PostsList postsList={user.likedPosts} />)}
         </div>
   ) : (
     <div>

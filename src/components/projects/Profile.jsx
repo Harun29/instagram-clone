@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import PostsList from "./PostsList";
 import BorderAll from "../../icons/BorderAll";
 import HeartIcon from "../../icons/HeartIcon";
+import SaveIcon from "../../icons/SaveIcon";
 
 const Profile = () => {
 
@@ -17,6 +18,9 @@ const Profile = () => {
   const { getUserByEmail } = useAuth();
   const [user, setUser] = useState();
   const [currentProfilePhoto, setCurrentProfilePhoto] = useState(null);
+  const [posts, setPosts] = useState(true);
+  const [saved, setSaved] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -42,6 +46,22 @@ const Profile = () => {
       getLink();
     }
   }, [user])
+
+  const handleSaved = () => {
+    setSaved(true)
+    setPosts(false)
+    setLiked(false)
+  }
+  const handlePosts = () => {
+    setPosts(true)
+    setSaved(false)
+    setLiked(false)
+  }
+  const handleLiked = () => {
+    setLiked(true)
+    setPosts(false)
+    setSaved(false)
+  }
 
   return (  
     <div className="main-profile-container">
@@ -88,16 +108,22 @@ const Profile = () => {
 
           </div>
           <div className="posts-border">
-            <div>
+            <div onClick={handlePosts} className={posts && `active`}>
               <BorderAll></BorderAll>
               <p>POSTS</p>
             </div>
-            <div>
+            <div onClick={handleLiked} className={liked && `active`}>
               <HeartIcon size={"18"}></HeartIcon>
               <p>LIKED</p>
             </div>
+            <div onClick={handleSaved} className={saved && `active`}>
+              <SaveIcon size={"18"}></SaveIcon>
+              <p>SAVED</p>
+            </div>
           </div>
-          { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
+          { (user && posts) && (<PostsList postsList={user.posts} />)}
+          { (user && saved) && (<PostsList postsList={user.savedIds} />)}
+          { (user && liked) && (<PostsList postsList={user.likedPosts} />)}
         </div>
   ) : (
     <div>

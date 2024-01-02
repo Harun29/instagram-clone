@@ -29,7 +29,7 @@ const SignIn = () => {
 
   useEffect(() => {
     currentUser && navigate('/')
-  }, [currentUser])
+  }, [currentUser, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

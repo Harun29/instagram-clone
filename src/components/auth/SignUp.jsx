@@ -39,7 +39,7 @@ const SignUp = () => {
 
   useEffect(() => {
     currentUser && navigate('/')
-  }, [currentUser])
+  }, [currentUser, navigate])
 
   useEffect(() => {
     const fetchUserNames = async () => {
