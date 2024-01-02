@@ -248,10 +248,6 @@ useEffect(() => {
               <BorderAll></BorderAll>
               <p>POSTS</p>
             </div>
-            <div>
-              <HeartIcon size={"18"}></HeartIcon>
-              <p>LIKED</p>
-            </div>
           </div>
           { user ? (<PostsList postsList={user.posts} />) : <>Loading...</> }
         </div>

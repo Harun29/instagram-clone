@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 
 const SignUp = () => {
 
+  const {currentUser} = useAuth();
   const [name, setName] = useState('')
   const [userName, setUserName] = useState('')
   // const [age, setAge] = useState('')
@@ -35,6 +36,10 @@ const SignUp = () => {
       console.error('Error adding document: ', e);
     }
   }
+
+  useEffect(() => {
+    currentUser && navigate('/')
+  }, [currentUser])
 
   useEffect(() => {
     const fetchUserNames = async () => {

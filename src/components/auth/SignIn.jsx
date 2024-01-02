@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 // import { auth, googleProvider } from "../../config/firebase";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 const SignIn = () => {
 
+  const {currentUser} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('')
@@ -26,7 +27,10 @@ const SignIn = () => {
   //   }
   // };
 
-  //a little commit comment
+  useEffect(() => {
+    currentUser && navigate('/')
+  }, [currentUser])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
@@ -58,7 +62,7 @@ const SignIn = () => {
         value={email}
         placeholder="Email address"
         onChange={(e) => setEmail(e.target.value)}/>
-      </div>
+      </div>  
 
       <div className="form-outline">
         <input 
