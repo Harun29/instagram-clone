@@ -590,6 +590,14 @@ a {
   object-fit: contain;
 }
 
+/* SUGGESTED */
+
+.suggested-people{
+  width: 200px;
+  height: 200px;
+  margin: 15px;
+}
+
 /* COMMENTS */
 
 .add-comment-container {
