@@ -247,10 +247,11 @@ const Navigation = () => {
     location.pathname.includes("/messenger") && setHide(true);
   }, [location]);
 
-  const deleteNotif = async (e) => {
+  const deleteNotif = async (e, index) => {
     await updateDoc(e.notifRef, {
       notif: arrayRemove(e)
-    })
+    });
+    setNotifs(notifs.filter(notif => e.notifRef !== notif.notifRef));
   }
 
   return (
@@ -405,7 +406,7 @@ const Navigation = () => {
                     >
                       <img src={notif.postLikedPhoto} alt="" />
                     </Link>
-                    <button onClick={() => deleteNotif(notif)} className="exit-button">
+                    <button onClick={() => deleteNotif(notif, index)} className="exit-button">
                       <ExitIcon></ExitIcon>
                     </button>
                   </div>
@@ -431,7 +432,7 @@ const Navigation = () => {
                       <label>Started Following You!</label>
                     </div>
                   </Link>
-                  <button onClick={() => deleteNotif(notif)} className="exit-button">
+                  <button onClick={() => deleteNotif(notif, index)} className="exit-button">
                     <ExitIcon></ExitIcon>
                   </button>
                 </div>
@@ -463,7 +464,7 @@ const Navigation = () => {
                     >
                       <img src={notif.postCommentedPhoto} alt="" />
                     </Link>
-                    <button onClick={() => deleteNotif(notif)} className="exit-button">
+                    <button onClick={() => deleteNotif(notif, index)} className="exit-button">
                       <ExitIcon></ExitIcon>
                     </button>
                   </div>
