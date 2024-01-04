@@ -35,8 +35,6 @@ const Chats = () => {
             const chatSnap = await getDoc(
               doc(db, "chats", chatsRef[lastIndex].chatId),
             );
-            console.log(chats[lastIndex]);
-            console.log(chatsRef[lastIndex]);
             if (
               lastIndex >= 0 &&
               !chats[lastIndex].chatId === chatsRef[lastIndex].chatId &&
@@ -100,7 +98,6 @@ const Chats = () => {
                 <img className="friends-photo" src={chat.friendsPhoto} alt="" />
                 <div className="friends-info">
                   <span>{chat.friendsUserName}</span>
-                  <span>last message</span>
                 </div>
               </Link>
             ))}

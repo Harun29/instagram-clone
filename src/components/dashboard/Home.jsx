@@ -15,6 +15,7 @@ import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Post from "../projects/Post";
+import Suggested from "../projects/Suggested";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -518,7 +519,7 @@ const Home = () => {
           </div>
         )}
       </div>
-      <div className="quick-message"></div>
+      <Suggested></Suggested>
     </div>
   );
 };

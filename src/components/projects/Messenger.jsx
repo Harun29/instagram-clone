@@ -132,7 +132,7 @@ const Messenger = ({ user }) => {
               myUserName: userViewing.docs[0].data().userName,
               friendsId: param.userid,
               friendsPhoto: userData.userPhoto,
-              friendsUserName: userData.userName,
+              friendsUserName: userData.userName
             }),
           });
           await updateDoc(userRef, {
