@@ -22,6 +22,7 @@ import HomeIconFull from "../../icons/HomeIconFull";
 import SettingsIcon from "../../icons/SettingsIcon";
 import SaveIcon from "../../icons/SaveIcon";
 import CreatePost from "../projects/CreatePost";
+import ExitIcon from "../../icons/xIcon"
 import { db } from "../../config/firebase";
 
 const Navigation = () => {
@@ -311,9 +312,14 @@ const Navigation = () => {
                     <strong>{notif.likedBy}</strong>
                     <label>Liked your post</label>
                   </Link>{' '}
+                  <div className="photo-and-exit">
                   <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
                     <img src={notif.postLikedPhoto} alt="" />
                   </Link>
+                  <button className="exit-button">
+                    <ExitIcon></ExitIcon>
+                  </button>
+                  </div>
                 </div>
                 : null}
               {notif.notifType === "follow" ?
@@ -325,6 +331,9 @@ const Navigation = () => {
                       <label>Started Following You!</label>
                     </div>
                   </Link>
+                  <button className="exit-button">
+                    <ExitIcon></ExitIcon>
+                  </button>
                 </div>
                 : null}
               {notif.notifType === "comment" ?
@@ -336,9 +345,14 @@ const Navigation = () => {
                       <label>Commented your photo</label>
                     </div>
                   </Link>
-                  <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postCommented}`}>
+                  <div className="photo-and-exit">
+                    <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postCommented}`}>
                     <img src={notif.postCommentedPhoto} alt="" />
-                  </Link>
+                    </Link>
+                    <button className="exit-button">
+                    <ExitIcon></ExitIcon>
+                    </button>
+                  </div>
                 </div>
                 : null}
             </li>

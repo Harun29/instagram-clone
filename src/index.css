@@ -313,7 +313,7 @@ a {
 
 .notification {
   display: flex;
-  padding: 15px 20px 15px;
+  padding: 10px 20px;
   width: calc(100% - 40px);
 }
 
@@ -334,6 +334,18 @@ a {
   background-color: rgb(240, 240, 240);
 }
 
+.photo-and-exit{
+  display: flex;
+}
+
+.exit-button {
+  margin-left: 0.3rem;
+  padding: 0;
+  background: inherit;
+  border: none;
+  cursor: pointer;
+}
+
 .post-link-notif{
   display: flex;
   justify-content: center;
@@ -342,6 +354,8 @@ a {
 
 .post-link-notif img{
   width: 40px;
+  height: 40px;
+  object-fit: cover;
   margin-left: 30px;
 }
 
