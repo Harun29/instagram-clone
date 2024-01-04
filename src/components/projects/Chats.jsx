@@ -40,8 +40,7 @@ const Chats = () => {
               !chats[lastIndex].chatId === chatsRef[lastIndex].chatId &&
               chatSnap.data().messages[0]
             ) {
-              setChats((prevChat) => [...prevChat, chatsRef[lastIndex]]);
-              console.log("chats: ", chatsRef.docs)
+              setChats((prevChat) => [chatsRef[lastIndex], ...prevChat]);
             }
           },
         );
@@ -77,7 +76,7 @@ const Chats = () => {
           const chatSnap = await getDoc(doc(db, "chats", chat.chatId));
           console.log(chatSnap.data());
           chatSnap.data()?.messages[0] &&
-            setChats((prevChat) => [...prevChat, chat]);
+            setChats((prevChat) => [chat, ...prevChat]);
         });
         setLoadingChats(false);
       };
