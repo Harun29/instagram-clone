@@ -593,9 +593,57 @@ a {
 /* SUGGESTED */
 
 .suggested-people{
-  width: 200px;
-  height: 200px;
-  margin: 15px;
+  width: 300px;
+  margin: 15px 0 0 60px;
+}
+
+.suggested-people span:nth-child(1){
+  color: #737373;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.suggestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.suggestion a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.suggestion span{
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.suggestion img{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.suggestion button{
+  background: none;
+  border: none;
+  color: #0095f6;
+  cursor: pointer;
+}
+
+.suggestion button:hover{
+  color: black;
+}
+
+.signature{
+  font-size: 0.7rem;
+  color: #c7c7c7;
 }
 
 /* COMMENTS */

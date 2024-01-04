@@ -53,7 +53,8 @@ const Suggested = () => {
 
   return (
     <div className="suggested-people">
-      {users && users.map((user, index) => {
+      <span>Suggested for you</span>
+      {users && users.map((user, index) => (
         <div key={index} className="suggestion">
           <Link to={`/user/${user.userName}`}>
             <img src={user.pphoto} alt="" />
@@ -61,7 +62,8 @@ const Suggested = () => {
           </Link>
           <button>follow</button>
         </div>
-      })}
+      ))}
+      <span className="signature">2024 INSTAGRAM CLONE BY <Link to="https://github.com/Harun29">HARUN</Link></span>
     </div>
   );
 };
