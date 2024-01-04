@@ -28,7 +28,9 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="App">
+      <div className="App" 
+          style={{ fontFamily: "Oleo Script" }}
+          >
         <Router>
           {currentUser && <Navigation />}
           <Routes>
