@@ -168,8 +168,8 @@ const Navigation = () => {
 
     const notifCommentObject = (notifStatus) => {
       const object = {
-        commentedBy: e.followedBy,
-        commentedByPhoto: e.likedByPhoto,
+        commentedBy: e.commentedBy,
+        commentedByPhoto: e.commentedByPhoto,
         opened: notifStatus,
         notifRef: e.notifRef,
         notifType: "comment",
