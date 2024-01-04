@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
-import { getDoc, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import SaveIcon from "../../icons/SaveIcon";
 
-
 const Post = ({ param, postRef }) => {
-
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
-  const [userViewingPhoto, setUserViewingPhoto] = useState('');
+  const [userViewingPhoto, setUserViewingPhoto] = useState("");
   const [userViewingId, setUserViewingId] = useState();
   const [post, setPost] = useState();
   const [postPicture, setPostPicture] = useState();
@@ -27,72 +31,74 @@ const Post = ({ param, postRef }) => {
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    currentUser && console.log(currentUser.email)
-  }, [currentUser])
+    currentUser && console.log(currentUser.email);
+  }, [currentUser]);
 
   const getUserByEmailInPost = async (email) => {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('email', '==', email));
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      console.error('No matching documents for email:', email);
+      console.error("No matching documents for email:", email);
       return null;
     }
     const user = querySnapshot;
     return user;
-  }
+  };
 
   useEffect(() => {
     if (post) {
       if (userViewing && post.likedby.includes(userViewing.email)) {
-        setLiked(true)
+        setLiked(true);
       }
     }
-  }, [userViewing, post])
-
+  }, [userViewing, post]);
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
-      console.log(user)
-    }
+      console.log(user);
+    };
     try {
-      currentUser && fetchUserByEmail(currentUser.email)
+      currentUser && fetchUserByEmail(currentUser.email);
+    } catch (err) {
+      console.error(err);
     }
-    catch (err) {
-      console.error(err)
-    }
-  }, [currentUser])
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const userViewingPhoto = await getDownloadURL(ref(storage, `profile_pictures/${userViewing.pphoto}`))
+      const userViewingPhoto = await getDownloadURL(
+        ref(storage, `profile_pictures/${userViewing.pphoto}`),
+      );
       setUserViewingPhoto(userViewingPhoto);
-    }
+    };
     try {
-      userViewing.pphoto && fetchPhoto()
+      userViewing.pphoto && fetchPhoto();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }, [userViewing])
+  }, [userViewing]);
 
   useEffect(() => {
     const fetchPostPhoto = async () => {
-      const docRef = doc(db, 'posts', param);
-      const docSnap = await getDoc(docRef)
-      const docImg = await getDownloadURL(ref(storage, `posts_pictures/${docSnap.data().photo}`))
+      const docRef = doc(db, "posts", param);
+      const docSnap = await getDoc(docRef);
+      const docImg = await getDownloadURL(
+        ref(storage, `posts_pictures/${docSnap.data().photo}`),
+      );
       setPostPicture(docImg);
-    }
+    };
 
     try {
       param && fetchPostPhoto();
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }, [param])
+  }, [param]);
 
   const handleLike = async () => {
     setLiked((prevLiked) => !prevLiked);
@@ -108,34 +114,34 @@ const Post = ({ param, postRef }) => {
         likedByPhoto: userViewingPhoto,
         opened: notifStatus,
         notifRef: docNotifRef,
-        notifType: "like"
-      }
-      return object
-    }
+        notifType: "like",
+      };
+      return object;
+    };
 
     try {
       if (!liked) {
         await updateDoc(docRef, {
-          likedby: arrayUnion(userViewing.email)
+          likedby: arrayUnion(userViewing.email),
         });
         await updateDoc(docUserRef, {
-          likedPosts: arrayUnion(param)
+          likedPosts: arrayUnion(param),
         });
         await updateDoc(docNotifRef, {
-          notif: arrayUnion(notifObject(false))
+          notif: arrayUnion(notifObject(false)),
         });
       } else {
         await updateDoc(docRef, {
-          likedby: arrayRemove(userViewing.email)
+          likedby: arrayRemove(userViewing.email),
         });
         await updateDoc(docUserRef, {
-          likedPosts: arrayRemove(param)
+          likedPosts: arrayRemove(param),
         });
         await updateDoc(docNotifRef, {
-          notif: arrayRemove(notifObject(false))
+          notif: arrayRemove(notifObject(false)),
         });
         await updateDoc(docNotifRef, {
-          notif: arrayRemove(notifObject(true))
+          notif: arrayRemove(notifObject(true)),
         });
       }
     } catch (err) {
@@ -147,58 +153,58 @@ const Post = ({ param, postRef }) => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmailInPost(email);
       setUser(user.docs[0].data().userName);
-      let userPhoto = '/blank-profile.jpg';
+      let userPhoto = "/blank-profile.jpg";
       if (user.docs[0].data().pphoto) {
-        userPhoto = await getDownloadURL(ref(storage, `profile_pictures/${user.docs[0].data().pphoto}`));
+        userPhoto = await getDownloadURL(
+          ref(storage, `profile_pictures/${user.docs[0].data().pphoto}`),
+        );
         setUserPhoto(userPhoto);
       } else {
         setUserPhoto(userPhoto);
       }
-      setUserId(user.docs[0].id)
-    }
+      setUserId(user.docs[0].id);
+    };
 
     /* ERROR ON LOADING */
     try {
       if (post.user) {
-        fetchUserByEmail(post.user)
+        fetchUserByEmail(post.user);
       }
+    } catch (err) {
+      console.error(err);
     }
-    catch (err) {
-      console.error(err)
-    }
-  }, [post])
+  }, [post]);
 
   useEffect(() => {
     const fetchPost = async (id) => {
       const docRef = doc(db, "posts", id);
       const post = await getDoc(docRef);
       setPost(post.data());
-    }
+    };
 
     try {
       fetchPost(param);
     } catch (err) {
-      console.error("error: ", err)
+      console.error("error: ", err);
     }
-
-  }, [param])
+  }, [param]);
 
   useEffect(() => {
     const fetchPicture = async (photoName) => {
       const postPicture = await getDownloadURL(
-        ref(storage, `posts_pictures/${photoName}`)
+        ref(storage, `posts_pictures/${photoName}`),
       );
       setPostPicture(postPicture);
-    }
+    };
     /* ERROR ON LOADING */
     try {
       if (post.photo) {
-        fetchPicture(post.photo)
+        fetchPicture(post.photo);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }, [post])
+  }, [post]);
 
   const handleComment = async (postid, postPhoto, userId, comment) => {
     const docRef = doc(db, "posts", postid);
@@ -212,90 +218,119 @@ const Post = ({ param, postRef }) => {
         commentedByPhoto: userViewingPhoto,
         opened: notifStatus,
         notifRef: docNotifRef,
-        notifType: "comment"
-      }
-      return object
-    }
+        notifType: "comment",
+      };
+      return object;
+    };
 
     try {
       await updateDoc(docRef, {
         comments: arrayUnion({
           user: userViewing.email,
-          comment: comment
-        }
-        )
+          comment: comment,
+        }),
       });
       await updateDoc(docNotifRef, {
-        notif: arrayUnion(notifObject(false))
+        notif: arrayUnion(notifObject(false)),
       });
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
   };
 
-    return post ? (
-      <div className="card" ref={postRef}>
-        <img src={postPicture} alt="Post" className="card-img-top" />
+  return post ? (
+    <div className="card" ref={postRef}>
+      <img src={postPicture} alt="Post" className="card-img-top" />
 
-        <div className="card-body">
-
-          <div className="post-header in-post">
-            <Link className="link-to-user" to={`/user/${user}`}>
-              <img className="profile-photo" src={userPhoto} alt="profile" />
-              <label>{user}</label>
-            </Link>
-            <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
-          </div>
-
-          <div className="post-header-description">
-            <Link className="link-to-user" to={`/user/${user}`}>
-              <img className="profile-photo" src={userPhoto} alt="profile" />
-            </Link>
-              <p className="card-text">
-                <Link to={`/user/${user}`} className="bold">{user}</Link> {" "}
-                {post.title} {" "}
-                {post.description}
-              </p>
-          </div>
-
-          <div className="comments-in-post">
-            {post.comments.map((comment) => (
-              <div className="comment">
-                <Link to={`/user/${comment.userName}`}>
-                  <img src={comment.userPhoto} alt="commented by"/>
-                </Link>
-                <p>
-                  <Link to={`/user/${comment.userName}`}>{comment.userName}</Link>
-                  {" "}
-                  {comment.comment}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="interactions in-post">
-            <div>
-              <div onClick={handleLike}>
-                <svg id={post.id} xmlns="http://www.w3.org/2000/svg" class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${liked ? "active" : ""}`} width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill={liked ? "red" : "none"} stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                </svg>
-              </div>
-              <MessageCircleIcon></MessageCircleIcon>
-              <ArrowForwardIcon></ArrowForwardIcon>
-            </div>
-            <SaveIcon></SaveIcon>
-          </div>
-
-          <div className="add-comment-container in-post">
-            <input className="add-comment in-post" placeholder="Add a comment..." id={post.id + "comment"} type="text" />
-            <button className="comment-button-in-post" onClick={() => handleComment(post.id, post.photo, post.userId, document.getElementById(post.id + "comment").value)}>post</button>
-          </div>
+      <div className="card-body">
+        <div className="post-header in-post">
+          <Link className="link-to-user" to={`/user/${user}`}>
+            <img className="profile-photo" src={userPhoto} alt="profile" />
+            <label>{user}</label>
+          </Link>
+          <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
         </div>
 
-      </div>
-    ) : <p>Loading...</p>
+        <div className="post-header-description">
+          <Link className="link-to-user" to={`/user/${user}`}>
+            <img className="profile-photo" src={userPhoto} alt="profile" />
+          </Link>
+          <p className="card-text">
+            <Link to={`/user/${user}`} className="bold">
+              {user}
+            </Link>{" "}
+            {post.title} {post.description}
+          </p>
+        </div>
 
-}
+        <div className="comments-in-post">
+          {post.comments.map((comment) => (
+            <div className="comment">
+              <Link to={`/user/${comment.userName}`}>
+                <img src={comment.userPhoto} alt="commented by" />
+              </Link>
+              <p>
+                <Link to={`/user/${comment.userName}`}>{comment.userName}</Link>{" "}
+                {comment.comment}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="interactions in-post">
+          <div>
+            <div onClick={handleLike}>
+              <svg
+                id={post.id}
+                xmlns="http://www.w3.org/2000/svg"
+                class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${
+                  liked ? "active" : ""
+                }`}
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="currentColor"
+                fill={liked ? "red" : "none"}
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+              </svg>
+            </div>
+            <MessageCircleIcon></MessageCircleIcon>
+            <ArrowForwardIcon></ArrowForwardIcon>
+          </div>
+          <SaveIcon></SaveIcon>
+        </div>
+
+        <div className="add-comment-container in-post">
+          <input
+            className="add-comment in-post"
+            placeholder="Add a comment..."
+            id={post.id + "comment"}
+            type="text"
+          />
+          <button
+            className="comment-button-in-post"
+            onClick={() =>
+              handleComment(
+                post.id,
+                post.photo,
+                post.userId,
+                document.getElementById(post.id + "comment").value,
+              )
+            }
+          >
+            post
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <p>Loading...</p>
+  );
+};
 
 export default Post;

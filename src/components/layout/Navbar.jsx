@@ -4,7 +4,16 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { updateDoc, arrayRemove, arrayUnion, collection, where, query, getDocs, or} from "firebase/firestore";
+import {
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+  collection,
+  where,
+  query,
+  getDocs,
+  or,
+} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { useRef } from "react";
@@ -22,33 +31,35 @@ import HomeIconFull from "../../icons/HomeIconFull";
 import SettingsIcon from "../../icons/SettingsIcon";
 import SaveIcon from "../../icons/SaveIcon";
 import CreatePost from "../projects/CreatePost";
-import ExitIcon from "../../icons/xIcon"
+import ExitIcon from "../../icons/xIcon";
 import { db } from "../../config/firebase";
 
 const Navigation = () => {
-
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const { getUserByEmail } = useAuth()
+  const { getUserByEmail } = useAuth();
   const { logout } = useAuth();
   const [error, setError] = useState("");
   const [notifs, setNotifs] = useState();
-  const [notifNumber, setNotifNumber] = useState(0)
+  const [notifNumber, setNotifNumber] = useState(0);
   const [dropdown, setDropdown] = useState(false);
   const [moreDropdown, setMoreDropdown] = useState(false);
-  const [userPhoto, setUserPhoto] = useState('/blank-profile.jpg');
+  const [userPhoto, setUserPhoto] = useState("/blank-profile.jpg");
   const [createPost, setCreatePost] = useState(false);
   const [searchDropdown, setSearchDropdown] = useState(false);
   const [hide, setHide] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState([])
+  const [searchResults, setSearchResults] = useState([]);
   const moreDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const isClickInsideDropdown = moreDropdownRef.current && moreDropdownRef.current.contains(event.target);
-      const isClickInsideBottomExcludedRegion = event.clientY > window.innerHeight - 55;
+      const isClickInsideDropdown =
+        moreDropdownRef.current &&
+        moreDropdownRef.current.contains(event.target);
+      const isClickInsideBottomExcludedRegion =
+        event.clientY > window.innerHeight - 55;
 
       if (!isClickInsideDropdown && !isClickInsideBottomExcludedRegion) {
         setMoreDropdown(false);
@@ -59,41 +70,40 @@ const Navigation = () => {
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
-  
+
   useEffect(() => {
     const fetchUsers = async (input) => {
       const q = query(
-        collection(db, 'users'),
-        or(
-          where("name", "==", input),
-          or(where("userName", "==", input))
-        )
+        collection(db, "users"),
+        or(where("name", "==", input), or(where("userName", "==", input))),
       );
       try {
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(async(doc) => {
-          const newDocument = doc.data()
-          const imgUrl = await getDownloadURL(ref(storage, `profile_pictures/${doc.data().pphoto}`))
+        querySnapshot.forEach(async (doc) => {
+          const newDocument = doc.data();
+          const imgUrl = await getDownloadURL(
+            ref(storage, `profile_pictures/${doc.data().pphoto}`),
+          );
           newDocument.pphoto = imgUrl;
-          let found = false
-          searchResults.forEach(result => {
-            if(result.userName === doc.data().userName){
-              found = true
+          let found = false;
+          searchResults.forEach((result) => {
+            if (result.userName === doc.data().userName) {
+              found = true;
             }
-          })
-          !found && setSearchResults((prevResults) => [...prevResults, newDocument]);
+          });
+          !found &&
+            setSearchResults((prevResults) => [...prevResults, newDocument]);
         });
       } catch (err) {
         console.error(err);
       }
-    }
+    };
     try {
       fetchUsers(searchInput);
     } catch (err) {
       console.error(err);
     }
   }, [searchInput, searchResults]);
-  
 
   useEffect(() => {
     const fetchUser = async (email) => {
@@ -101,34 +111,36 @@ const Navigation = () => {
       // setUser(user);
       setNotifs(user.notif);
       if (user.pphoto) {
-        const userPhotoUrl = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+        const userPhotoUrl = await getDownloadURL(
+          ref(storage, `profile_pictures/${user.pphoto}`),
+        );
         setUserPhoto(userPhotoUrl);
       }
-    }
+    };
 
     try {
       currentUser && fetchUser(currentUser.email);
     } catch (err) {
-      console.error("error in fetch user: ", err)
+      console.error("error in fetch user: ", err);
     }
-  }, [currentUser, getUserByEmail])
+  }, [currentUser, getUserByEmail]);
 
   const handleLogout = async () => {
-    setError('')
+    setError("");
     try {
-      await logout()
-      navigate('/signup')
+      await logout();
+      navigate("/signup");
     } catch (err) {
-      setError('Failed to logout')
-      console.log(err)
+      setError("Failed to logout");
+      console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (error) {
-      console.log(error)
+      console.log(error);
     }
-  }, [error])
+  }, [error]);
 
   const handleOpened = async (e) => {
     const notifLikeObject = (notifStatus) => {
@@ -139,148 +151,189 @@ const Navigation = () => {
         likedByPhoto: e.likedByPhoto,
         opened: notifStatus,
         notifRef: e.notifRef,
-        notifType: "like"
-      }
-      return object
-    }
+        notifType: "like",
+      };
+      return object;
+    };
     const notifFollowObject = (notifStatus) => {
       const object = {
         followedBy: e.followedBy,
         likedByPhoto: e.likedByPhoto,
         opened: notifStatus,
         notifRef: e.notifRef,
-        notifType: "follow"
-      }
-      return object
-    }
+        notifType: "follow",
+      };
+      return object;
+    };
 
     if (!e.opened && e.notifType === "like") {
       await updateDoc(e.notifRef, {
-        notif: arrayRemove(notifLikeObject(false))
+        notif: arrayRemove(notifLikeObject(false)),
       });
       await updateDoc(e.notifRef, {
-        notif: arrayUnion(notifLikeObject(true))
+        notif: arrayUnion(notifLikeObject(true)),
       });
     } else {
       await updateDoc(e.notifRef, {
-        notif: arrayRemove(notifFollowObject(false))
+        notif: arrayRemove(notifFollowObject(false)),
       });
       await updateDoc(e.notifRef, {
-        notif: arrayUnion(notifFollowObject(true))
+        notif: arrayUnion(notifFollowObject(true)),
       });
     }
-  }
+  };
 
   useEffect(() => {
     if (notifs) {
-      setNotifNumber(0)
-      notifs.forEach(notif => {
-        if (!notif.opened) (
-          setNotifNumber(prevNotifNumber => prevNotifNumber + 1)
-        )
-      })
+      setNotifNumber(0);
+      notifs.forEach((notif) => {
+        if (!notif.opened)
+          setNotifNumber((prevNotifNumber) => prevNotifNumber + 1);
+      });
     }
-  }, [notifs])
+  }, [notifs]);
 
   const handleDropdown = () => {
-    const stateCheck = dropdown
-    setSearchDropdown(false)
-    setDropdown(prevDropdown => !prevDropdown)
+    const stateCheck = dropdown;
+    setSearchDropdown(false);
+    setDropdown((prevDropdown) => !prevDropdown);
     if (!stateCheck) {
-      setHide(true)
-    }else if(!location.pathname.includes("/messenger"))(
-      setHide(false)
-    )
-  }
+      setHide(true);
+    } else if (!location.pathname.includes("/messenger")) setHide(false);
+  };
 
   const handleSearchDropdown = () => {
-    const stateCheck = searchDropdown
+    const stateCheck = searchDropdown;
     setDropdown(false);
-    setSearchDropdown(prevSearchDropdown => !prevSearchDropdown)
-    if(!stateCheck){
-      setHide(true)
-    }else if(!location.pathname.includes("/messenger")){
-      setHide(false)
+    setSearchDropdown((prevSearchDropdown) => !prevSearchDropdown);
+    if (!stateCheck) {
+      setHide(true);
+    } else if (!location.pathname.includes("/messenger")) {
+      setHide(false);
     }
-  }
+  };
 
   const handleHide = () => {
-    setDropdown(false)
-    setSearchDropdown(false)
-    setHide(false)
-  }
-  
+    setDropdown(false);
+    setSearchDropdown(false);
+    setHide(false);
+  };
+
   const handleMoreDropdown = () => {
-    setMoreDropdown(prevMoreDropdown => !prevMoreDropdown)
-  }
+    setMoreDropdown((prevMoreDropdown) => !prevMoreDropdown);
+  };
 
   useEffect(() => {
-    location.pathname.includes("/messenger") && setHide(true)
-  }, [location])
+    location.pathname.includes("/messenger") && setHide(true);
+  }, [location]);
 
   return (
     <div className="navigation-container">
-      <nav className='nav-wrapper'>
+      <nav className="nav-wrapper">
         <div className="container">
-          <Link onClick={hide && handleHide} to='/' className={`brand-logo logo-on-top ${!hide ? "active" : ''}`}>
-            <h1 className={`logo-name ${hide ? " active" : ''}`} style={{ fontFamily: 'Oleo Script' }}>igclone</h1>
+          <Link
+            onClick={hide && handleHide}
+            to="/"
+            className={`brand-logo logo-on-top ${!hide ? "active" : ""}`}
+          >
+            <h1
+              className={`logo-name ${hide ? " active" : ""}`}
+              style={{ fontFamily: "Oleo Script" }}
+            >
+              igclone
+            </h1>
             <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Link>
-          <Link onClick={hide && handleHide} to='/'>
-            {
-              window.location.pathname === '/' && !hide ?
-                <HomeIconFull /> :
-                <HomeIcon />
-            }
-            <button className={`notif-button ${hide && " active"}`} style={window.location.pathname === '/' ? { fontWeight: '700' } : null}>Home</button>
+          <Link onClick={hide && handleHide} to="/">
+            {window.location.pathname === "/" && !hide ? (
+              <HomeIconFull />
+            ) : (
+              <HomeIcon />
+            )}
+            <button
+              className={`notif-button ${hide && " active"}`}
+              style={
+                window.location.pathname === "/" ? { fontWeight: "700" } : null
+              }
+            >
+              Home
+            </button>
           </Link>
           <div onClick={handleSearchDropdown} className="menu-bar">
             <SearchIcon></SearchIcon>
-            <button className={`notif-button ${hide && " active"}`}>Search</button>
+            <button className={`notif-button ${hide && " active"}`}>
+              Search
+            </button>
           </div>
           <Link to="">
             <CompassIcon></CompassIcon>
-            <button className={`notif-button ${hide && " active"}`}>Explore</button>
+            <button className={`notif-button ${hide && " active"}`}>
+              Explore
+            </button>
           </Link>
           <Link onClick={hide && handleHide} to="/messenger">
-          {
-              window.location.pathname === '/messenger' ?
-                <MessageCircleIconFull /> :
-                <MessageCircleIcon />
-            }
-            <button className={`notif-button ${hide && " active"}`}>Messages</button>
+            {window.location.pathname === "/messenger" ? (
+              <MessageCircleIconFull />
+            ) : (
+              <MessageCircleIcon />
+            )}
+            <button className={`notif-button ${hide && " active"}`}>
+              Messages
+            </button>
           </Link>
           <div onClick={handleDropdown} className="menu-bar notif-icon">
-            {
-              dropdown ?
-                <HeartIconFull></HeartIconFull> :
-                <HeartIcon></HeartIcon>
-            }
-            {notifs && notifNumber > 0 ? <div className="notif-count">
-              {notifs ? notifNumber : null}
-            </div> : null}
-            <button className={`notif-button ${hide && " active"}`}>Notifications</button>
+            {dropdown ? (
+              <HeartIconFull></HeartIconFull>
+            ) : (
+              <HeartIcon></HeartIcon>
+            )}
+            {notifs && notifNumber > 0 ? (
+              <div className="notif-count">{notifs ? notifNumber : null}</div>
+            ) : null}
+            <button className={`notif-button ${hide && " active"}`}>
+              Notifications
+            </button>
           </div>
           <div onClick={() => setCreatePost(!createPost)} className="menu-bar">
             <PlusIcon></PlusIcon>
-            <button className={`notif-button ${hide && " active"}`}>Create</button>
+            <button className={`notif-button ${hide && " active"}`}>
+              Create
+            </button>
           </div>
-          <Link onClick={hide && handleHide} to='/profile'>
-            <img src={userPhoto} style={window.location.pathname === '/profile' ? { border: '2px solid black', width: '31px', height: '31px' } : null} alt="user" className="profile-photo navbar" />
-            <button style={window.location.pathname === '/profile' ? { fontWeight: '700'} : null} className={`notif-button ${hide && " active"}`}>Profile</button>
+          <Link onClick={hide && handleHide} to="/profile">
+            <img
+              src={userPhoto}
+              style={
+                window.location.pathname === "/profile"
+                  ? { border: "2px solid black", width: "31px", height: "31px" }
+                  : null
+              }
+              alt="user"
+              className="profile-photo navbar"
+            />
+            <button
+              style={
+                window.location.pathname === "/profile"
+                  ? { fontWeight: "700" }
+                  : null
+              }
+              className={`notif-button ${hide && " active"}`}
+            >
+              Profile
+            </button>
           </Link>
         </div>
         <footer onClick={handleMoreDropdown}>
-          {
-            dropdown ?
-              <ListIconBold></ListIconBold> :
-              <ListIcon></ListIcon>
-          }
-          <button className={`notif-button ${hide && " active"}`} style={moreDropdown ? { fontWeight: '700' } : null}>More</button>
+          {dropdown ? <ListIconBold></ListIconBold> : <ListIcon></ListIcon>}
+          <button
+            className={`notif-button ${hide && " active"}`}
+            style={moreDropdown ? { fontWeight: "700" } : null}
+          >
+            More
+          </button>
         </footer>
-        {moreDropdown ?
+        {moreDropdown ? (
           <div ref={moreDropdownRef} className="more-dropdown-container">
-
             <Link to="/settings" className="more-dropdown-element menu-bar">
               <SettingsIcon></SettingsIcon>
               <button>Settings</button>
@@ -289,44 +342,65 @@ const Navigation = () => {
               <SaveIcon></SaveIcon>
               <button>Saved</button>
             </div>
-            <Link onClick={handleLogout} className="more-dropdown-element menu-bar">
+            <Link
+              onClick={handleLogout}
+              className="more-dropdown-element menu-bar"
+            >
               <button>Logout</button>
             </Link>
           </div>
-          :
-          null
-        }
+        ) : null}
       </nav>
 
-      <ul className={`dropdown-menu${dropdown ? ' active' : ''}`}>
-        <h1 className="notifications-heading">
-          Notifications
-        </h1>
-        {notifs && (
+      <ul className={`dropdown-menu${dropdown ? " active" : ""}`}>
+        <h1 className="notifications-heading">Notifications</h1>
+        {notifs &&
           notifs.map((notif, index) => (
             <li key={index} className="notification">
-              {notif.notifType === "like" ?
+              {notif.notifType === "like" ? (
                 <div className="notification-container">
                   <Link className="notif-by" to={`/user/${notif.likedBy}`}>
-                    <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                    <img
+                      src={
+                        notif.likedByPhoto
+                          ? notif.likedByPhoto
+                          : "/blank-profile.jpg"
+                      }
+                      alt="liked"
+                    />
                     <strong>{notif.likedBy}</strong>
                     <label>Liked your post</label>
-                  </Link>{' '}
+                  </Link>{" "}
                   <div className="photo-and-exit">
-                  <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postLiked}`}>
-                    <img src={notif.postLikedPhoto} alt="" />
-                  </Link>
-                  <button className="exit-button">
-                    <ExitIcon></ExitIcon>
-                  </button>
+                    <Link
+                      onClick={() => handleOpened(notif)}
+                      className="post-link-notif"
+                      to={`/post/${notif.postLiked}`}
+                    >
+                      <img src={notif.postLikedPhoto} alt="" />
+                    </Link>
+                    <button className="exit-button">
+                      <ExitIcon></ExitIcon>
+                    </button>
                   </div>
                 </div>
-                : null}
-              {notif.notifType === "follow" ?
+              ) : null}
+              {notif.notifType === "follow" ? (
                 <div className="notification-container">
-                  <Link onClick={() => handleOpened(notif)} className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
+                  <Link
+                    onClick={() => handleOpened(notif)}
+                    className="notif-by follow-notif-link"
+                    to={`/user/${notif.followedBy}`}
+                  >
                     <div>
-                      <img src={notif.likedByPhoto ? notif.likedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                      <img
+                        src={
+                          notif.likedByPhoto
+                            ? notif.likedByPhoto
+                            : "/blank-profile.jpg"
+                        }
+                        alt="liked"
+                      />
                       <strong>{notif.followedBy}</strong>
                       <label>Started Following You!</label>
                     </div>
@@ -335,42 +409,61 @@ const Navigation = () => {
                     <ExitIcon></ExitIcon>
                   </button>
                 </div>
-                : null}
-              {notif.notifType === "comment" ?
+              ) : null}
+              {notif.notifType === "comment" ? (
                 <div className="notification-container">
-                  <Link className="notif-by follow-notif-link" to={`/user/${notif.followedBy}`}>
+                  <Link
+                    className="notif-by follow-notif-link"
+                    to={`/user/${notif.followedBy}`}
+                  >
                     <div>
-                      <img src={notif.commentedByPhoto ? notif.commentedByPhoto : '/blank-profile.jpg'} alt="liked" />
+                      <img
+                        src={
+                          notif.commentedByPhoto
+                            ? notif.commentedByPhoto
+                            : "/blank-profile.jpg"
+                        }
+                        alt="liked"
+                      />
                       <strong>{notif.commentedBy}</strong>
                       <label>Commented your photo</label>
                     </div>
                   </Link>
                   <div className="photo-and-exit">
-                    <Link onClick={() => handleOpened(notif)} className="post-link-notif" to={`/post/${notif.postCommented}`}>
-                    <img src={notif.postCommentedPhoto} alt="" />
+                    <Link
+                      onClick={() => handleOpened(notif)}
+                      className="post-link-notif"
+                      to={`/post/${notif.postCommented}`}
+                    >
+                      <img src={notif.postCommentedPhoto} alt="" />
                     </Link>
                     <button className="exit-button">
-                    <ExitIcon></ExitIcon>
+                      <ExitIcon></ExitIcon>
                     </button>
                   </div>
                 </div>
-                : null}
+              ) : null}
             </li>
-          ))
-        )}
+          ))}
       </ul>
 
-
-      <ul className={`dropdown-menu${searchDropdown ? ' active' : ''}`}>
+      <ul className={`dropdown-menu${searchDropdown ? " active" : ""}`}>
         <div className="search-box">
-          <h1 className="notifications-heading">
-            Search
-          </h1>
-          <input onChange={e => setSearchInput(e.target.value)} placeholder="Search" className="search-input" type="text" />
+          <h1 className="notifications-heading">Search</h1>
+          <input
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search"
+            className="search-input"
+            type="text"
+          />
           <div className="hr"></div>
           <div className="search-result">
             {searchResults.map((result, index) => (
-              <Link to={`/user/${result.userName}`} key={index} className="result-box">
+              <Link
+                to={`/user/${result.userName}`}
+                key={index}
+                className="result-box"
+              >
                 <img src={result.pphoto} alt="" />
                 <div className="result-names">
                   <span>{result.userName}</span>
@@ -382,10 +475,9 @@ const Navigation = () => {
         </div>
       </ul>
 
-
-      {createPost ? <CreatePost></CreatePost>:null}
+      {createPost ? <CreatePost></CreatePost> : null}
     </div>
   );
-}
+};
 
 export default Navigation;

@@ -2,14 +2,10 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { storage } from "../../config/firebase";
-import {
-  ref,
-  getDownloadURL
-} from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { Link } from "react-router-dom";
 
 const UserFollowList = ({ fetchType }) => {
-
   const { getUserByUsername } = useAuth();
 
   const param = useParams();
@@ -21,47 +17,50 @@ const UserFollowList = ({ fetchType }) => {
     const fetchUserByUsername = async (username) => {
       const user = await getUserByUsername(username);
       setUser(user);
+    };
+    try {
+      fetchUserByUsername(param.username);
+    } catch (err) {
+      console.error(err);
     }
-    try{
-      fetchUserByUsername(param.username)
-    }
-    catch(err){
-      console.error(err)
-    }
-  }, [param, getUserByUsername])
-
+  }, [param, getUserByUsername]);
 
   useEffect(() => {
-    if (user){
-      (fetchType === "followers" ? setFollowList(user.followers) : setFollowList(user.following))
+    if (user) {
+      fetchType === "followers"
+        ? setFollowList(user.followers)
+        : setFollowList(user.following);
     }
-  }, [user, fetchType])
-
+  }, [user, fetchType]);
 
   useEffect(() => {
     const fetchFollowers = async () => {
       const followersObject = {};
-  
+
       const fetchFollowersPhoto = async (username) => {
         const user = await getUserByUsername(username);
         if (user.pphoto) {
-          const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
+          const url = await getDownloadURL(
+            ref(storage, `profile_pictures/${user.pphoto}`),
+          );
           followersObject[username] = url;
         } else {
           followersObject[username] = "/blank-profile.jpg";
         }
       };
-  
-      try{
+
+      try {
         if (followList) {
-          await Promise.all(followList.map((follower) => fetchFollowersPhoto(follower)));
+          await Promise.all(
+            followList.map((follower) => fetchFollowersPhoto(follower)),
+          );
           setFollowersWithPictures(followersObject);
         }
-      }catch(err){
+      } catch (err) {
         console.error(err);
       }
     };
-  
+
     fetchFollowers();
   }, [followList, getUserByUsername]);
 
@@ -70,7 +69,7 @@ const UserFollowList = ({ fetchType }) => {
       <h1 className="text-center mb-5">
         {fetchType === "followers" ? "User Followers" : "User Following"}
       </h1>
-      
+
       <div className="row justify-content-center">
         {followersWithPictures &&
           Object.keys(followersWithPictures).map((follower) => (
@@ -95,8 +94,7 @@ const UserFollowList = ({ fetchType }) => {
           ))}
       </div>
     </div>
+  );
+};
 
-  );  
-}
- 
 export default UserFollowList;

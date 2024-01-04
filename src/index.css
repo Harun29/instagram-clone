@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Raleway:wght@100;300;400;500;700&family=Roboto:wght@100;300;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Raleway:wght@100;300;400;500;700&family=Roboto:wght@100;300;500;700&display=swap");
 
 /* RESET CSS */
 html,
@@ -124,7 +124,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 
@@ -167,12 +167,12 @@ a {
   transition: all 0.5s ease;
 }
 
-.notif-button{
+.notif-button {
   width: 14vw;
   transition: width 0.5s ease;
 }
 
-.notif-button.active{
+.notif-button.active {
   width: 0;
   padding: 0;
   margin: 0;
@@ -180,7 +180,7 @@ a {
   overflow: hidden;
 }
 
-.logo-on-top{
+.logo-on-top {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,14 +194,14 @@ a {
   transition: all 0.5s ease;
 }
 
-.logo-name.active{
+.logo-name.active {
   width: 0;
   font-size: 0;
   margin: 0;
   padding: 0;
 }
 
-.fa-instagram{
+.fa-instagram {
   padding: 25px 0 16px;
   margin: 0 2px;
   margin-bottom: 19px;
@@ -210,7 +210,7 @@ a {
   width: 50px;
 }
 
-.logo-on-top.active svg{
+.logo-on-top.active svg {
   width: 0;
 }
 
@@ -219,8 +219,7 @@ a {
   text-align: start;
 }
 
-
-.container a:nth-child(n+2),
+.container a:nth-child(n + 2),
 .nav-wrapper footer,
 .menu-bar {
   padding: 12px;
@@ -234,7 +233,7 @@ a {
   width: calc(100% - 24px);
 }
 
-.container a:nth-child(n+2):hover,
+.container a:nth-child(n + 2):hover,
 .nav-wrapper footer:hover,
 .menu-bar:hover {
   background-color: rgb(240, 240, 240);
@@ -270,7 +269,7 @@ a {
   justify-content: center;
   color: white;
   border-radius: 50%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dropdown-menu {
@@ -340,7 +339,7 @@ a {
   background-color: rgb(240, 240, 240);
 }
 
-.photo-and-exit{
+.photo-and-exit {
   display: flex;
 }
 
@@ -352,13 +351,13 @@ a {
   cursor: pointer;
 }
 
-.post-link-notif{
+.post-link-notif {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.post-link-notif img{
+.post-link-notif img {
   width: 40px;
   height: 40px;
   object-fit: cover;
@@ -457,7 +456,7 @@ a {
   font-size: 0.8rem;
 }
 
-.post-header label.loading{
+.post-header label.loading {
   color: rgb(224, 222, 222);
   background-color: rgb(224, 222, 222);
 }
@@ -470,7 +469,7 @@ a {
   margin-right: 12px;
 }
 
-.profile-photo.loading{
+.profile-photo.loading {
   background-color: rgb(224, 222, 222);
   border: none;
 }
@@ -488,13 +487,13 @@ a {
   border: 1px solid rgb(224, 222, 222);
 }
 
-.post .post-photo.loading{
+.post .post-photo.loading {
   background-color: rgb(224, 222, 222);
   height: 600px;
   border: none;
 }
 
-.post .post-photo.loading::before{
+.post .post-photo.loading::before {
   display: none;
 }
 
@@ -505,7 +504,7 @@ a {
   margin-bottom: 15px;
 }
 
-.interactions div{
+.interactions div {
   display: flex;
 }
 
@@ -513,11 +512,11 @@ a {
   margin-right: 15px;
 }
 
-.interactions div:nth-child(2) svg{
+.interactions div:nth-child(2) svg {
   margin: 0;
 }
 
-.post-description{
+.post-description {
   white-space: wrap;
 }
 
@@ -527,7 +526,7 @@ a {
   font-size: 0.8rem;
 }
 
-.post-description h4.loading{
+.post-description h4.loading {
   background-color: rgb(224, 222, 222);
   color: rgb(224, 222, 222);
 }
@@ -540,11 +539,11 @@ a {
   line-height: 20px;
 }
 
-.description-paragraph.more{
+.description-paragraph.more {
   max-height: none;
 }
 
-.more-button{
+.more-button {
   border: none;
   background-color: inherit;
   padding: 0;
@@ -553,14 +552,13 @@ a {
   margin-bottom: 10px;
 }
 
-.view-all-comments{
+.view-all-comments {
   font-size: 0.8rem;
   color: rgb(150, 150, 150);
   cursor: pointer;
 }
 
-
-.post-description p.loading{
+.post-description p.loading {
   background-color: rgb(224, 222, 222);
   color: rgb(224, 222, 222);
   line-height: 20px;
@@ -569,23 +567,23 @@ a {
   margin: 0;
 }
 
-.liked-by{
+.liked-by {
   display: flex;
   font-size: 0.8rem;
   margin-bottom: 10px;
   align-items: center;
 }
 
-.liked-by a:nth-child(n+2){
+.liked-by a:nth-child(n + 2) {
   margin: 0 5px;
   font-weight: 700;
 }
 
-.liked-by a:nth-child(1){
+.liked-by a:nth-child(1) {
   margin-right: 5px;
 }
 
-.liked-by a:nth-child(1) img{
+.liked-by a:nth-child(1) img {
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -594,13 +592,13 @@ a {
 
 /* COMMENTS */
 
-.add-comment-container{
+.add-comment-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.add-comment{
+.add-comment {
   border: none;
   border-bottom: 1px solid rgb(224, 222, 222);
   width: 100%;
@@ -608,11 +606,11 @@ a {
   margin-top: 10px;
 }
 
-.add-comment:focus{
+.add-comment:focus {
   outline: none;
 }
 
-.add-comment-container button{
+.add-comment-container button {
   background: none;
   border: none;
   color: #0095f6;
@@ -621,7 +619,7 @@ a {
   border-bottom: 1px solid rgb(224, 222, 222);
 }
 
-.add-comment-container button:hover{
+.add-comment-container button:hover {
   color: black;
 }
 
@@ -629,13 +627,13 @@ a {
 
 /* PROFILE */
 
-.main-profile-container{
+.main-profile-container {
   margin-left: 22vw;
 }
 
-.profile-container{
+.profile-container {
   padding: 30px 20px 0;
-  margin:0 15%;
+  margin: 0 15%;
   width: calc(100% - 30%);
   display: flex;
   flex-direction: column;
@@ -643,30 +641,30 @@ a {
   justify-content: center;
 }
 
-.profile-data{
+.profile-data {
   width: 100%;
   display: flex;
   margin-bottom: 100px;
 }
 
-.profile-picture{
+.profile-picture {
   width: 300px;
   margin-right: 30px;
   text-align: center;
 }
 
-.profile-picture img{
+.profile-picture img {
   border-radius: 100%;
 }
 
-.username-edit{
+.username-edit {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.main-data{
+.main-data {
   width: 400px;
   display: flex;
   flex-direction: column;
@@ -674,22 +672,22 @@ a {
   align-items: flex-start;
 }
 
-.main-data div:nth-child(1) h5{
+.main-data div:nth-child(1) h5 {
   font-size: 18px;
   margin-right: 20px;
 }
 
-.profile-username{
+.profile-username {
   font-weight: 700;
   font-size: 14px;
 }
 
-.profile-bio{
+.profile-bio {
   margin-top: 20px;
   font-size: 14px;
 }
 
-.posts-border{
+.posts-border {
   border-top: 1px solid rgb(224, 222, 222);
   display: flex;
   justify-content: center;
@@ -697,7 +695,7 @@ a {
   width: 100%;
 }
 
-.posts-border div{
+.posts-border div {
   font-size: 12px;
   margin: 0 20px;
   padding: 15px 0;
@@ -707,11 +705,11 @@ a {
   cursor: pointer;
 }
 
-.posts-border div.active{
+.posts-border div.active {
   border-top: 1px solid rgba(97, 97, 97, 0.9);
 }
 
-.posts-border div p{
+.posts-border div p {
   margin-left: 5px;
 }
 
@@ -729,8 +727,8 @@ a {
 }
 
 .grid-item {
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
   z-index: -20;
@@ -744,7 +742,9 @@ a {
 
 /* -------------------- */
 
-.edit-button, .unfollow-button, .follow-button{
+.edit-button,
+.unfollow-button,
+.follow-button {
   padding: 0px 16px;
   background-color: rgb(240, 240, 240);
   border-radius: 10px;
@@ -760,16 +760,16 @@ a {
   margin: 0 5px;
 }
 
-.follow-button{
+.follow-button {
   background-color: #0095f6;
   color: white;
 }
 
-.follow-button:hover{
+.follow-button:hover {
   background-color: #0064e0;
 }
 
-.post-followers{
+.post-followers {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -777,11 +777,12 @@ a {
   margin-bottom: 20px;
 }
 
-.post-followers div, .post-followers a{
+.post-followers div,
+.post-followers a {
   margin-right: 40px;
 }
 
-.post-followers strong{
+.post-followers strong {
   margin-right: 5px;
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
@@ -826,20 +827,20 @@ a {
 
 /* SIGNUP */
 
-.brand-logo-on-signup{
+.brand-logo-on-signup {
   font-size: 45px;
   margin: 0px 25px 25px;
 }
 
-.signup-container{
+.signup-container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;  
+  flex-direction: column;
 }
 
-.form-container{
+.form-container {
   flex-direction: column;
   display: flex;
   justify-content: center;
@@ -849,17 +850,17 @@ a {
   width: 350px;
 }
 
-.form-container p{
+.form-container p {
   font: 16px;
   margin: 10px;
 }
 
-.form-outline{
+.form-outline {
   width: 100%;
   text-align: center;
 }
 
-.form-control{
+.form-control {
   width: 80%;
   margin: 10px;
   padding: 15px;
@@ -867,21 +868,21 @@ a {
   background-color: rgb(252, 252, 252);
 }
 
-.alt-login{
+.alt-login {
   padding: 20px 0;
   margin-top: 10px;
   width: 392px;
 }
 
-.alt-login p{
+.alt-login p {
   font-weight: 700;
 }
 
-.alt-login p a{
+.alt-login p a {
   font-weight: 500;
 }
 
-.signup-button{
+.signup-button {
   background: #0095f6;
   color: white;
   border: none;
@@ -891,17 +892,17 @@ a {
   cursor: pointer;
 }
 
-.signup-button:hover{
+.signup-button:hover {
   background: #0064e0;
 }
 
-.login-error{
+.login-error {
   color: red;
 }
 
 /* CreatePost */
 
-.create-post{
+.create-post {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -913,14 +914,14 @@ a {
   background-color: rgba(97, 97, 97, 0.8);
 }
 
-.create-post-container{
+.create-post-container {
   background-color: white;
   height: 80%;
   width: 700px;
   border-radius: 15px;
 }
 
-.text-center{
+.text-center {
   font-size: 0.8rem;
   font-weight: 700;
   display: flex;
@@ -930,7 +931,7 @@ a {
   border-bottom: 1px solid rgb(228, 228, 228);
 }
 
-.upload-photo{
+.upload-photo {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -939,7 +940,7 @@ a {
   width: 100%;
 }
 
-.drag-info{
+.drag-info {
   font-size: 20px;
   display: flex;
   flex-direction: column;
@@ -947,16 +948,16 @@ a {
   justify-content: center;
 }
 
-.drag-info svg{
+.drag-info svg {
   margin-bottom: 25px;
 }
 
-.input-group{
+.input-group {
   display: flex;
   flex-direction: column;
 }
 
-.photo-preview{
+.photo-preview {
   width: 100%;
   height: 100%;
   display: flex;
@@ -964,7 +965,7 @@ a {
   justify-content: center;
 }
 
-.photo-preview img{
+.photo-preview img {
   width: 100%;
   overflow: hidden;
 }
@@ -1001,7 +1002,7 @@ a {
   background-color: #0064e0;
 }
 
-.continue-with-creating{
+.continue-with-creating {
   display: flex;
   justify-content: space-between;
 }
@@ -1012,24 +1013,23 @@ a {
   color: #0095f6;
 }
 
-.continue-with-creating span:nth-child(1){
+.continue-with-creating span:nth-child(1) {
   color: red;
 }
 
-.continue-with-creating span:hover{
+.continue-with-creating span:hover {
   color: black;
 }
 
-
 /* Navbar - Search bar */
 
-.search-box{
+.search-box {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.search-input{
+.search-input {
   font-size: 1rem;
   margin: 25px;
   padding: 13px;
@@ -1038,26 +1038,26 @@ a {
   background-color: rgb(240, 240, 240);
 }
 
-.search-input:focus{
+.search-input:focus {
   outline: none;
 }
 
-.hr{
+.hr {
   display: flex;
   height: 1px;
   border-bottom: 1px solid rgb(224, 222, 222);
 }
 
-.search-result{
+.search-result {
   width: calc(100% -30px);
   padding: 10px;
 }
 
-.search-result:hover{
+.search-result:hover {
   background-color: rgb(240, 240, 240);
 }
 
-.result-box{
+.result-box {
   width: 100%;
   padding: 0 15px;
   display: flex;
@@ -1067,54 +1067,54 @@ a {
   transition: all 0.5s ease;
 }
 
-.result-box img{
+.result-box img {
   height: 40px;
   width: 40px;
   border-radius: 50%;
 }
 
-.result-box span{
+.result-box span {
   margin-left: 15px;
   font-size: 0.8rem;
 }
 
-.result-names{
+.result-names {
   display: flex;
   flex-direction: column;
 }
 
-.result-names span:nth-child(1){
+.result-names span:nth-child(1) {
   font-weight: 600;
   margin-bottom: 5px;
 }
-.result-names span:nth-child(2){
+.result-names span:nth-child(2) {
   color: rgb(150, 150, 150);
 }
 
 /* Messenger - Chats */
 
-.chat-box{
+.chat-box {
   z-index: -10;
   border-radius: 0;
   box-shadow: none;
   display: flex;
   flex-direction: row;
-  width: 100%!important;
+  width: 100% !important;
 }
 
-.chats-box{
+.chats-box {
   height: 100%;
   width: 33%;
   border-right: 1px solid rgb(224, 222, 222);
 }
 
-.chats-span{
+.chats-span {
   font-weight: 700;
   font-size: 0.9rem;
   margin: 15px;
 }
 
-.empty-messages{
+.empty-messages {
   width: 100%;
   height: 100%;
   display: flex;
@@ -1123,49 +1123,49 @@ a {
   flex-direction: column;
 }
 
-.empty-messages svg{
+.empty-messages svg {
   border: 1px solid black;
   border-radius: 50%;
   padding: 15px;
   transform: scale(2);
 }
 
-.empty-messages span{
+.empty-messages span {
   margin-top: 40px;
   font-size: 1.2rem;
 }
 
-.empty-messages p{
+.empty-messages p {
   margin: 15px 0;
   color: rgb(150, 150, 150);
 }
 
-.messages-heading{
-  padding: 0 15px!important;
+.messages-heading {
+  padding: 0 15px !important;
   margin-top: 40px;
 }
 
-.messages-span{
+.messages-span {
   font-weight: 700;
   padding: 15px;
   margin-top: 15px;
   font-size: 0.9rem;
 }
 
-.messenger{
+.messenger {
   width: 100%;
   height: 100vh;
   display: flex;
 }
 
-.chats{
+.chats {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 }
 
-.chat{
+.chat {
   display: flex;
   height: 50px;
   width: calc(100% - 40px);
@@ -1173,11 +1173,11 @@ a {
   cursor: pointer;
 }
 
-.chat:hover{
+.chat:hover {
   background-color: rgb(252, 252, 252);
 }
 
-.friends-photo{
+.friends-photo {
   height: 50px;
   width: 50px;
   margin-right: 10px;
@@ -1185,7 +1185,7 @@ a {
   object-fit: cover;
 }
 
-.friends-info{
+.friends-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1193,46 +1193,46 @@ a {
   font-size: 0.8rem;
 }
 
-.friend-info img{
+.friend-info img {
   width: 50px;
   height: 50px;
 }
 
-.friends-info span:nth-child(2){
+.friends-info span:nth-child(2) {
   color: rgb(150, 150, 150);
 }
 
-.messenger{
+.messenger {
   display: flex;
   flex-direction: column;
   margin-right: 85px;
 }
 
-.friend-info{
+.friend-info {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   border-bottom: 1px solid rgb(224, 222, 222);
 }
 
-.friend-info img{
+.friend-info img {
   width: 50px;
   margin: 15px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.friend-info{
+.friend-info {
   font-size: 0.9rem;
   font-weight: 600;
 }
 
-.messages-container{
+.messages-container {
   height: 100%;
   padding: 15px;
 }
 
-.messenger input{
+.messenger input {
   margin: 15px;
   padding: 15px;
   border-radius: 30px;
@@ -1240,15 +1240,15 @@ a {
   border: 1px solid rgb(224, 222, 222);
 }
 
-.messenger input:focus{
+.messenger input:focus {
   outline: none;
 }
 
-.send-message{
+.send-message {
   position: relative;
 }
 
-.send-button{
+.send-button {
   position: absolute;
   right: 50px;
   top: 32px;
@@ -1257,45 +1257,45 @@ a {
   color: #0064e0;
 }
 
-.send-button:hover{
+.send-button:hover {
   color: black;
 }
 
-.message{
+.message {
   width: 100%;
   display: flex;
 }
 
-
-.my-message-container{
+.my-message-container {
   justify-content: flex-end;
   align-items: flex-end;
 }
 
-.friends-message-container{
+.friends-message-container {
   justify-content: flex-start;
   align-items: flex-start;
 }
 
-.my-message, .friends-message{
+.my-message,
+.friends-message {
   padding: 10px;
   margin: 1px;
   border-radius: 20px;
   font-size: 0.8rem;
 }
-.friends-message{
+.friends-message {
   background-color: #efefef;
   color: black;
 }
 
-.my-message{
+.my-message {
   color: white;
   background-color: #0064e0;
 }
 
 /* Update */
 
-.edit-profile{
+.edit-profile {
   margin-bottom: 35px;
   font-weight: 600;
   font-size: 1.2rem;
@@ -1312,21 +1312,19 @@ a {
   border-radius: 100%;
 }
 
-.settings-container{
+.settings-container {
   margin-left: calc(14vw + 85px);
   padding: 0 100px;
   display: flex;
   justify-content: center;
 }
 
-.settings-container form{
+.settings-container form {
   width: 50%;
   padding: 50px;
 }
 
-
-
-.picture-update{
+.picture-update {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1336,11 +1334,11 @@ a {
   border-radius: 20px;
 }
 
-.picture-update div{
+.picture-update div {
   display: flex;
 }
 
-.picture-update-spans{
+.picture-update-spans {
   margin-left: 10px;
   display: flex;
   align-items: flex-start;
@@ -1349,17 +1347,17 @@ a {
   font-size: 0.9rem;
 }
 
-.picture-update-spans span:nth-child(1){
+.picture-update-spans span:nth-child(1) {
   color: black;
   font-weight: 600;
   margin-bottom: 3px;
 }
 
-.picture-update-spans span:nth-child(2){
+.picture-update-spans span:nth-child(2) {
   color: #737373;
 }
 
-.update-form{
+.update-form {
   display: flex;
   flex-direction: column;
   margin-bottom: 35px;
@@ -1367,21 +1365,23 @@ a {
   font-weight: 600;
 }
 
-.update-form label{
+.update-form label {
   margin-bottom: 15px;
 }
 
-.update-form input, .update-form textarea{
+.update-form input,
+.update-form textarea {
   padding: 15px;
   border-radius: 12px;
   border: 1px solid rgb(204, 208, 213);
 }
 
-.update-form input:focus, .update-form textarea:focus{
+.update-form input:focus,
+.update-form textarea:focus {
   outline: 1px solid black;
 }
 
-.update-submit{
+.update-submit {
   color: white;
   border-radius: 8px;
   padding: 15px 100px;
@@ -1390,19 +1390,19 @@ a {
   cursor: pointer;
   border: none;
 }
-.update-submit:hover{
+.update-submit:hover {
   background-color: #0064e0;
 }
 
-.send-password-button{
+.send-password-button {
   margin-bottom: 15px;
 }
 
-.resend-email{
+.resend-email {
   margin-bottom: 15px;
 }
 
-.resend-email button{
+.resend-email button {
   background-color: inherit;
   border: none;
   cursor: pointer;
@@ -1410,13 +1410,13 @@ a {
   font-size: inherit;
   color: #0064e0;
 }
-.resend-email button:hover{
+.resend-email button:hover {
   color: black;
 }
 
 /* Post */
 
-.post-background{
+.post-background {
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -1430,23 +1430,22 @@ a {
   right: 0;
   top: 0;
   font-size: 0.9rem;
-
 }
 
-.card{
+.card {
   display: flex;
   background-color: white;
   max-width: 85%;
   height: 90%;
 }
 
-.card-img-top{
+.card-img-top {
   max-width: 60%;
   object-fit: contain;
   background-color: black;
 }
 
-.card-body{
+.card-body {
   max-width: 500px;
   display: grid;
   grid-template-rows: 60px 1fr 5fr 50px 50px;
@@ -1454,17 +1453,17 @@ a {
   line-height: 18px;
 }
 
-.post-header.in-post{
+.post-header.in-post {
   padding: 30px 15px;
   font-weight: 600;
   border-bottom: 1px solid rgb(224, 222, 222);
 }
 
-.post-header-description{
+.post-header-description {
   padding: 15px;
 }
 
-.comments-in-post{
+.comments-in-post {
   overflow-y: scroll;
   margin: 0 15px 15px;
   scrollbar-width: none;
@@ -1476,28 +1475,28 @@ a {
   display: none;
 }
 
-.interactions.in-post{
+.interactions.in-post {
   padding: 15px;
 }
 
-.add-comment-container.in-post{
+.add-comment-container.in-post {
   padding: 0 15px;
   margin-bottom: 15px;
   width: calc(100% - 30px);
 }
 
-.show-post .icon-tabler-x{
+.show-post .icon-tabler-x {
   position: fixed;
   top: 0;
   right: 0;
   z-index: 2000;
 }
 
-.post-header-description{
+.post-header-description {
   display: flex;
 }
 
-.bold{
+.bold {
   font-weight: 700;
 }
 
@@ -1508,7 +1507,7 @@ a {
   margin-bottom: 20px;
 }
 
-.comment a img{
+.comment a img {
   width: 35px;
   height: 35px;
   object-fit: cover;
@@ -1516,11 +1515,11 @@ a {
   margin-right: 12px;
 }
 
-.comment p{
+.comment p {
   width: 90%;
   word-wrap: break-word;
 }
 
-.comment p a{
+.comment p a {
   font-weight: 600;
 }

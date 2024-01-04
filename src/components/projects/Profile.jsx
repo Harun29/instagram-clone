@@ -1,11 +1,8 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 import { storage } from "../../config/firebase";
-import {
-  ref,
-  getDownloadURL
-} from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { Link } from "react-router-dom";
 import PostsList from "./PostsList";
 import BorderAll from "../../icons/BorderAll";
@@ -13,7 +10,6 @@ import HeartIcon from "../../icons/HeartIcon";
 import SaveIcon from "../../icons/SaveIcon";
 
 const Profile = () => {
-
   const { currentUser } = useAuth();
   const { getUserByEmail } = useAuth();
   const [user, setUser] = useState();
@@ -26,55 +22,55 @@ const Profile = () => {
     const fetchUserByEmail = async (email) => {
       const user = await getUserByEmail(email);
       setUser(user);
-    }
+    };
     try {
-      currentUser && fetchUserByEmail(currentUser.email)
+      currentUser && fetchUserByEmail(currentUser.email);
+    } catch (err) {
+      console.error(err);
     }
-    catch (err) {
-      console.error(err)
-    }
-  }, [currentUser, getUserByEmail])
+  }, [currentUser, getUserByEmail]);
 
   useEffect(() => {
     const getLink = async () => {
       if (user.pphoto) {
-        const url = await getDownloadURL(ref(storage, `profile_pictures/${user.pphoto}`));
-        setCurrentProfilePhoto(url)
+        const url = await getDownloadURL(
+          ref(storage, `profile_pictures/${user.pphoto}`),
+        );
+        setCurrentProfilePhoto(url);
       }
-    }
+    };
     if (user) {
       getLink();
     }
-  }, [user])
+  }, [user]);
 
   const handleSaved = () => {
-    setSaved(true)
-    setPosts(false)
-    setLiked(false)
-  }
+    setSaved(true);
+    setPosts(false);
+    setLiked(false);
+  };
   const handlePosts = () => {
-    setPosts(true)
-    setSaved(false)
-    setLiked(false)
-  }
+    setPosts(true);
+    setSaved(false);
+    setLiked(false);
+  };
   const handleLiked = () => {
-    setLiked(true)
-    setPosts(false)
-    setSaved(false)
-  }
+    setLiked(true);
+    setPosts(false);
+    setSaved(false);
+  };
 
-  return (  
+  return (
     <div className="main-profile-container">
       {user ? (
         <div className="profile-container">
-
           <div className="profile-data">
             <div className="profile-picture">
               <img
                 src={currentProfilePhoto || "/blank-profile.jpg"}
                 alt=""
                 className="rounded-circle"
-                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                style={{ width: "150px", height: "150px", objectFit: "cover" }}
               />
             </div>
 
@@ -105,7 +101,6 @@ const Profile = () => {
                 <p className="profile-bio">{user.bio}</p>
               </div>
             </div>
-
           </div>
           <div className="posts-border">
             <div onClick={handlePosts} className={posts && `active`}>
@@ -121,23 +116,19 @@ const Profile = () => {
               <p>SAVED</p>
             </div>
           </div>
-          { (user && posts) && (<PostsList postsList={user.posts} />)}
-          { (user && saved) && (<PostsList postsList={user.savedIds} />)}
-          { (user && liked) && (<PostsList postsList={user.likedPosts} />)}
+          {user && posts && <PostsList postsList={user.posts} />}
+          {user && saved && <PostsList postsList={user.savedIds} />}
+          {user && liked && <PostsList postsList={user.likedPosts} />}
         </div>
-  ) : (
-    <div>
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
+      ) : (
+        <div>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      )}
     </div>
-  )
-}
-    </div >
   );
-
-}
+};
 
 export default Profile;
-
-

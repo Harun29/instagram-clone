@@ -16,7 +16,7 @@ const PostsList = ({ postsList }) => {
 
         if (docSnap.exists()) {
           const postPicture = await getDownloadURL(
-            ref(storage, `posts_pictures/${docSnap.data().photo}`)
+            ref(storage, `posts_pictures/${docSnap.data().photo}`),
           );
           return {
             picture: postPicture,

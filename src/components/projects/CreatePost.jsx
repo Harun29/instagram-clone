@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
-import PhotoIcon from "../../icons/PhotoIcon"
+import PhotoIcon from "../../icons/PhotoIcon";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -94,8 +94,8 @@ const CreatePost = () => {
   };
 
   const handleDiscard = () => {
-    setPhoto(null)
-  }
+    setPhoto(null);
+  };
 
   return (
     <form
@@ -105,17 +105,21 @@ const CreatePost = () => {
       onDrop={handleDrop}
     >
       <div className="create-post-container">
-        {!photo ? <h4 className="text-center">Create new post</h4>
-        : <div className="text-center continue-with-creating">
+        {!photo ? (
+          <h4 className="text-center">Create new post</h4>
+        ) : (
+          <div className="text-center continue-with-creating">
             <span onClick={handleDiscard}>discard</span>
             <span>next</span>
-          </div>}
+          </div>
+        )}
         <div className="upload-photo">
-          {!photo && 
-          <div className="drag-info">
-            <PhotoIcon></PhotoIcon>
-            <p>Drag photos here</p>
-          </div>}
+          {!photo && (
+            <div className="drag-info">
+              <PhotoIcon></PhotoIcon>
+              <p>Drag photos here</p>
+            </div>
+          )}
           {!photo && (
             <div
               className="file-upload-container"
@@ -134,11 +138,11 @@ const CreatePost = () => {
               </label>
             </div>
           )}
-          {photo && 
-          <div className="photo-preview">
-            <img src={photo} alt="preview" />
-          </div>
-          }
+          {photo && (
+            <div className="photo-preview">
+              <img src={photo} alt="preview" />
+            </div>
+          )}
         </div>
       </div>
       <p className="close-create">x</p>
