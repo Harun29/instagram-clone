@@ -41,6 +41,7 @@ const Chats = () => {
               chatSnap.data().messages[0]
             ) {
               setChats((prevChat) => [...prevChat, chatsRef[lastIndex]]);
+              console.log("chats: ", chatsRef.docs)
             }
           },
         );
@@ -98,6 +99,7 @@ const Chats = () => {
                 <img className="friends-photo" src={chat.friendsPhoto} alt="" />
                 <div className="friends-info">
                   <span>{chat.friendsUserName}</span>
+                  <span>{chat.lastMessage}</span>
                 </div>
               </Link>
             ))}

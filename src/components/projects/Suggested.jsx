@@ -8,37 +8,37 @@ const Suggested = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async() => {
-      const usersRef = query((collection(db, "users")), limit(5))
-      const users = await getDocs(usersRef)
-      users.forEach(user => {
-        setUsers((prevUsers) => [...prevUsers, user.data()])
+    const fetchUsers = async () => {
+      const usersRef = query(collection(db, "users"), limit(5));
+      const users = await getDocs(usersRef);
+      users.forEach((user) => {
+        setUsers((prevUsers) => [...prevUsers, user.data()]);
       });
-    }
-    try{
+    };
+    try {
       fetchUsers();
-    }catch(err){
-      console.error(err)  
+    } catch (err) {
+      console.error(err);
     }
-  }, [])
+  }, []);
 
-  useEffect(() => { 
-    users && console.log(users)
-  }, [users])
-  
-  return ( 
+  useEffect(() => {
+    users && console.log(users);
+  }, [users]);
+
+  return (
     <div>
-      {users.map(user => {
+      {users.map((user) => {
         <div>
           <Link to={`/user/${user.userName}`}>
-          <img src="user.pphoto" alt="" />
-          <span>{user.userName}</span>
+            <img src="user.pphoto" alt="" />
+            <span>{user.userName}</span>
           </Link>
           <button>follow</button>
-        </div>
+        </div>;
       })}
     </div>
-   );
-}
- 
+  );
+};
+
 export default Suggested;

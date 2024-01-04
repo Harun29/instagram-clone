@@ -174,7 +174,7 @@ const Navigation = () => {
         notifRef: e.notifRef,
         notifType: "comment",
         postCommented: e.postCommented,
-        postCommentedPhoto: e.postCommentedPhoto
+        postCommentedPhoto: e.postCommentedPhoto,
       };
       return object;
     };
@@ -186,14 +186,14 @@ const Navigation = () => {
       await updateDoc(e.notifRef, {
         notif: arrayUnion(notifLikeObject(true)),
       });
-    } else if(!e.opened && e.notifType === "follow") {
+    } else if (!e.opened && e.notifType === "follow") {
       await updateDoc(e.notifRef, {
         notif: arrayRemove(notifFollowObject(false)),
       });
       await updateDoc(e.notifRef, {
         notif: arrayUnion(notifFollowObject(true)),
       });
-    } else if(!e.opened && e.notifType === "comment"){
+    } else if (!e.opened && e.notifType === "comment") {
       await updateDoc(e.notifRef, {
         notif: arrayRemove(notifCommentObject(false)),
       });
@@ -249,10 +249,10 @@ const Navigation = () => {
 
   const deleteNotif = async (e) => {
     await updateDoc(e.notifRef, {
-      notif: arrayRemove(e)
+      notif: arrayRemove(e),
     });
-    setNotifs(notifs.filter(notif => e.notifRef !== notif.notifRef));
-  }
+    setNotifs(notifs.filter((notif) => e.notifRef !== notif.notifRef));
+  };
 
   return (
     <div className="navigation-container">
@@ -406,7 +406,10 @@ const Navigation = () => {
                     >
                       <img src={notif.postLikedPhoto} alt="" />
                     </Link>
-                    <button onClick={() => deleteNotif(notif)} className="exit-button">
+                    <button
+                      onClick={() => deleteNotif(notif)}
+                      className="exit-button"
+                    >
                       <ExitIcon></ExitIcon>
                     </button>
                   </div>
@@ -432,7 +435,10 @@ const Navigation = () => {
                       <label>Started Following You!</label>
                     </div>
                   </Link>
-                  <button onClick={() => deleteNotif(notif)} className="exit-button">
+                  <button
+                    onClick={() => deleteNotif(notif)}
+                    className="exit-button"
+                  >
                     <ExitIcon></ExitIcon>
                   </button>
                 </div>
@@ -464,7 +470,10 @@ const Navigation = () => {
                     >
                       <img src={notif.postCommentedPhoto} alt="" />
                     </Link>
-                    <button onClick={() => deleteNotif(notif)} className="exit-button">
+                    <button
+                      onClick={() => deleteNotif(notif)}
+                      className="exit-button"
+                    >
                       <ExitIcon></ExitIcon>
                     </button>
                   </div>

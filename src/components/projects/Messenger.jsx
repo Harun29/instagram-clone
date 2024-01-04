@@ -9,6 +9,7 @@ import {
   getDocs,
   updateDoc,
   arrayUnion,
+  arrayRemove,
   setDoc,
   onSnapshot,
 } from "firebase/firestore";
@@ -24,6 +25,7 @@ const Messenger = ({ user }) => {
   const [chatId, setChatId] = useState();
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
+  const [lastMessage, setLastMessage] = useState("");
 
   useEffect(() => {
     try {
@@ -31,6 +33,7 @@ const Messenger = ({ user }) => {
         const unsubscribe = onSnapshot(doc(db, "chats", chatId), (doc) => {
           const messages = doc.data()?.messages || [];
           const lastIndex = messages.length - 1;
+          setLastMessage(messages[lastIndex].message);
           if (lastIndex >= 0) {
             setChat((prevChat) => [...prevChat, messages[lastIndex]]);
           }
@@ -132,7 +135,8 @@ const Messenger = ({ user }) => {
               myUserName: userViewing.docs[0].data().userName,
               friendsId: param.userid,
               friendsPhoto: userData.userPhoto,
-              friendsUserName: userData.userName
+              friendsUserName: userData.userName,
+              lastMessage: "",
             }),
           });
           await updateDoc(userRef, {
@@ -143,6 +147,7 @@ const Messenger = ({ user }) => {
               friendsId: userViewing.docs[0].id,
               friendsPhoto: userViewingPhoto,
               friendsUserName: userViewing.docs[0].data().userName,
+              lastMessage: "",
             }),
           });
         }
@@ -160,14 +165,61 @@ const Messenger = ({ user }) => {
     const messageToSend = message;
     setMessage("");
     const docRef = doc(db, "chats", chatId);
-    message &&
-      (await updateDoc(docRef, {
-        messages: arrayUnion({
-          message: messageToSend,
-          sentBy: userViewing.docs[0].data().userName,
-          time: new Date(),
-        }),
-      }));
+    const userViewingRef = doc(db, "users", userViewing.docs[0].id);
+    const userRef = doc(db, "users", param.userid);
+
+    await updateDoc(docRef, {
+      messages: arrayUnion({
+        message: messageToSend,
+        sentBy: userViewing.docs[0].data().userName,
+        time: new Date(),
+      }),
+    });
+
+    await updateDoc(userRef, {
+      chats: arrayUnion({
+        chatId,
+        myPhoto: userData.userPhoto,
+        myUserName: userData.userName,
+        friendsId: userViewing.docs[0].id,
+        friendsPhoto: userViewingPhoto,
+        friendsUserName: userViewing.docs[0].data().userName,
+        lastMessage: messageToSend,
+      }),
+    });
+    await updateDoc(userRef, {
+      chats: arrayRemove({
+        chatId,
+        myPhoto: userData.userPhoto,
+        myUserName: userData.userName,
+        friendsId: userViewing.docs[0].id,
+        friendsPhoto: userViewingPhoto,
+        friendsUserName: userViewing.docs[0].data().userName,
+        lastMessage,
+      }),
+    });
+    await updateDoc(userViewingRef, {
+      chats: arrayUnion({
+        chatId,
+        myPhoto: userViewingPhoto,
+        myUserName: userViewing.docs[0].data().userName,
+        friendsId: param.userid,
+        friendsPhoto: userData.userPhoto,
+        friendsUserName: userData.userName,
+        lastMessage: messageToSend,
+      }),
+    });
+    await updateDoc(userViewingRef, {
+      chats: arrayRemove({
+        chatId,
+        myPhoto: userViewingPhoto,
+        myUserName: userViewing.docs[0].data().userName,
+        friendsId: param.userid,
+        friendsPhoto: userData.userPhoto,
+        friendsUserName: userData.userName,
+        lastMessage,
+      }),
+    });
   };
 
   return (
