@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db, storage } from "../../config/firebase";
-import { getDocs, collection, limit, query, where } from "firebase/firestore";
+import { getDocs, collection, limit, query, where, or } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { getDownloadURL } from "firebase/storage";
 import { useAuth } from "../../context/AuthContext";
@@ -16,6 +16,7 @@ const Suggested = () => {
     const fetchUserFollowing = async() => {
       const user = await getUserByEmail(currentUser.email)
       const userFollowingList = user.following
+      userFollowingList.push(user.userName)
       setUserFollowing(userFollowingList);
     }
     try{
@@ -28,7 +29,10 @@ const Suggested = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const usersRef = query(collection(db, "users"),where("userName", "not-in", userFollowing), limit(5));
+      const usersRef = query(
+        collection(db, "users"),
+        where("userName", "not-in", userFollowing),
+        limit(5));
       const users = await getDocs(usersRef);
       users.forEach(async(user) => {
         const object = user.data();
