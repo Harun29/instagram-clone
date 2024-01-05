@@ -932,6 +932,10 @@ a {
   margin-right: 40px;
 }
 
+.following-stats-button, .following-stats-button label{
+  cursor: pointer;
+}
+
 .post-followers strong {
   margin-right: 5px;
   font-weight: 700;

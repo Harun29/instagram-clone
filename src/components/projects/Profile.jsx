@@ -124,11 +124,11 @@ const Profile = () => {
                     <strong>{user.posts.length}</strong>
                     <label>posts</label>
                   </div>
-                  <div onClick={handleFollowers}>
+                  <div className="following-stats-button" onClick={handleFollowers}>
                     <strong>{user.followers.length}</strong>
                     <label>followers</label>
                   </div>
-                  <div onClick={handleFollowing}>
+                  <div className="following-stats-button" onClick={handleFollowing}>
                     <strong>{user.following.length}</strong>
                     <label>following</label>
                   </div>
