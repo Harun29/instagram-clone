@@ -1315,6 +1315,13 @@ a {
 .messages-container {
   height: 100%;
   padding: 15px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.messages-container::-webkit-scrollbar {
+  display: none;
 }
 
 .messenger input {
@@ -1365,7 +1372,7 @@ a {
 .friends-message {
   padding: 10px;
   margin: 1px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 0.8rem;
 }
 .friends-message {
@@ -1399,7 +1406,7 @@ a {
 
 .settings-container {
   margin-left: calc(14vw + 85px);
-  padding: 0 100px;
+  padding: 0 15% 0 5%;
   display: flex;
   justify-content: center;
 }
@@ -1459,6 +1466,8 @@ a {
   padding: 15px;
   border-radius: 12px;
   border: 1px solid rgb(204, 208, 213);
+  margin: 0;
+  width: 100%;
 }
 
 .update-form input:focus,
