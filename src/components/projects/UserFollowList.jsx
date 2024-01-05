@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 
-const UserFollowList = ({ userFollowers, userViewingFollowers, fetchType }) => {
+const UserFollowList = ({ userFollowers, userViewingFollowers, fetchType, currentUserName }) => {
   const [followers, setFollowers] = useState([]);
   const { getUserByUsername } = useAuth();
 
@@ -33,16 +33,15 @@ const UserFollowList = ({ userFollowers, userViewingFollowers, fetchType }) => {
   }, [userFollowers]);
 
   useEffect(() => {
-    console.log(followers);
+    console.log(currentUserName);
   }, [followers]);
 
   return (
     <div className="post-background">
-
       <div className="followers">
-      <h1 className="followers-header">
-        {fetchType === "followers" ? "User Followers" : "User Following"}
-      </h1>
+        <h1 className="followers-header">
+          {fetchType === "followers" ? "User Followers" : "User Following"}
+        </h1>
         {followers &&
           followers.map((follower) => (
             <div className="follower-in-list" key={follower}>
@@ -61,11 +60,13 @@ const UserFollowList = ({ userFollowers, userViewingFollowers, fetchType }) => {
                   <span>{follower.name}</span>
                 </div>
               </Link>
-              {!userViewingFollowers.includes(follower.username) ? (
-                <button className="follow-button">follow</button>
-              ) : (
-                <button className="unfollow-button">following</button>
-              )}
+              {(!userViewingFollowers.includes(follower.username) && (follower.username !== currentUserName)) && (
+  <button className="follow-button">follow</button>
+)}
+{(userViewingFollowers.includes(follower.username) && (follower.username !== currentUserName)) && (
+  <button className="unfollow-button">following</button>
+)}
+
             </div>
           ))}
       </div>

@@ -108,8 +108,8 @@ const Profile = () => {
                     <strong>{user.following.length}</strong>
                     <label>following</label>
                   </div>
-                  {followers && <UserFollowList userFollowers={user.followers} userViewingFollowers={user.following} fetchType={"followers"}></UserFollowList>}
-                  {following && <UserFollowList userFollowers={user.following} userViewingFollowers={user.following} fetchType={"following"}></UserFollowList>}
+                  {followers && <UserFollowList userFollowers={user.followers} userViewingFollowers={user.following} fetchType={"followers"} currentUserName={user.userName}></UserFollowList>}
+                  {following && <UserFollowList userFollowers={user.following} userViewingFollowers={user.following} fetchType={"following"} currentUserName={user.userName}></UserFollowList>}
                 </div>
                 <label className="profile-username">{user.name}</label>
                 <p className="profile-bio">{user.bio}</p>

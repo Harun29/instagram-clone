@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import {} from "firebase/firestore";
 import BorderAll from "../../icons/BorderAll";
 import HeartIcon from "../../icons/HeartIcon";
+import UserFollowList from "./UserFollowList";
 
 const User = () => {
   const { currentUser } = useAuth();
@@ -42,6 +43,9 @@ const User = () => {
 
   const [posts, setPosts] = useState(true);
   const [liked, setLiked] = useState(false);
+
+  const [followers, setFollowers] = useState(false);
+  const [following, setFollowing] = useState(false);
 
   /* REDIRECTS CURRENT USER */
 
@@ -207,6 +211,15 @@ const User = () => {
     setPosts(false);
   };
 
+  const handleFollowers = () => {
+    setFollowers(true)
+    setFollowing(false)
+  }
+  const handleFollowing = () => {
+    setFollowing(true)
+    setFollowers(false)
+  }
+
   return (
     <div className="main-profile-container">
       {user ? (
@@ -252,14 +265,16 @@ const User = () => {
                     <strong>{user.posts.length}</strong>
                     <label>posts</label>
                   </div>
-                  <Link to={`${user.userName}/followers`}>
+                  <div onClick={handleFollowers}>
                     <strong>{user.followers.length}</strong>
-                    followers
-                  </Link>
-                  <Link to={`${user.userName}/following`}>
+                    <label>followers</label>
+                  </div>
+                  <div onClick={handleFollowing}>
                     <strong>{user.following.length}</strong>
-                    following
-                  </Link>
+                    <label>following</label>
+                  </div>
+                  {followers && <UserFollowList userFollowers={user.followers} userViewingFollowers={userViewing.following} fetchType={"followers"} currentUserName={userViewing.userName}></UserFollowList>}
+                  {following && <UserFollowList userFollowers={user.following} userViewingFollowers={userViewing.following} fetchType={"following"} currentUserName={userViewing.userName}></UserFollowList>}
                 </div>
                 <label className="profile-username">{user.name}</label>
                 <p className="profile-bio">{user.bio}</p>
