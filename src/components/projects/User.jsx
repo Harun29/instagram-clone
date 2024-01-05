@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -46,6 +46,28 @@ const User = () => {
 
   const [followers, setFollowers] = useState(false);
   const [following, setFollowing] = useState(false);
+  const userRef = useRef(null);
+  const [buttonClicked, setButtonClicked] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInsidePost =
+        userRef.current && userRef.current.contains(event.target);
+
+      if (!isClickInsidePost && !buttonClicked) {
+        setFollowers(false);
+        setFollowing(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [followers, following, buttonClicked]);
+
+  useEffect(() => {
+    (followers || following) && setButtonClicked(false);
+  }, [followers, following]);
 
   /* REDIRECTS CURRENT USER */
 
@@ -212,13 +234,15 @@ const User = () => {
   };
 
   const handleFollowers = () => {
-    setFollowers(true)
-    setFollowing(false)
-  }
+    setButtonClicked(true)
+    setFollowers(true);
+    setFollowing(false);
+  };
   const handleFollowing = () => {
-    setFollowing(true)
-    setFollowers(false)
-  }
+    setButtonClicked(true)
+    setFollowing(true);
+    setFollowers(false);
+  };
 
   return (
     <div className="main-profile-container">
@@ -273,8 +297,28 @@ const User = () => {
                     <strong>{user.following.length}</strong>
                     <label>following</label>
                   </div>
-                  {followers && <UserFollowList userFollowers={user.followers} userViewingFollowers={userViewing.following} fetchType={"followers"} currentUserName={userViewing.userName}></UserFollowList>}
-                  {following && <UserFollowList userFollowers={user.following} userViewingFollowers={userViewing.following} fetchType={"following"} currentUserName={userViewing.userName}></UserFollowList>}
+                  {followers && (
+                    <div className="post-background">
+                      <UserFollowList
+                        userRef={userRef}
+                        userFollowers={user.followers}
+                        userViewingFollowers={userViewing.following}
+                        fetchType={"followers"}
+                        currentUserName={userViewing.userName}
+                      ></UserFollowList>
+                    </div>
+                  )}
+                  {following && (
+                    <div className="post-background">
+                      <UserFollowList
+                        userRef={userRef}
+                        userFollowers={user.following}
+                        userViewingFollowers={userViewing.following}
+                        fetchType={"following"}
+                        currentUserName={userViewing.userName}
+                      ></UserFollowList>
+                    </div>
+                  )}
                 </div>
                 <label className="profile-username">{user.name}</label>
                 <p className="profile-bio">{user.bio}</p>

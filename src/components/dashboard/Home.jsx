@@ -48,6 +48,10 @@ const Home = () => {
   }, [seePost, buttonClicked]);
 
   useEffect(() => {
+    seePost && setButtonClicked(false);
+  }, [seePost]);
+
+  useEffect(() => {
     if (!currentUser) {
       navigate("/signup");
     }
@@ -330,9 +334,7 @@ const Home = () => {
     setButtonClicked(true);
   };
 
-  useEffect(() => {
-    seePost && setButtonClicked(false);
-  }, [seePost]);
+  
 
   return (
     <div className="home-container">
