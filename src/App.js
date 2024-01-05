@@ -18,6 +18,7 @@ import Chats from "./components/projects/Chats";
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -26,9 +27,21 @@ function App() {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 4000)
+  }, [])
+
   return (
     <AuthProvider>
       <div className="App">
+        {loading &&
+        <div className="loading-screen">
+          <img src="igclone.png" />
+          <h1 style={{ fontFamily: "Oleo Script" }}>Igclone</h1>
+        </div>
+        }
         <Router>
           {currentUser && <Navigation />}
           <Routes>
