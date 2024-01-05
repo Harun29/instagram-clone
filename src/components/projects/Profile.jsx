@@ -8,6 +8,7 @@ import PostsList from "./PostsList";
 import BorderAll from "../../icons/BorderAll";
 import HeartIcon from "../../icons/HeartIcon";
 import SaveIcon from "../../icons/SaveIcon";
+import UserFollowList from "./UserFollowList";
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -17,6 +18,8 @@ const Profile = () => {
   const [posts, setPosts] = useState(true);
   const [saved, setSaved] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [followers, setFollowers] = useState(false);
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -60,6 +63,15 @@ const Profile = () => {
     setSaved(false);
   };
 
+  const handleFollowers = () => {
+    setFollowers(true)
+    setFollowing(false)
+  }
+  const handleFollowing = () => {
+    setFollowing(true)
+    setFollowers(false)
+  }
+
   return (
     <div className="main-profile-container">
       {user ? (
@@ -88,14 +100,16 @@ const Profile = () => {
                     <strong>{user.posts.length}</strong>
                     <label>posts</label>
                   </div>
-                  <Link to={`${user.userName}/followers`}>
+                  <div onClick={handleFollowers}>
                     <strong>{user.followers.length}</strong>
-                    followers
-                  </Link>
-                  <Link to={`${user.userName}/following`}>
+                    <label>followers</label>
+                  </div>
+                  <div onClick={handleFollowing}>
                     <strong>{user.following.length}</strong>
-                    following
-                  </Link>
+                    <label>following</label>
+                  </div>
+                  {followers && <UserFollowList userFollowers={user.followers} userViewingFollowers={user.following} fetchType={"followers"}></UserFollowList>}
+                  {following && <UserFollowList userFollowers={user.following} userViewingFollowers={user.following} fetchType={"following"}></UserFollowList>}
                 </div>
                 <label className="profile-username">{user.name}</label>
                 <p className="profile-bio">{user.bio}</p>
