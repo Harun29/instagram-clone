@@ -61,10 +61,12 @@ const CreatePost = ({ userPhoto, userName }) => {
 
   useEffect(() => {
     setPost({
-      title: title,
       description: description,
       photo: imgName,
       user: currentUser.email,
+      userName,
+      comments: [],
+      likedby: []
     });
   }, [title, description, imgName, currentUser]);
 

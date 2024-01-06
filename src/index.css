@@ -529,8 +529,10 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
+
+
 
 .interactions div {
   display: flex;
@@ -548,15 +550,8 @@ a {
   white-space: wrap;
 }
 
-.post-description h4 {
-  font-weight: 700;
-  margin-bottom: 10px;
-  font-size: 0.8rem;
-}
-
-.post-description h4.loading {
-  background-color: rgb(224, 222, 222);
-  color: rgb(224, 222, 222);
+.post-description p strong{
+  font-weight: 600;
 }
 
 .description-paragraph {

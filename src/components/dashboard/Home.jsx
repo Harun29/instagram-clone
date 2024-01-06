@@ -155,6 +155,7 @@ const Home = () => {
               id: doc.id,
               title: doc.data().title,
               description: doc.data().description,
+              userName: doc.data().userName,
               likedBy: doc.data().likedby ? doc.data().likedby : [],
               likedByPhoto: await getLikedByPhoto(),
               likedByUsername: await getLikedByUsername(),
@@ -169,6 +170,7 @@ const Home = () => {
               id: doc.id,
               title: doc.data().title,
               description: doc.data().description,
+              userName: doc.data().userName,
               likedBy: doc.data().likedby ? doc.data().likedby : [],
               likedByPhoto: await getLikedByPhoto(),
               likedByUsername: await getLikedByUsername(),
@@ -334,8 +336,6 @@ const Home = () => {
     setButtonClicked(true);
   };
 
-  
-
   return (
     <div className="home-container">
       <div className="row">
@@ -435,11 +435,13 @@ const Home = () => {
               )}
 
               <div className="post-description">
-                <h4>{post.title}</h4>
                 <p
                   id={post.id + "description"}
                   className="description-paragraph"
                 >
+                  <strong>
+                    <Link to={`/user/${post.userName}`}>{post.userName}</Link>
+                  </strong>{" "}
                   {post.description}
                 </p>
                 <button
@@ -456,7 +458,7 @@ const Home = () => {
                   onClick={() => handleSeePost(post.id)}
                   className="view-all-comments"
                 >
-                  <p>View all {post.comments.length} comments</p>
+                  {post.comments.length > 0 && <p>View all {post.comments.length} comments</p>}
                 </div>
               ) : null}
 
@@ -512,7 +514,6 @@ const Home = () => {
             </div>
 
             <div className="post-description loading">
-              <h4 className="loading">--------------</h4>
               <p className="loading">
                 -------------------------------------------------
                 ----------------------------- ---------------------
