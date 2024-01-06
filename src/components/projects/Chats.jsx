@@ -27,35 +27,35 @@ const Chats = () => {
   const [loadingChats, setLoadingChats] = useState(true);
   const [newMessage, setNewMessage] = useState(false);
 
-  useEffect(() => {
-    try {
-      if (userId && loadingChats) {
-        const unsubscribe = onSnapshot(
-          doc(db, "users", userId),
-          async (document) => {
-            const chatsRef = document.data()?.chats || [];
-            const lastIndex = chatsRef.length - 1;
-            const chatSnap = await getDoc(
-              doc(db, "chats", chatsRef[lastIndex].chatId),
-            );
-            if (
-              lastIndex >= 0 &&
-              !chats[lastIndex].chatId === chatsRef[lastIndex].chatId &&
-              chatSnap.data().messages[0]
-            ) {
-              if(!chats.includes(chatsRef[lastIndex])){
-                setChats((prevChat) => [chatsRef[lastIndex], ...prevChat]);
-              }
-            }
-          },
-        );
+  // useEffect(() => {
+  //   try {
+  //     if (userId && !loadingChats) {
+  //       const unsubscribe = onSnapshot(
+  //         doc(db, "users", userId),
+  //         async (document) => {
+  //           const chatsRef = document.data()?.chats || [];
+  //           const lastIndex = chatsRef.length - 1;
+  //           console.log(chats[lastIndex].chatId)
+  //           console.log(chatsRef[lastIndex].chatId)
+  //           const chatSnap = await getDoc(
+  //             doc(db, "chats", chatsRef[lastIndex].chatId),
+  //           );
+  //           if (
+  //             lastIndex >= 0 &&
+  //             chats[lastIndex].chatId !== chatsRef[lastIndex].chatId &&
+  //             chatSnap.data().messages[0]
+  //           ) {
+  //             setChats((prevChat) => [chatsRef[lastIndex], ...prevChat]);
+  //           }
+  //         },
+  //       );
 
-        return () => unsubscribe();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [userId, chats, loadingChats]);
+  //       return () => unsubscribe();
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }, [userId, loadingChats]);
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
@@ -71,21 +71,22 @@ const Chats = () => {
   };
 
   useEffect(() => {
+    setChats([])
     try {
       const fetchUser = async () => {
         const user = await getUserByEmailInPost(currentUser.email);
         const userName = user.docs[0].data().userName;
         setUserId(user.docs[0].id);
         setUserName(userName);
-        user.docs[0].data().chats.map(async (chat) => {
+        Promise.all(user.docs[0].data().chats.map(async (chat) => {
           const chatSnap = await getDoc(doc(db, "chats", chat.chatId));
           console.log(chatSnap.data());
           chatSnap.data()?.messages[0] &&
             setChats((prevChat) => [chat, ...prevChat]);
-        });
-        setLoadingChats(false);
+        }))
       };
       currentUser && fetchUser();
+      setLoadingChats(false);
     } catch (err) {
       console.error(err);
     }
@@ -133,7 +134,7 @@ const Chats = () => {
           <MessageCircleIcon></MessageCircleIcon>
           <span>Your chats</span>
           <p>Send private chats to a friend</p>
-          <button className="follow-button">Send message</button>
+          <button onClick={handleNewMessage} className="follow-button">Send message</button>
         </div>
       )}
     </ul>
