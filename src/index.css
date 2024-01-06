@@ -211,7 +211,9 @@ a {
 .logo-on-top {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-left: 3px;
 }
 
 .logo-name {
@@ -259,12 +261,14 @@ a {
   border-radius: 15px;
   cursor: pointer;
   width: calc(100% - 24px);
+  transition: all 0.1s ease;
 }
 
 .container a:nth-child(n + 2):hover,
 .nav-wrapper footer:hover,
 .menu-bar:hover {
   background-color: rgb(240, 240, 240);
+  scale: 1.05;
 }
 
 .nav-wrapper footer button,
@@ -536,7 +540,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 
@@ -1077,6 +1081,10 @@ a {
   border-radius: 15px;
 }
 
+.create-post-container.next{
+  border-radius: 15px 15px 0 0;
+}
+
 .finish-post{
   display: flex;
   height: 100%;
@@ -1121,6 +1129,7 @@ a {
   word-break: break-word;
   height: 200px;
   border-bottom: 1px solid rgb(228, 228, 228);
+  resize: none;
 }
 
 .create-description:focus{
@@ -1616,6 +1625,7 @@ a {
   margin: 0;
   width: 100%;
   background-color: #fcfcfc;
+  resize: none;
 }
 
 .update-form input:focus,

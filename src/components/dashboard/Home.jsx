@@ -444,13 +444,13 @@ const Home = () => {
                   </strong>{" "}
                   {post.description}
                 </p>
-                <button
+                {post.description.length > 190 && <button
                   id={post.id + "button"}
                   onClick={() => handleMore(post.id)}
                   className="more-button"
                 >
                   more
-                </button>
+                </button>}
               </div>
 
               {post.comments ? (
@@ -516,7 +516,8 @@ const Home = () => {
             <div className="post-description loading">
               <p className="loading">
                 -------------------------------------------------
-                ----------------------------- ---------------------
+                ----------------------------- --------------------- -------------
+                ------------- ------------
               </p>
             </div>
           </div>

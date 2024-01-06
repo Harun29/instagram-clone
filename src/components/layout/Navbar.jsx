@@ -95,7 +95,7 @@ const Navigation = () => {
   
   const handleCreatePost = () => {
     setButtonClicked(true);
-    setCreatePost(true);
+    setCreatePost(!createPost);
   };
 
   useEffect(() => {

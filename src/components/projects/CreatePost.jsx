@@ -95,13 +95,15 @@ const CreatePost = ({ createRef, userPhoto, userName }) => {
     }
   };
 
-  const handleDiscard = () => {
+  const handleDiscard = (e) => {
     setPhoto(null);
     setFinish(false);
+    e.stopPropagation();
   };
 
-  const handleFinish = () => {
+  const handleFinish = (e) => {
     setFinish(true);
+    e.stopPropagation();
   };
 
   return (
@@ -113,7 +115,8 @@ const CreatePost = ({ createRef, userPhoto, userName }) => {
     >
       <div
       ref={createRef}
-      className="create-post-container">
+      className={`create-post-container ${photo && !finish && "next"}`}
+      >
         {!photo ? (
           <h4 className="text-center">Create new post</h4>
         ) : (
