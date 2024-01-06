@@ -8,8 +8,7 @@ import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import PhotoIcon from "../../icons/PhotoIcon";
 
-const CreatePost = ({ userPhoto, userName }) => {
-  const [title, setTitle] = useState("");
+const CreatePost = ({ createRef, userPhoto, userName }) => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
@@ -68,7 +67,7 @@ const CreatePost = ({ userPhoto, userName }) => {
       comments: [],
       likedby: []
     });
-  }, [title, description, imgName, currentUser]);
+  }, [userName, description, imgName, currentUser]);
 
   useEffect(() => {
     console.log(post);
@@ -112,7 +111,9 @@ const CreatePost = ({ userPhoto, userName }) => {
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="create-post-container">
+      <div
+      ref={createRef}
+      className="create-post-container">
         {!photo ? (
           <h4 className="text-center">Create new post</h4>
         ) : (

@@ -412,12 +412,19 @@ a {
   z-index: 999;
 }
 
+.more-dropdown-container .menu-bar:nth-child(1) svg{
+  margin-left: 3px;
+}
+
 .more-dropdown-container .menu-bar {
   font-size: 0.8rem;
   padding: 16px;
   margin: 0;
   min-height: 20px;
   width: calc(100% - 32px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .more-dropdown-container .menu-bar:nth-child(3) button {
@@ -1079,7 +1086,7 @@ a {
   height: 100%;
   width: 0px;
   overflow: hidden;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   position: relative;
 }
 
@@ -1174,12 +1181,13 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  object-fit: cover;
+  object-fit: contain;
   background-color: black;
 }
 
 .photo-preview img {
   width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 

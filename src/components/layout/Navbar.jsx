@@ -41,7 +41,7 @@ const Navigation = () => {
   const { getUserByEmail } = useAuth();
   const { logout } = useAuth();
   const [error, setError] = useState("");
-  const [notifs, setNotifs] = useState();
+  const [notifs, setNotifs] = useState([]);
   const [notifNumber, setNotifNumber] = useState(0);
   const [dropdown, setDropdown] = useState(false);
   const [moreDropdown, setMoreDropdown] = useState(false);
@@ -52,6 +52,8 @@ const Navigation = () => {
   const [hide, setHide] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const createRef = useRef(null);
   const moreDropdownRef = useRef(null);
 
   useEffect(() => {
@@ -70,7 +72,31 @@ const Navigation = () => {
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [moreDropdown]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInsideCreate =
+        createRef.current && createRef.current.contains(event.target);
+
+      if (!isClickInsideCreate && !buttonClicked) {
+        setCreatePost(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [createPost, buttonClicked]);
+
+  useEffect(() => {
+    createPost && setButtonClicked(false)
+  }, [createPost])
+  
+  const handleCreatePost = () => {
+    setButtonClicked(true);
+    setCreatePost(true);
+  };
 
   useEffect(() => {
     const fetchUsers = async (input) => {
@@ -331,7 +357,7 @@ const Navigation = () => {
               Notifications
             </button>
           </div>
-          <div onClick={() => setCreatePost(!createPost)} className="menu-bar">
+          <div onClick={handleCreatePost} className="menu-bar">
             <PlusIcon></PlusIcon>
             <button className={`notif-button ${hide && " active"}`}>
               Create
@@ -522,7 +548,11 @@ const Navigation = () => {
       </ul>
 
       {createPost ? (
-        <CreatePost userPhoto={userPhoto} userName={userName}></CreatePost>
+        <CreatePost
+          createRef={createRef}
+          userPhoto={userPhoto}
+          userName={userName}
+        ></CreatePost>
       ) : null}
     </div>
   );
