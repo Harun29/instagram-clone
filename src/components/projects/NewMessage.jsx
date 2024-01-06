@@ -19,9 +19,12 @@ const NewMessage = () => {
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(async (doc) => {
           const newDocument = doc.data();
-          const imgUrl = await getDownloadURL(
-            ref(storage, `profile_pictures/${doc.data().pphoto}`),
-          );
+          let imgUrl = 'blank-profile.jpg'
+          if(doc.data().pphoto){
+            imgUrl = await getDownloadURL(
+              ref(storage, `profile_pictures/${doc.data().pphoto}`),
+            );
+          }
           newDocument.pphoto = imgUrl;
           newDocument.userId = doc.id;
           let found = false;

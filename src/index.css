@@ -1294,20 +1294,21 @@ a {
   padding: 10px;
 }
 
-.search-result:hover {
-  background-color: rgb(240, 240, 240);
-}
-
 .result-box {
-  width: 100%;
-  padding: 0 15px;
+  width: calc(100% - 40px);
+  padding: 5px 15px;
   display: flex;
   cursor: pointer;
   align-items: center;
   justify-content: flex-start;
-  transition: all 0.5s ease;
+  transition: all 0.1s ease;
+  margin: 5px;
+  border-radius: 15px;
 }
 
+.result-box:hover {
+  background-color: rgb(240, 240, 240);
+}
 .result-box img {
   height: 40px;
   width: 40px;
@@ -1600,6 +1601,7 @@ a {
 
 .new-message-to{
   border-bottom: 1px solid rgb(204, 208, 213);
+  margin-bottom: 10px;
 }
 
 .new-message-to label{
@@ -1617,12 +1619,16 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
 }
 
 .result-box.in-chat{
   width: 100%;
   padding: 0;
+  margin: 0;
+}
+
+.result-box.in-chat:hover{
+  background-color: inherit;
 }
 
 .result-names.in-chat{
