@@ -117,7 +117,7 @@ const Navigation = () => {
         );
         setUserPhoto(userPhotoUrl);
       }
-      setUserName(user.userName)
+      setUserName(user.userName);
     };
 
     try {
@@ -288,7 +288,11 @@ const Navigation = () => {
               Home
             </button>
           </Link>
-          <div onClick={handleSearchDropdown} className="menu-bar">
+          <div
+            style={searchDropdown ? { border: "1px solid #c7c7c7" } : null}
+            onClick={handleSearchDropdown}
+            className="menu-bar"
+          >
             <SearchIcon></SearchIcon>
             <button className={`notif-button ${hide && " active"}`}>
               Search
@@ -310,7 +314,11 @@ const Navigation = () => {
               Messages
             </button>
           </Link>
-          <div onClick={handleDropdown} className="menu-bar notif-icon">
+          <div
+            onClick={handleDropdown}
+            style={dropdown ? { border: "1px solid #c7c7c7" } : null}
+            className="menu-bar notif-icon"
+          >
             {dropdown ? (
               <HeartIconFull></HeartIconFull>
             ) : (
@@ -513,7 +521,9 @@ const Navigation = () => {
         </div>
       </ul>
 
-      {createPost ? <CreatePost userPhoto={userPhoto} userName={userName}></CreatePost> : null}
+      {createPost ? (
+        <CreatePost userPhoto={userPhoto} userName={userName}></CreatePost>
+      ) : null}
     </div>
   );
 };
