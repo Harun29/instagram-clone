@@ -1071,8 +1071,70 @@ a {
 .create-post-container {
   background-color: white;
   height: 80%;
-  width: 700px;
+  min-width: 700px;
   border-radius: 15px;
+}
+
+.finish-post{
+  display: flex;
+  height: 100%;
+}
+
+.add-description {
+  height: 100%;
+  width: 0px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+.add-description.active{
+  border-left: 1px solid rgb(228, 228, 228);
+  width: 300px;
+}
+
+.user-in-create{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px;
+}
+
+.user-in-create img{
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-in-create span{
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.create-description{
+  border: none;
+  padding: 15px;
+  width: 90%;
+  word-break: break-word;
+  height: 200px;
+  border-bottom: 1px solid rgb(228, 228, 228);
+}
+
+.create-description:focus{
+  outline: none;
+}
+
+.description-length{
+  position: absolute;
+  bottom: 420px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: #737373;
+}
+
+.description-length.too-big{
+  color: red;
 }
 
 .text-center {
@@ -1090,7 +1152,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100% - 40px);
+  height: calc(100% - 45px);
   width: 100%;
 }
 
@@ -1112,11 +1174,13 @@ a {
 }
 
 .photo-preview {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: cover;
+  background-color: black;
 }
 
 .photo-preview img {
@@ -1161,17 +1225,28 @@ a {
   justify-content: space-between;
 }
 
-.continue-with-creating span {
+.continue-with-creating span, .continue-with-creating button{
   margin: 0 25px;
   cursor: pointer;
   color: #0095f6;
+}
+
+.continue-with-creating button{
+  border: none;
+  background-color: inherit;
+  padding: 0;
+}
+
+.continue-with-creating button:disabled{
+  color: #737373;
+  font-weight: 600;
 }
 
 .continue-with-creating span:nth-child(1) {
   color: red;
 }
 
-.continue-with-creating span:hover {
+.continue-with-creating span:hover, .continue-with-creating button:hover {
   color: black;
 }
 

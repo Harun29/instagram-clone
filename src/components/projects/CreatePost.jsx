@@ -8,7 +8,7 @@ import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import PhotoIcon from "../../icons/PhotoIcon";
 
-const CreatePost = () => {
+const CreatePost = ({ userPhoto, userName }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -16,6 +16,7 @@ const CreatePost = () => {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageUpload, setImageUpload] = useState(null);
+  const [finish, setFinish] = useState(false);
 
   const navigate = useNavigate();
 
@@ -95,6 +96,11 @@ const CreatePost = () => {
 
   const handleDiscard = () => {
     setPhoto(null);
+    setFinish(false);
+  };
+
+  const handleFinish = () => {
+    setFinish(true);
   };
 
   return (
@@ -110,7 +116,8 @@ const CreatePost = () => {
         ) : (
           <div className="text-center continue-with-creating">
             <span onClick={handleDiscard}>discard</span>
-            <span>next</span>
+            {!finish && <span onClick={handleFinish}>next</span>}
+            {finish && <button disabled={description.length > 2200} type="submit">Share</button>}
           </div>
         )}
         <div className="upload-photo">
@@ -139,13 +146,27 @@ const CreatePost = () => {
             </div>
           )}
           {photo && (
-            <div className="photo-preview">
-              <img src={photo} alt="preview" />
+            <div className="finish-post">
+              <div className="photo-preview">
+                <img src={photo} alt="preview" />
+              </div>
+              <div className={`add-description ${finish && "active"}`}>
+                <div className="user-in-create">
+                  <img src={userPhoto} alt="" />
+                  <span>{userName}</span>
+                </div>
+                <textarea
+                  className="create-description"
+                  placeholder="Write a caption..."
+                  onChange={e => setDescription(e.target.value)}
+                >
+                </textarea>
+                  <span className={`description-length ${description.length > 2200 && "too-big"}`}>{description.length}/2,200</span>
+              </div>
             </div>
           )}
         </div>
       </div>
-      <p className="close-create">x</p>
     </form>
   );
 };

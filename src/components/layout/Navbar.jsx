@@ -46,6 +46,7 @@ const Navigation = () => {
   const [dropdown, setDropdown] = useState(false);
   const [moreDropdown, setMoreDropdown] = useState(false);
   const [userPhoto, setUserPhoto] = useState("/blank-profile.jpg");
+  const [userName, setUserName] = useState();
   const [createPost, setCreatePost] = useState(false);
   const [searchDropdown, setSearchDropdown] = useState(false);
   const [hide, setHide] = useState(false);
@@ -116,6 +117,7 @@ const Navigation = () => {
         );
         setUserPhoto(userPhotoUrl);
       }
+      setUserName(user.userName)
     };
 
     try {
@@ -511,7 +513,7 @@ const Navigation = () => {
         </div>
       </ul>
 
-      {createPost ? <CreatePost></CreatePost> : null}
+      {createPost ? <CreatePost userPhoto={userPhoto} userName={userName}></CreatePost> : null}
     </div>
   );
 };
