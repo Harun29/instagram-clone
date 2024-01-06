@@ -25,7 +25,7 @@ const Messenger = ({ user }) => {
   const [chatId, setChatId] = useState();
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
-  const [lastMessage, setLastMessage] = useState("");
+  const [lastMessage, setLastMessage] = useState("New chat");
 
   useEffect(() => {
     try {
@@ -33,7 +33,7 @@ const Messenger = ({ user }) => {
         const unsubscribe = onSnapshot(doc(db, "chats", chatId), (doc) => {
           const messages = doc.data()?.messages || [];
           const lastIndex = messages.length - 1;
-          setLastMessage(messages[lastIndex].message);
+          messages[lastIndex] && setLastMessage(messages[lastIndex].message);
           if (lastIndex >= 0) {
             setChat((prevChat) => [...prevChat, messages[lastIndex]]);
           }

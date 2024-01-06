@@ -77,7 +77,7 @@ const Home = () => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
-      setSavedArray(user.docs[0].data().savedIds);
+      user.docs[0].data().savedIds && setSavedArray(user.docs[0].data().savedIds);
       console.log(user);
     };
     try {

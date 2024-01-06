@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
+import MessageCirclePlusIcon from "../../icons/MessageCirclePlus";
 import {
   doc,
   getDoc,
@@ -14,6 +15,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import NewMessage from "./NewMessage";
 
 const Chats = () => {
   const { currentUser } = useAuth();
@@ -23,6 +25,7 @@ const Chats = () => {
   const [chats, setChats] = useState([]);
   const [userId, setUserId] = useState();
   const [loadingChats, setLoadingChats] = useState(true);
+  const [newMessage, setNewMessage] = useState(false);
 
   useEffect(() => {
     try {
@@ -40,7 +43,9 @@ const Chats = () => {
               !chats[lastIndex].chatId === chatsRef[lastIndex].chatId &&
               chatSnap.data().messages[0]
             ) {
-              setChats((prevChat) => [chatsRef[lastIndex], ...prevChat]);
+              if(!chats.includes(chatsRef[lastIndex])){
+                setChats((prevChat) => [chatsRef[lastIndex], ...prevChat]);
+              }
             }
           },
         );
@@ -86,14 +91,25 @@ const Chats = () => {
     }
   }, [currentUser, getUserByEmail]);
 
+  const handleNewMessage = () => {
+    setNewMessage(true)
+  }
+
+
   return (
-    <ul className="dropdown-menu active chat-box">
+    <ul className={`dropdown-menu active chat-box ${newMessage && "new-message-z-index"}`}>
+      {newMessage && <NewMessage />}
       <div className="search-box chats-box">
-        <h1 className="chats-heading">{userName}</h1>
+        <h1 className="chats-heading">
+          <span>{userName}</span>
+          <button onClick={handleNewMessage}>
+            <MessageCirclePlusIcon />
+          </button>
+        </h1>
         <span className="chats-span">Messages</span>
-        <div className="chats">
-          {chats &&
-            chats.map((chat) => (
+        {chats.length > 0 && (
+          <div className="chats">
+            {chats.map((chat) => (
               <Link to={`/messenger/${chat.friendsId}`} className="chat">
                 <img className="friends-photo" src={chat.friendsPhoto} alt="" />
                 <div className="friends-info">
@@ -102,7 +118,13 @@ const Chats = () => {
                 </div>
               </Link>
             ))}
+          </div>
+        )}
+      {chats.length === 0 && (
+        <div className="empty-chats">
+          <span>No messages found.</span>
         </div>
+      )}
       </div>
       {param.userid ? (
         <Messenger user={param} />
