@@ -339,7 +339,7 @@ a {
 .dropdown-menu h1 {
   font-size: 22px;
   font-weight: 700;
-  padding: 25px 15px 15px;
+  padding: 25px 35px 15px;
 }
 
 .notif-by {
@@ -434,6 +434,32 @@ a {
 .more-dropdown-container .menu-bar:nth-child(3) button {
   margin-left: 10px;
   padding: 0;
+}
+
+.empty-notifications-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.empty-notifications-div span{
+  color: #737373;
+  margin-bottom: 20px;
+  width: 70%;
+  text-align: center;
+}
+
+.empty-notifications-heart{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  border: 1px solid black;
 }
 
 /*------------------------*/

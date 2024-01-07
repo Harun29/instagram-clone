@@ -420,7 +420,7 @@ const Navigation = () => {
 
       <ul className={`dropdown-menu${dropdown ? " active" : ""}`}>
         <h1 className="notifications-heading">Notifications</h1>
-        {notifs &&
+        {notifs ?
           notifs.map((notif, index) => (
             <li key={index} className="notification">
               {notif.notifType === "like" ? (
@@ -519,7 +519,14 @@ const Navigation = () => {
                 </div>
               ) : null}
             </li>
-          ))}
+          )) :
+          <div className="empty-notifications-div">
+            <div className="empty-notifications-heart">
+              <HeartIcon size={"45"}></HeartIcon>  
+            </div>
+            <span>Activity On Your Posts</span>
+            <span>When someone likes or comments on one of your posts, you'll see it here.</span>
+          </div>}
       </ul>
 
       <ul className={`dropdown-menu${searchDropdown ? " active" : ""}`}>
