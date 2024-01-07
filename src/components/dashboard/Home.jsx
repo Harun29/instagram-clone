@@ -31,6 +31,11 @@ const Home = () => {
   const [seePost, setSeePost] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const postRef = useRef(null);
+  const [comment, setComment] = useState("");
+
+  useEffect(() => {
+    likedByArray && console.log("likedBy", likedByArray)
+  }, [likedByArray])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -190,7 +195,7 @@ const Home = () => {
     fetchPosts();
   }, [getUserByEmail]);
 
-  const handleComment = async (postid, postPhoto, userId, comment) => {
+  const handleComment = async (postid, postPhoto, userId) => {
     const docRef = doc(db, "posts", postid);
     const docNotifRef = doc(db, "users", userId);
 
@@ -219,6 +224,7 @@ const Home = () => {
       await updateDoc(docNotifRef, {
         notif: arrayUnion(notifObject(false)),
       });
+      setComment("")
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
@@ -277,10 +283,6 @@ const Home = () => {
       console.error("Error in handleLike: ", err);
     }
   };
-
-  useEffect(() => {
-    console.log(savedArray);
-  }, [savedArray]);
 
   const handleSave = async (postId, postPhoto) => {
     const docUserRef = doc(db, "users", userViewingId);
@@ -365,7 +367,7 @@ const Home = () => {
                         post.id,
                         post.photo,
                         post.userId,
-                        posts.indexOf(post),
+                        posts.indexOf(post)
                       )
                     }
                   >
@@ -398,7 +400,7 @@ const Home = () => {
                 <div
                   key={`${posts.indexOf(post)}save`}
                   onClick={() =>
-                    handleSave(post.id, post.photo, posts.indexOf(post))
+                    handleSave(post.id, post.photo)
                   }
                 >
                   <svg
@@ -468,14 +470,15 @@ const Home = () => {
                   placeholder="Add a comment..."
                   id={post.id + "comment"}
                   type="text"
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
                 />
                 <button
                   onClick={() =>
                     handleComment(
                       post.id,
                       post.photo,
-                      post.userId,
-                      document.getElementById(post.id + "comment").value,
+                      post.userId
                     )
                   }
                 >
@@ -486,7 +489,7 @@ const Home = () => {
               {seePost && (
                 <div className="show-post">
                   <div className="post-background">
-                    <Post param={postid} postRef={postRef}></Post>
+                    <Post param={postid} postRef={postRef} savedArray={savedArray}></Post>
                   </div>
                 </div>
               )}

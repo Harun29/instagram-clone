@@ -16,9 +16,8 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
-import SaveIcon from "../../icons/SaveIcon";
 
-const Post = ({ param, postRef }) => {
+const Post = ({ param, postRef, savedArray }) => {
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState("");
@@ -29,6 +28,8 @@ const Post = ({ param, postRef }) => {
   const [userId, setUserId] = useState();
   const [userPhoto, setUserPhoto] = useState();
   const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [comment, setComment] = useState("")
 
   useEffect(() => {
     currentUser && console.log(currentUser.email);
@@ -54,6 +55,14 @@ const Post = ({ param, postRef }) => {
       }
     }
   }, [userViewing, post]);
+
+  useEffect(() => {
+    if (post) {
+      if (savedArray.includes(param)) {
+        setSaved(true);
+      }
+    }
+  }, [savedArray, post, param]);
 
   useEffect(() => {
     const fetchUserByEmail = async (email) => {
@@ -101,7 +110,6 @@ const Post = ({ param, postRef }) => {
   }, [param]);
 
   const handleLike = async () => {
-    setLiked((prevLiked) => !prevLiked);
     const docRef = doc(db, "posts", param);
     const docUserRef = doc(db, "users", userViewingId);
     const docNotifRef = doc(db, "users", userId);
@@ -120,17 +128,10 @@ const Post = ({ param, postRef }) => {
     };
 
     try {
-      if (!liked) {
-        await updateDoc(docRef, {
-          likedby: arrayUnion(userViewing.email),
-        });
-        await updateDoc(docUserRef, {
-          likedPosts: arrayUnion(param),
-        });
-        await updateDoc(docNotifRef, {
-          notif: arrayUnion(notifObject(false)),
-        });
-      } else {
+      if (liked) {
+        setLiked(false)
+        document.getElementById(param).classList.remove("active");
+        document.getElementById(param).setAttribute("fill", "none");
         await updateDoc(docRef, {
           likedby: arrayRemove(userViewing.email),
         });
@@ -143,9 +144,59 @@ const Post = ({ param, postRef }) => {
         await updateDoc(docNotifRef, {
           notif: arrayRemove(notifObject(true)),
         });
+      } else {
+        setLiked(true)
+        document.getElementById(param).classList.add("active");
+        document.getElementById(param).setAttribute("fill", "red");
+        await updateDoc(docRef, {
+          likedby: arrayUnion(userViewing.email),
+        });
+        await updateDoc(docUserRef, {
+          likedPosts: arrayUnion(param),
+        });
+        await updateDoc(docNotifRef, {
+          notif: arrayUnion(notifObject(false)),
+        });
       }
     } catch (err) {
       console.error("Error in handleLike: ", err);
+    }
+  };
+
+  const handleSave = async () => {
+    const docUserRef = doc(db, "users", userViewingId);
+    const postid = param + "save";
+
+    try {
+      if (savedArray.includes(param)) {
+        setSaved(false)
+        savedArray.pop(param);
+        document.getElementById(postid).setAttribute("fill", "none");
+        await updateDoc(docUserRef, {
+          saved: arrayRemove({
+            postId: param,
+            postPhoto: postPicture,
+          }),
+        });
+        await updateDoc(docUserRef, {
+          savedIds: arrayRemove(param),
+        });
+      } else {
+        setSaved(true)
+        savedArray.push(param);
+        document.getElementById(postid).setAttribute("fill", "full");
+        await updateDoc(docUserRef, {
+          saved: arrayUnion({
+            postId: param,
+            postPhoto: postPicture,
+          }),
+        });
+        await updateDoc(docUserRef, {
+          savedIds: arrayUnion(param),
+        });
+      }
+    } catch (err) {
+      console.error("Error in handleSave: ", err);
     }
   };
 
@@ -206,14 +257,14 @@ const Post = ({ param, postRef }) => {
     }
   }, [post]);
 
-  const handleComment = async (postid, postPhoto, userId, comment) => {
-    const docRef = doc(db, "posts", postid);
+  const handleComment = async () => {
+    const docRef = doc(db, "posts", param);
     const docNotifRef = doc(db, "users", userId);
 
     const notifObject = (notifStatus) => {
       const object = {
-        postCommented: postid,
-        postCommentedPhoto: postPhoto,
+        postCommented: param,
+        postCommentedPhoto: postPicture,
         commentedBy: userViewing.userName,
         commentedByPhoto: userViewingPhoto,
         opened: notifStatus,
@@ -228,15 +279,22 @@ const Post = ({ param, postRef }) => {
         comments: arrayUnion({
           user: userViewing.email,
           comment: comment,
+          userPhoto: userViewingPhoto,
+          userName: userViewing.userName
         }),
       });
       await updateDoc(docNotifRef, {
         notif: arrayUnion(notifObject(false)),
       });
+      setComment("")
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
   };
+
+  useEffect(() => {
+    console.log("saved array: ", savedArray)
+  }, [savedArray])
 
   return post ? (
     <div className="card" ref={postRef}>
@@ -267,7 +325,7 @@ const Post = ({ param, postRef }) => {
           {post.comments.map((comment) => (
             <div className="comment">
               <Link to={`/user/${comment.userName}`}>
-                <img src={comment.userPhoto} alt="commented by" />
+                <img src={comment.userPhoto ? comment.userPhoto : "blank-profile.jpg"} alt="commented by" />
               </Link>
               <p>
                 <Link to={`/user/${comment.userName}`}>{comment.userName}</Link>{" "}
@@ -281,7 +339,7 @@ const Post = ({ param, postRef }) => {
           <div>
             <div onClick={handleLike}>
               <svg
-                id={post.id}
+                id={param}
                 xmlns="http://www.w3.org/2000/svg"
                 class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${
                   liked ? "active" : ""
@@ -302,7 +360,27 @@ const Post = ({ param, postRef }) => {
             <MessageCircleIcon></MessageCircleIcon>
             <ArrowForwardIcon></ArrowForwardIcon>
           </div>
-          <SaveIcon></SaveIcon>
+          <div
+                  key={`${param}save`}
+                  onClick={handleSave}
+                >
+                  <svg
+                    id={`${param}save`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-bookmark"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 24 24"
+                    stroke-width="1"
+                    stroke="currentColor"
+                    fill={saved ? "full" : "none"}
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" />
+                  </svg>
+                </div>
         </div>
 
         <div className="add-comment-container in-post">
@@ -311,17 +389,12 @@ const Post = ({ param, postRef }) => {
             placeholder="Add a comment..."
             id={post.id + "comment"}
             type="text"
+            onChange={e => setComment(e.target.value)}
+            value = {comment}
           />
           <button
             className="comment-button-in-post"
-            onClick={() =>
-              handleComment(
-                post.id,
-                post.photo,
-                post.userId,
-                document.getElementById(post.id + "comment").value,
-              )
-            }
+            onClick={handleComment}
           >
             post
           </button>

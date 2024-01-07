@@ -616,6 +616,7 @@ a {
   font-size: 0.8rem;
   color: rgb(150, 150, 150);
   cursor: pointer;
+  margin-top: 5px;
 }
 
 .post-description p.loading {
@@ -1799,7 +1800,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(97, 97, 97, 0.5);
+  background-color: rgba(53, 53, 53, 0.3);
   z-index: 2000;
   position: fixed;
   bottom: 0;
@@ -1823,7 +1824,7 @@ a {
 }
 
 .card-body {
-  max-width: 500px;
+  width: 400px;
   display: grid;
   grid-template-rows: 60px 1fr 5fr 50px 50px;
   font-size: 0.8rem;
