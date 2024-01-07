@@ -579,8 +579,8 @@ a {
   margin-right: 15px;
 }
 
-.interactions div:nth-child(2) svg {
-  margin: 0;
+.save-div svg {
+  margin: 0!important;
 }
 
 .post-description {
@@ -1815,6 +1815,7 @@ a {
   background-color: white;
   max-width: 85%;
   height: 90%;
+  /* transition: all 0.1s ease; */
 }
 
 .card-img-top {

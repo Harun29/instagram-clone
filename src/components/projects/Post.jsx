@@ -31,10 +31,6 @@ const Post = ({ param, postRef, savedArray }) => {
   const [saved, setSaved] = useState(false);
   const [comment, setComment] = useState("")
 
-  useEffect(() => {
-    currentUser && console.log(currentUser.email);
-  }, [currentUser]);
-
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
@@ -69,7 +65,6 @@ const Post = ({ param, postRef, savedArray }) => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
-      console.log(user);
     };
     try {
       currentUser && fetchUserByEmail(currentUser.email);
@@ -80,13 +75,16 @@ const Post = ({ param, postRef, savedArray }) => {
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const userViewingPhoto = await getDownloadURL(
-        ref(storage, `profile_pictures/${userViewing.pphoto}`),
-      );
+      let userViewingPhoto = "blank-profile.jpg"
+      if(userViewing.pphoto){
+        userViewingPhoto = await getDownloadURL(
+          ref(storage, `profile_pictures/${userViewing.pphoto}`),
+        );
+      }
       setUserViewingPhoto(userViewingPhoto);
     };
     try {
-      userViewing.pphoto && fetchPhoto();
+      userViewing && fetchPhoto();
     } catch (err) {
       console.error(err);
     }
@@ -218,7 +216,7 @@ const Post = ({ param, postRef, savedArray }) => {
 
     /* ERROR ON LOADING */
     try {
-      if (post.user) {
+      if (post) {
         fetchUserByEmail(post.user);
       }
     } catch (err) {
@@ -249,7 +247,7 @@ const Post = ({ param, postRef, savedArray }) => {
     };
     /* ERROR ON LOADING */
     try {
-      if (post.photo) {
+      if (post) {
         fetchPicture(post.photo);
       }
     } catch (err) {
@@ -292,18 +290,14 @@ const Post = ({ param, postRef, savedArray }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("saved array: ", savedArray)
-  }, [savedArray])
-
-  return post ? (
+  return post && postPicture ? (
     <div className="card" ref={postRef}>
       <img src={postPicture} alt="Post" className="card-img-top" />
 
       <div className="card-body">
         <div className="post-header in-post">
           <Link className="link-to-user" to={`/user/${user}`}>
-            <img className="profile-photo" src={userPhoto} alt="profile" />
+            <img className="profile-photo" src={userPhoto ? userPhoto : 'blank-profile.jpg'} alt="profile" />
             <label>{user}</label>
           </Link>
           <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
@@ -311,7 +305,7 @@ const Post = ({ param, postRef, savedArray }) => {
 
         <div className="post-header-description">
           <Link className="link-to-user" to={`/user/${user}`}>
-            <img className="profile-photo" src={userPhoto} alt="profile" />
+            <img className="profile-photo" src={userPhoto ? userPhoto : 'blank-profile.jpg'} alt="profile" />
           </Link>
           <p className="card-text">
             <Link to={`/user/${user}`} className="bold">

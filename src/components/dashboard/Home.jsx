@@ -34,10 +34,6 @@ const Home = () => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    likedByArray && console.log("likedBy", likedByArray)
-  }, [likedByArray])
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
       const isClickInsidePost =
         postRef.current && postRef.current.contains(event.target);
@@ -83,7 +79,6 @@ const Home = () => {
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
       user.docs[0].data().savedIds && setSavedArray(user.docs[0].data().savedIds);
-      console.log(user);
     };
     try {
       currentUser && fetchUserByEmail(currentUser.email);
@@ -302,7 +297,6 @@ const Home = () => {
           savedIds: arrayRemove(postId),
         });
       } else {
-        console.log("im here");
         savedArray.push(postId);
         document.getElementById(postid).setAttribute("fill", "full");
         await updateDoc(docUserRef, {
@@ -394,7 +388,11 @@ const Home = () => {
                       <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
                     </svg>
                   </div>
-                  <MessageCircleIcon></MessageCircleIcon>
+                  <div
+                  onClick={() => handleSeePost(post.id)}
+                  >
+                    <MessageCircleIcon></MessageCircleIcon>
+                  </div>
                   <ArrowForwardIcon></ArrowForwardIcon>
                 </div>
                 <div
@@ -402,6 +400,7 @@ const Home = () => {
                   onClick={() =>
                     handleSave(post.id, post.photo)
                   }
+                  className="save-div"
                 >
                   <svg
                     id={`${post.id}save`}
