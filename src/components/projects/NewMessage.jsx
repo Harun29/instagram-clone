@@ -5,7 +5,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { Link } from "react-router-dom";
 
-const NewMessage = () => {
+const NewMessage = ({newMessageRef}) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
@@ -53,7 +53,7 @@ const NewMessage = () => {
 
   return (
     <div className="new-message-background">
-      <div className="new-message">
+      <div ref={newMessageRef} className="new-message">
         <div className="new-message-span">
           <span>New Message</span>
         </div>

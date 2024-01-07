@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Messenger from "./Messenger";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -26,6 +26,27 @@ const Chats = () => {
   const [userId, setUserId] = useState();
   const [loadingChats, setLoadingChats] = useState(true);
   const [newMessage, setNewMessage] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const newMessageRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInsidePost =
+        newMessageRef.current && newMessageRef.current.contains(event.target);
+
+      if (!isClickInsidePost && !buttonClicked) {
+        setNewMessage(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [newMessage, buttonClicked]);
+
+  useEffect(() => {
+    newMessage && setButtonClicked(false);
+  }, [newMessage]);
 
   // useEffect(() => {
   //   try {
@@ -93,13 +114,13 @@ const Chats = () => {
   }, [currentUser, getUserByEmail]);
 
   const handleNewMessage = () => {
+    setButtonClicked(true)
     setNewMessage(true)
   }
 
-
   return (
     <ul className={`dropdown-menu active chat-box ${newMessage && "new-message-z-index"}`}>
-      {newMessage && <NewMessage />}
+      {newMessage && <NewMessage newMessageRef={newMessageRef}/>}
       <div className="search-box chats-box">
         <h1 className="chats-heading">
           <span>{userName}</span>
