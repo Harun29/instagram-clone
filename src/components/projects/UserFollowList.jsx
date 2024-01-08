@@ -20,10 +20,10 @@ const UserFollowList = ({
   userViewingFollowers,
   fetchType,
   currentUserName,
-  user,
   userViewing,
   userViewingPhoto,
 }) => {
+
   const [followers, setFollowers] = useState([]);
   const { currentUser } = useAuth();
   const { getUserByUsername } = useAuth();
@@ -116,7 +116,6 @@ const UserFollowList = ({
         userPhoto = await getDownloadURL(
           ref(storage, `profile_pictures/${newFollower.pphoto}`),
         );
-      console.log("photo:", userPhoto, newFollower.userName);
       const followState = userViewingFollowers.includes(newFollower.userName);
       const email = newFollower.email;
       const object = {
@@ -137,8 +136,8 @@ const UserFollowList = ({
   }, [userFollowers, userViewingFollowers, getUserByUsername]);
 
   useEffect(() => {
-    followers && console.log(followers);
-  }, [followers]);
+    userViewing && console.log("user viewing: ", userViewing)
+  }, [userViewing])
 
   return (
     <div ref={userRef} className="followers">

@@ -305,8 +305,6 @@ const User = () => {
                         userViewingFollowers={userViewing.following}
                         fetchType={"followers"}
                         currentUserName={userViewing.userName}
-                        user={user}
-                        userId={userId}
                         userViewing={userViewing}
                         userViewingPhoto={userViewingPhoto}
                       ></UserFollowList>
@@ -320,8 +318,6 @@ const User = () => {
                         userViewingFollowers={userViewing.following}
                         fetchType={"following"}
                         currentUserName={userViewing.userName}
-                        user={user}
-                        userId={userId}
                         userViewing={userViewing}
                         userViewingPhoto={userViewingPhoto}
                       ></UserFollowList>
