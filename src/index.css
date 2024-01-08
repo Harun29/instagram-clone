@@ -1858,6 +1858,10 @@ a {
   padding: 15px;
 }
 
+.interactions.in-post div:nth-child(2) svg{
+  margin: 0;
+}
+
 .add-comment-container.in-post {
   padding: 0 15px;
   margin-bottom: 15px;

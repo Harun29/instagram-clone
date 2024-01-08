@@ -9,7 +9,6 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
-import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
@@ -17,11 +16,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 
-const Post = ({ param, postRef, savedArray, postPhoto }) => {
-  const { currentUser } = useAuth();
-  const [userViewing, setUserViewing] = useState();
-  const [userViewingPhoto, setUserViewingPhoto] = useState("");
-  const [userViewingId, setUserViewingId] = useState();
+const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingId, userViewingPhoto }) => {
   const [post, setPost] = useState();
   const [user, setUser] = useState();
   const [userId, setUserId] = useState();
@@ -47,7 +42,6 @@ const Post = ({ param, postRef, savedArray, postPhoto }) => {
     if (post && !liked) {
       if (userViewing && post.likedby.includes(userViewing.email)) {
         setLiked(true);
-        console.log("aaaaaaaaaaaaaaaaaaa")
       }
     }
   }, [userViewing, post]);
@@ -56,42 +50,10 @@ const Post = ({ param, postRef, savedArray, postPhoto }) => {
     if (post && !saved) {
       if (savedArray.includes(param)) {
         setSaved(true);
-        console.log("bbbbbbbbbbbbbbbbbbbbb")
 
       }
     }
   }, [savedArray, post, param]);
-
-  useEffect(() => {
-    const fetchUserByEmail = async (email) => {
-      const user = await getUserByEmailInPost(email);
-      setUserViewing(user.docs[0].data());
-      setUserViewingId(user.docs[0].id);
-    };
-    try {
-      currentUser && fetchUserByEmail(currentUser.email);
-      console.log("aaaaaaaaaaaaaaaaaaa")
-    } catch (err) {
-      console.error(err);
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    const fetchPhoto = async () => {
-      let userViewingPhoto = "blank-profile.jpg"
-      if(userViewing.pphoto){
-        userViewingPhoto = await getDownloadURL(
-          ref(storage, `profile_pictures/${userViewing.pphoto}`),
-        );
-      }
-      setUserViewingPhoto(userViewingPhoto);
-    };
-    try {
-      userViewing && fetchPhoto();
-    } catch (err) {
-      console.error(err);
-    }
-  }, [userViewing]);
 
   const handleLike = async () => {
     const docRef = doc(db, "posts", param);
@@ -198,7 +160,6 @@ const Post = ({ param, postRef, savedArray, postPhoto }) => {
         setUserPhoto(userPhoto);
       }
       setUserId(user.docs[0].id);
-      console.log("ddddddddddddddddddddddddddd")
     };
 
     /* ERROR ON LOADING */
@@ -220,7 +181,6 @@ const Post = ({ param, postRef, savedArray, postPhoto }) => {
 
     try {
       fetchPost(param);
-      console.log("eeeeeeeeeeeeeeeeeeeeeee")
     } catch (err) {
       console.error("error: ", err);
     }

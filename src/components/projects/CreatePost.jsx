@@ -8,7 +8,7 @@ import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import PhotoIcon from "../../icons/PhotoIcon";
 
-const CreatePost = ({ createRef, userPhoto, userName }) => {
+const CreatePost = ({ createRef, userPhoto, userName, createPost, setCreatePost }) => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
@@ -41,6 +41,7 @@ const CreatePost = ({ createRef, userPhoto, userName }) => {
       e.preventDefault();
       addData(post);
       await uploadBytes(imageRef, imageUpload);
+      setCreatePost();
     } catch (err) {
       console.error(err);
     }

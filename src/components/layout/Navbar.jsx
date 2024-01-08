@@ -562,6 +562,8 @@ const Navigation = () => {
           createRef={createRef}
           userPhoto={userPhoto}
           userName={userName}
+          createPost={createPost === true}
+          setCreatePost={() => setCreatePost(false)}
         ></CreatePost>
       ) : null}
     </div>

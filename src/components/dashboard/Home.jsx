@@ -491,7 +491,7 @@ const Home = () => {
               {seePost && (
                 <div className="show-post">
                   <div className="post-background">
-                    <Post param={postid} postRef={postRef} savedArray={savedArray} postPhoto={postPhoto}></Post>
+                    <Post param={postid} postRef={postRef} savedArray={savedArray} postPhoto={postPhoto} userViewing={userViewing} userViewingId={userViewingId} userViewingPhoto={userViewingPhoto}></Post>
                   </div>
                 </div>
               )}
