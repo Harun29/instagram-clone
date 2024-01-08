@@ -102,9 +102,6 @@ const Suggested = () => {
   };
 
   const handleFollow = async (email, userName) => {
-    const user = await getUserByEmailInPost(email);
-    const userId = user.docs[0].id;
-    const docNotifRef = doc(db, "users", userId);
     const newObject = users.map((user) => {
       if (user.userName === userName) {
         user.following = true;
@@ -114,6 +111,9 @@ const Suggested = () => {
       }
     });
     setUsers(newObject);
+    const user = await getUserByEmailInPost(email);
+    const userId = user.docs[0].id;
+    const docNotifRef = doc(db, "users", userId);
 
     try {
       await followersUpdate(email, arrayUnion(currentUserName));
@@ -127,9 +127,6 @@ const Suggested = () => {
   };
 
   const handleUnfollow = async (email, userName) => {
-    const user = await getUserByEmailInPost(email);
-    const userId = user.docs[0].id;
-    const docNotifRef = doc(db, "users", userId);
     const newObject = users.map((user) => {
       if (user.userName === userName) {
         user.following = false;
@@ -139,6 +136,9 @@ const Suggested = () => {
       }
     });
     setUsers(newObject);
+    const user = await getUserByEmailInPost(email);
+    const userId = user.docs[0].id;
+    const docNotifRef = doc(db, "users", userId);
     try {
       await followersUpdate(email, arrayRemove(currentUserName));
       await followingUpdate(currentUser.email, arrayRemove(userName));

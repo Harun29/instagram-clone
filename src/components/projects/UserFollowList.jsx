@@ -2,7 +2,17 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "../../config/firebase";
+import { storage, db } from "../../config/firebase";
+import {
+  arrayRemove,
+  arrayUnion,
+  updateDoc,
+  doc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const UserFollowList = ({
   userRef,
@@ -10,9 +20,92 @@ const UserFollowList = ({
   userViewingFollowers,
   fetchType,
   currentUserName,
+  user,
+  userViewing,
+  userViewingPhoto,
 }) => {
   const [followers, setFollowers] = useState([]);
+  const { currentUser } = useAuth();
   const { getUserByUsername } = useAuth();
+  const { followersUpdate } = useAuth();
+  const { followingUpdate } = useAuth();
+
+  const getUserByEmailInPost = async (email) => {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.error("No matching documents for email:", email);
+      return null;
+    }
+    const user = querySnapshot;
+    return user;
+  };
+
+  const notifObject = (notifStatus, notifRef) => {
+    const object = {
+      followedBy: userViewing.userName,
+      likedByPhoto: userViewingPhoto,
+      opened: notifStatus,
+      notifRef: notifRef,
+      notifType: "follow",
+    };
+    return object;
+  };
+
+  const handleFollow = async (email, username, e) => {
+    e.stopPropagation();
+    const newObject = followers.map((follower) => {
+      if (follower.username === username) {
+        follower.followState = true;
+        return follower;
+      } else {
+        return follower;
+      }
+    });
+    setFollowers(newObject);
+    const user = await getUserByEmailInPost(email);
+    const userId = user.docs[0].id;
+    const docNotifRef = doc(db, "users", userId);
+    try {
+      await followersUpdate(email, arrayUnion(userViewing.userName));
+      await followingUpdate(currentUser.email, arrayUnion(username));
+      await updateDoc(docNotifRef, {
+        notif: arrayUnion(notifObject(false, docNotifRef)),
+      });
+    } catch (err) {
+      console.error("error following user", err);
+    }
+  };
+
+  const handleUnfollow = async (email, username, e) => {
+    e.stopPropagation();
+    const newObject = followers.map((follower) => {
+      if (follower.username === username) {
+        follower.followState = false;
+        return follower;
+      } else {
+        return follower;
+      }
+    });
+    setFollowers(newObject);
+    const user = await getUserByEmailInPost(email);
+    const userId = user.docs[0].id;
+    const docNotifRef = doc(db, "users", userId);
+    try {
+      await followersUpdate(email, arrayRemove(userViewing.userName));
+      await followingUpdate(currentUser.email, arrayRemove(username));
+      await updateDoc(docNotifRef, {
+        notif: arrayRemove(notifObject(false, docNotifRef)),
+      });
+      await updateDoc(docNotifRef, {
+        notif: arrayRemove(notifObject(true, docNotifRef)),
+      });
+    } catch (err) {
+      console.error("error unfollowing user", err);
+    }
+  };
 
   useEffect(() => {
     setFollowers([]);
@@ -24,10 +117,14 @@ const UserFollowList = ({
           ref(storage, `profile_pictures/${newFollower.pphoto}`),
         );
       console.log("photo:", userPhoto, newFollower.userName);
+      const followState = userViewingFollowers.includes(newFollower.userName);
+      const email = newFollower.email;
       const object = {
+        email,
         username,
         name: newFollower.name,
         userPhoto,
+        followState,
       };
       setFollowers((prevFollowers) => [...prevFollowers, object]);
     };
@@ -37,10 +134,10 @@ const UserFollowList = ({
     } catch (err) {
       console.error(err);
     }
-  }, [userFollowers]);
+  }, [userFollowers, userViewingFollowers, getUserByUsername]);
 
   useEffect(() => {
-    console.log(currentUserName);
+    followers && console.log(followers);
   }, [followers]);
 
   return (
@@ -54,7 +151,7 @@ const UserFollowList = ({
             <Link to={`/user/${follower.username}`} className="btn btn-primary">
               <img
                 src={follower.userPhoto}
-                alt="Profile"
+                alt="profile"
                 className="rounded-circle"
                 style={{ width: "50px", height: "50px" }}
               />
@@ -63,14 +160,26 @@ const UserFollowList = ({
                 <span>{follower.name}</span>
               </div>
             </Link>
-            {!userViewingFollowers.includes(follower.username) &&
-              follower.username !== currentUserName && (
-                <button className="follow-button">follow</button>
-              )}
-            {userViewingFollowers.includes(follower.username) &&
-              follower.username !== currentUserName && (
-                <button className="unfollow-button">following</button>
-              )}
+            {!follower.followState && follower.username !== currentUserName && (
+              <button
+                onClick={(e) =>
+                  handleFollow(follower.email, follower.username, e)
+                }
+                className="follow-button"
+              >
+                follow
+              </button>
+            )}
+            {follower.followState && follower.username !== currentUserName && (
+              <button
+                onClick={(e) =>
+                  handleUnfollow(follower.email, follower.username, e)
+                }
+                className="unfollow-button"
+              >
+                following
+              </button>
+            )}
           </div>
         ))}
     </div>
