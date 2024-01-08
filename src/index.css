@@ -699,6 +699,10 @@ a {
   cursor: pointer;
 }
 
+.suggestion button.unfollow{
+  color: black;
+}
+
 .suggestion button:hover{
   color: black;
 }

@@ -79,7 +79,8 @@ const Home = () => {
       const user = await getUserByEmailInPost(email);
       setUserViewing(user.docs[0].data());
       setUserViewingId(user.docs[0].id);
-      user.docs[0].data().savedIds && setSavedArray(user.docs[0].data().savedIds);
+      user.docs[0].data().savedIds &&
+        setSavedArray(user.docs[0].data().savedIds);
     };
     try {
       currentUser && fetchUserByEmail(currentUser.email);
@@ -220,7 +221,7 @@ const Home = () => {
       await updateDoc(docNotifRef, {
         notif: arrayUnion(notifObject(false)),
       });
-      setComment("")
+      setComment("");
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
@@ -332,7 +333,7 @@ const Home = () => {
     setPostPhoto(postPhoto);
     setSeePost(true);
     setButtonClicked(true);
-    console.log(postPhoto)
+    console.log(postPhoto);
   };
 
   return (
@@ -364,7 +365,7 @@ const Home = () => {
                         post.id,
                         post.photo,
                         post.userId,
-                        posts.indexOf(post)
+                        posts.indexOf(post),
                       )
                     }
                   >
@@ -391,18 +392,14 @@ const Home = () => {
                       <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
                     </svg>
                   </div>
-                  <div
-                  onClick={() => handleSeePost(post.id)}
-                  >
+                  <div onClick={() => handleSeePost(post.id)}>
                     <MessageCircleIcon></MessageCircleIcon>
                   </div>
                   <ArrowForwardIcon></ArrowForwardIcon>
                 </div>
                 <div
                   key={`${posts.indexOf(post)}save`}
-                  onClick={() =>
-                    handleSave(post.id, post.photo)
-                  }
+                  onClick={() => handleSave(post.id, post.photo)}
                   className="save-div"
                 >
                   <svg
@@ -448,13 +445,15 @@ const Home = () => {
                   </strong>{" "}
                   {post.description}
                 </p>
-                {post.description.length > 190 && <button
-                  id={post.id + "button"}
-                  onClick={() => handleMore(post.id)}
-                  className="more-button"
-                >
-                  more
-                </button>}
+                {post.description.length > 190 && (
+                  <button
+                    id={post.id + "button"}
+                    onClick={() => handleMore(post.id)}
+                    className="more-button"
+                  >
+                    more
+                  </button>
+                )}
               </div>
 
               {post.comments ? (
@@ -462,7 +461,9 @@ const Home = () => {
                   onClick={() => handleSeePost(post.id, post.photo)}
                   className="view-all-comments"
                 >
-                  {post.comments.length > 0 && <p>View all {post.comments.length} comments</p>}
+                  {post.comments.length > 0 && (
+                    <p>View all {post.comments.length} comments</p>
+                  )}
                 </div>
               ) : null}
 
@@ -473,15 +474,11 @@ const Home = () => {
                   id={post.id + "comment"}
                   type="text"
                   value={comment}
-                  onChange={e => setComment(e.target.value)}
+                  onChange={(e) => setComment(e.target.value)}
                 />
                 <button
                   onClick={() =>
-                    handleComment(
-                      post.id,
-                      post.photo,
-                      post.userId
-                    )
+                    handleComment(post.id, post.photo, post.userId)
                   }
                 >
                   post
@@ -491,7 +488,15 @@ const Home = () => {
               {seePost && (
                 <div className="show-post">
                   <div className="post-background">
-                    <Post param={postid} postRef={postRef} savedArray={savedArray} postPhoto={postPhoto} userViewing={userViewing} userViewingId={userViewingId} userViewingPhoto={userViewingPhoto}></Post>
+                    <Post
+                      param={postid}
+                      postRef={postRef}
+                      savedArray={savedArray}
+                      postPhoto={postPhoto}
+                      userViewing={userViewing}
+                      userViewingId={userViewingId}
+                      userViewingPhoto={userViewingPhoto}
+                    ></Post>
                   </div>
                 </div>
               )}
@@ -521,8 +526,8 @@ const Home = () => {
             <div className="post-description loading">
               <p className="loading">
                 -------------------------------------------------
-                ----------------------------- --------------------- -------------
-                ------------- ------------
+                ----------------------------- ---------------------
+                ------------- ------------- ------------
               </p>
             </div>
           </div>
