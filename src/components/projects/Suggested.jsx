@@ -51,10 +51,6 @@ const Suggested = () => {
     }
   }, [userFollowing]);
 
-  useEffect(() => {
-    users && console.log(users);
-  }, [users]);
-
   return (
     <div className="suggested-people">
       <span>Suggested for you</span>

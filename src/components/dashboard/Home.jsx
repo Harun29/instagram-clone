@@ -32,6 +32,7 @@ const Home = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const postRef = useRef(null);
   const [comment, setComment] = useState("");
+  const [postPhoto, setPostPhoto] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -326,10 +327,12 @@ const Home = () => {
     }
   };
 
-  const handleSeePost = (postid) => {
+  const handleSeePost = (postid, postPhoto) => {
     setPostid(postid);
+    setPostPhoto(postPhoto);
     setSeePost(true);
     setButtonClicked(true);
+    console.log(postPhoto)
   };
 
   return (
@@ -456,7 +459,7 @@ const Home = () => {
 
               {post.comments ? (
                 <div
-                  onClick={() => handleSeePost(post.id)}
+                  onClick={() => handleSeePost(post.id, post.photo)}
                   className="view-all-comments"
                 >
                   {post.comments.length > 0 && <p>View all {post.comments.length} comments</p>}
@@ -488,7 +491,7 @@ const Home = () => {
               {seePost && (
                 <div className="show-post">
                   <div className="post-background">
-                    <Post param={postid} postRef={postRef} savedArray={savedArray}></Post>
+                    <Post param={postid} postRef={postRef} savedArray={savedArray} postPhoto={postPhoto}></Post>
                   </div>
                 </div>
               )}

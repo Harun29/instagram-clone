@@ -17,13 +17,12 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 
-const Post = ({ param, postRef, savedArray }) => {
+const Post = ({ param, postRef, savedArray, postPhoto }) => {
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState("");
   const [userViewingId, setUserViewingId] = useState();
   const [post, setPost] = useState();
-  const [postPicture, setPostPicture] = useState();
   const [user, setUser] = useState();
   const [userId, setUserId] = useState();
   const [userPhoto, setUserPhoto] = useState();
@@ -45,17 +44,20 @@ const Post = ({ param, postRef, savedArray }) => {
   };
 
   useEffect(() => {
-    if (post) {
+    if (post && !liked) {
       if (userViewing && post.likedby.includes(userViewing.email)) {
         setLiked(true);
+        console.log("aaaaaaaaaaaaaaaaaaa")
       }
     }
   }, [userViewing, post]);
-
+  
   useEffect(() => {
-    if (post) {
+    if (post && !saved) {
       if (savedArray.includes(param)) {
         setSaved(true);
+        console.log("bbbbbbbbbbbbbbbbbbbbb")
+
       }
     }
   }, [savedArray, post, param]);
@@ -68,6 +70,7 @@ const Post = ({ param, postRef, savedArray }) => {
     };
     try {
       currentUser && fetchUserByEmail(currentUser.email);
+      console.log("aaaaaaaaaaaaaaaaaaa")
     } catch (err) {
       console.error(err);
     }
@@ -90,23 +93,6 @@ const Post = ({ param, postRef, savedArray }) => {
     }
   }, [userViewing]);
 
-  useEffect(() => {
-    const fetchPostPhoto = async () => {
-      const docRef = doc(db, "posts", param);
-      const docSnap = await getDoc(docRef);
-      const docImg = await getDownloadURL(
-        ref(storage, `posts_pictures/${docSnap.data().photo}`),
-      );
-      setPostPicture(docImg);
-    };
-
-    try {
-      param && fetchPostPhoto();
-    } catch (err) {
-      console.error(err);
-    }
-  }, [param]);
-
   const handleLike = async () => {
     const docRef = doc(db, "posts", param);
     const docUserRef = doc(db, "users", userViewingId);
@@ -115,7 +101,7 @@ const Post = ({ param, postRef, savedArray }) => {
     const notifObject = (notifStatus) => {
       const object = {
         postLiked: param,
-        postLikedPhoto: postPicture,
+        postLikedPhoto: postPhoto,
         likedBy: userViewing.userName,
         likedByPhoto: userViewingPhoto,
         opened: notifStatus,
@@ -173,7 +159,7 @@ const Post = ({ param, postRef, savedArray }) => {
         await updateDoc(docUserRef, {
           saved: arrayRemove({
             postId: param,
-            postPhoto: postPicture,
+            postPhoto: postPhoto,
           }),
         });
         await updateDoc(docUserRef, {
@@ -186,7 +172,7 @@ const Post = ({ param, postRef, savedArray }) => {
         await updateDoc(docUserRef, {
           saved: arrayUnion({
             postId: param,
-            postPhoto: postPicture,
+            postPhoto: postPhoto,
           }),
         });
         await updateDoc(docUserRef, {
@@ -212,6 +198,7 @@ const Post = ({ param, postRef, savedArray }) => {
         setUserPhoto(userPhoto);
       }
       setUserId(user.docs[0].id);
+      console.log("ddddddddddddddddddddddddddd")
     };
 
     /* ERROR ON LOADING */
@@ -233,27 +220,11 @@ const Post = ({ param, postRef, savedArray }) => {
 
     try {
       fetchPost(param);
+      console.log("eeeeeeeeeeeeeeeeeeeeeee")
     } catch (err) {
       console.error("error: ", err);
     }
   }, [param]);
-
-  useEffect(() => {
-    const fetchPicture = async (photoName) => {
-      const postPicture = await getDownloadURL(
-        ref(storage, `posts_pictures/${photoName}`),
-      );
-      setPostPicture(postPicture);
-    };
-    /* ERROR ON LOADING */
-    try {
-      if (post) {
-        fetchPicture(post.photo);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [post]);
 
   const handleComment = async () => {
     const docRef = doc(db, "posts", param);
@@ -262,7 +233,7 @@ const Post = ({ param, postRef, savedArray }) => {
     const notifObject = (notifStatus) => {
       const object = {
         postCommented: param,
-        postCommentedPhoto: postPicture,
+        postCommentedPhoto: postPhoto,
         commentedBy: userViewing.userName,
         commentedByPhoto: userViewingPhoto,
         opened: notifStatus,
@@ -290,9 +261,9 @@ const Post = ({ param, postRef, savedArray }) => {
     }
   };
 
-  return post && postPicture ? (
+  return post && postPhoto ? (
     <div className="card" ref={postRef}>
-      <img src={postPicture} alt="Post" className="card-img-top" />
+      <img src={postPhoto} alt="Post" className="card-img-top" />
 
       <div className="card-body">
         <div className="post-header in-post">
