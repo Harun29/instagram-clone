@@ -140,6 +140,8 @@ const Profile = () => {
                         userViewingFollowers={user.following}
                         fetchType={"followers"}
                         currentUserName={user.userName}
+                        userViewing={user}
+                        userViewingPhoto={currentProfilePhoto}
                       ></UserFollowList>
                     </div>
                   )}
@@ -151,6 +153,8 @@ const Profile = () => {
                         userViewingFollowers={user.following}
                         fetchType={"following"}
                         currentUserName={user.userName}
+                        userViewing={user}
+                        userViewingPhoto={currentProfilePhoto}
                       ></UserFollowList>
                     </div>
                   )}
