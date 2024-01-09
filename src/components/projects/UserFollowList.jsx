@@ -41,7 +41,11 @@ const UserFollowList = ({
     }
     const user = querySnapshot;
     return user;
-  };
+  };  
+
+  useEffect(() => {
+    userFollowers && console.log(userFollowers)
+  }, [userFollowers])
 
   const notifObject = (notifStatus, notifRef) => {
     const object = {
@@ -111,11 +115,13 @@ const UserFollowList = ({
     setFollowers([]);
     const fetchFollowers = async (username) => {
       const newFollower = await getUserByUsername(username);
-      let userPhoto = "blank-profile.jpg";
+      let userPhoto = "/blank-profile.jpg";
+      console.log(userPhoto)
       if (newFollower.pphoto)
-        userPhoto = await getDownloadURL(
-          ref(storage, `profile_pictures/${newFollower.pphoto}`),
-        );
+      userPhoto = await getDownloadURL(
+        ref(storage, `profile_pictures/${newFollower.pphoto}`),
+      );
+      console.log(userPhoto)
       const followState = userViewingFollowers.includes(newFollower.userName);
       const email = newFollower.email;
       const object = {
@@ -125,6 +131,7 @@ const UserFollowList = ({
         userPhoto,
         followState,
       };
+      console.log(object)
       setFollowers((prevFollowers) => [...prevFollowers, object]);
     };
 
@@ -138,6 +145,9 @@ const UserFollowList = ({
   useEffect(() => {
     userViewing && console.log("user viewing: ", userViewing)
   }, [userViewing])
+  useEffect(() => {
+    userFollowers && console.log("user followers: ", userFollowers)
+  }, [userFollowers])
 
   return (
     <div ref={userRef} className="followers">
