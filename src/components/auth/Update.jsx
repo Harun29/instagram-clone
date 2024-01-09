@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { storage } from "../../config/firebase";
 import { v4 } from "uuid";
@@ -52,8 +52,29 @@ const UpdateProfile = () => {
   const [birthday, setBirthday] = useState();
 
   const [changePhoto, setChangePhoto] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const changePhotoRef = useRef(null)
 
   /* Changing profile picture */
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInsidePost =
+        changePhotoRef.current && changePhotoRef.current.contains(event.target);
+
+      if (!isClickInsidePost && !buttonClicked) {
+        setChangePhoto(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [changePhoto, buttonClicked]);
+
+  useEffect(() => {
+    changePhoto && setButtonClicked(false);
+  }, [changePhoto]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -171,6 +192,7 @@ const UpdateProfile = () => {
   };
 
   const handleChangePhoto = () => {
+    setButtonClicked(true)
     setChangePhoto(!changePhoto)
   }
 
@@ -206,7 +228,7 @@ const UpdateProfile = () => {
 
           {changePhoto && (
             <div className="new-message-background">
-              <div className="change-photo-container">
+              <div ref={changePhotoRef} className="change-photo-container">
                 <div>Changle Profile Photo</div>
                 <label htmlFor="photo">
                 <input
