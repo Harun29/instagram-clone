@@ -26,8 +26,10 @@ const UpdateProfile = () => {
 
   const [user, setUser] = useState();
 
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
+  const [initialName, setInitialName] = useState("");
+  const [initialUserName, setInitialUserName] = useState("");
   const [email, setEmail] = useState();
 
   const [password, setPassword] = useState();
@@ -91,11 +93,7 @@ const UpdateProfile = () => {
       email && await emailUpdate(user.email, email);
       bio && await bioUpdate(user.email, bio);
       birthday && await birthdayUpdate(user.email, birthday);
-      /* we chack for imageUpload so it does not delete current photo every
-      time we save changes */
       imageUpload && await updatePhoto();
-
-      window.location.reload();
     } catch (err) {
       console.error(err);
     } finally {
@@ -161,6 +159,8 @@ const UpdateProfile = () => {
       setCurrentPhotoName(user.pphoto);
       setBio(user.bio);
       setBirthday(user.age);
+      setInitialName(user.name);
+      setInitialUserName(user.userName);
     }
   }, [user]);
 
@@ -195,8 +195,8 @@ const UpdateProfile = () => {
             )}
 
             <div className="picture-update-spans">
-              <span>{userName}</span>
-              <span>{name}</span>
+              <span>{initialUserName}</span>
+              <span>{initialName}</span>
             </div>
           </div>
 

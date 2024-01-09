@@ -240,8 +240,14 @@ a {
   width: 50px;
 }
 
-.logo-on-top.active svg {
-  width: 0;
+.logo-on-top svg path{
+  color: black;
+  transition: all 0.9s ease;
+}
+
+.logo-on-top.active svg path{
+  transition: all 0.5s ease;
+  color: white;
 }
 
 .nav-wrapper a svg,
