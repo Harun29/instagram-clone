@@ -94,7 +94,7 @@ const Post = () => {
         setLiked(true);
       }
     }
-  }, [userViewing, post]);
+  }, [userViewing, post, liked]);
   
   useEffect(() => {
     if (post && !saved) {
@@ -103,7 +103,7 @@ const Post = () => {
 
       }
     }
-  }, [savedArray, post, param]);
+  }, [savedArray, post, param, saved]);
 
   const handleLike = async () => {
     const docRef = doc(db, "posts", param);

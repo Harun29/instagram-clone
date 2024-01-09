@@ -49,6 +49,8 @@ const UpdateProfile = () => {
 
   const [birthday, setBirthday] = useState();
 
+  const [changePhoto, setChangePhoto] = useState(false);
+
   /* Changing profile picture */
 
   const handleImageChange = (e) => {
@@ -84,16 +86,14 @@ const UpdateProfile = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await nameUpdate(user.email, name);
-      await userNameUpdate(user.email, userName);
-      await emailUpdate(user.email, email);
-      await bioUpdate(user.email, bio);
-      await birthdayUpdate(user.email, birthday);
+      name && await nameUpdate(user.email, name);
+      userName && await userNameUpdate(user.email, userName);
+      email && await emailUpdate(user.email, email);
+      bio && await bioUpdate(user.email, bio);
+      birthday && await birthdayUpdate(user.email, birthday);
       /* we chack for imageUpload so it does not delete current photo every
       time we save changes */
-      if (imageUpload) {
-        await updatePhoto();
-      }
+      imageUpload && await updatePhoto();
 
       window.location.reload();
     } catch (err) {
@@ -170,6 +170,10 @@ const UpdateProfile = () => {
     setUserName(replacedValue);
   };
 
+  const handleChangePhoto = () => {
+    setChangePhoto(!changePhoto)
+  }
+
   return user ? (
     <div className="settings-container">
       <form onSubmit={handleChanges}>
@@ -196,15 +200,28 @@ const UpdateProfile = () => {
             </div>
           </div>
 
-          <button className="follow-button">Change photo</button>
+          <button onClick={handleChangePhoto} className="follow-button">
+            Change photo
+          </button>
 
-          {/* <input 
-          type="file" 
-          className="form-control" 
-          id="photo"
-          accept="image/*"
-          onChange={handleImageChange}
-          /> */}
+          {changePhoto && (
+            <div className="new-message-background">
+              <div className="change-photo-container">
+                <div>Changle Profile Photo</div>
+                <label htmlFor="photo">
+                <input
+                  type="file"
+                  className="form-control"
+                  id="photo"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                Upload Photo
+                </label>
+                <div onClick={handleChangePhoto}>Cancel</div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="update-form">

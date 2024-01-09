@@ -1810,6 +1810,46 @@ a {
   color: black;
 }
 
+.change-photo-container{
+  background-color: white;
+  display: grid!important;
+  grid-template-columns: 400px;
+  grid-template-rows: 1.5fr 1fr 1fr;
+  border-radius: 15px;
+  height: 250px;
+}
+
+.change-photo-container div, .change-photo-container label{
+  padding: 20px;
+  border-bottom: 1px solid rgb(204, 208, 213);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.change-photo-container div:nth-child(3){
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.change-photo-container input {
+  display: none;
+}
+
+.change-photo-container div:nth-child(1){
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.change-photo-container label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0095f6;
+}
+
 /* Post */
 
 .post-background {

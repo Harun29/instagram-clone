@@ -49,7 +49,7 @@ const Suggested = () => {
       let userPhoto = "blank-profile.jpg";
       if (user.pphoto) {
         userPhoto = await getDownloadURL(
-          ref(storage, `profile-pictures/${user.pphoto}`),
+          ref(storage, `profile_pictures/${user.pphoto}`),
         );
       }
       setCurrentUserPhoto(currentUserPhoto);
