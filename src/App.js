@@ -9,6 +9,7 @@ import SignUp from "./components/auth/SignUp";
 import SignIn from "./components/auth/SignIn";
 import User from "./components/projects/User";
 import UserFollowList from "./components/projects/UserFollowList";
+import PostLink from "./components/projects/PostLink";
 import "animate.css";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
@@ -88,6 +89,10 @@ function App() {
             <Route
               path="/messenger"
               element={<PrivateRoute component={Chats} />}
+            />
+            <Route
+              path="/post/:id"
+              element={<PrivateRoute component={PostLink} />}
             />
           </Routes>
         </Router>
