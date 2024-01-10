@@ -13,6 +13,7 @@
     "animate.css": "^4.1.1",
     "bootstrap": "^5.2.3",
     "firebase": "^9.17.1",
+    "framer-motion": "^10.18.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",

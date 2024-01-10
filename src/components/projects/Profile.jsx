@@ -9,6 +9,7 @@ import BorderAll from "../../icons/BorderAll";
 import HeartIcon from "../../icons/HeartIcon";
 import SaveIcon from "../../icons/SaveIcon";
 import UserFollowList from "./UserFollowList";
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -165,18 +166,34 @@ const Profile = () => {
             </div>
           </div>
           <div className="posts-border">
-            <div onClick={handlePosts} className={posts && `active`}>
+            <motion.div whileHover={{
+                        scale: 1.1,
+                      }}
+                      whileTap={{
+                        scale: 1.2,
+                      }} onClick={handlePosts} className={posts && `active`}>
               <BorderAll></BorderAll>
               <p>POSTS</p>
-            </div>
-            <div onClick={handleLiked} className={liked && `active`}>
+            </motion.div>
+            <motion.div whileHover={{
+                        scale: 1.1,
+                      }}
+                      whileTap={{
+                        scale: 1.2,
+                      }} onClick={handleLiked} className={liked && `active`}>
               <HeartIcon size={"18"}></HeartIcon>
               <p>LIKED</p>
-            </div>
-            <div onClick={handleSaved} className={saved && `active`}>
+            </motion.div>
+            <motion.div whileHover={{
+                        scale: 1.1,
+                      }}
+                      whileTap={{
+                        scale: 1.2,
+                      }} onClick={handleSaved} className={saved && `active`}>
               <SaveIcon size={"18"}></SaveIcon>
               <p>SAVED</p>
-            </div>
+            </motion.div>
+            <div className={`options-line ${posts && " posts "}${liked && " liked "}${saved && " saved "}`}></div>
           </div>
           {user && posts && <PostsList postsList={user.posts} />}
           {user && saved && <PostsList postsList={user.savedIds} />}

@@ -9,6 +9,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import { motion, AnimatePresence } from "framer-motion";
 
 const UpdateProfile = () => {
   const {
@@ -227,7 +228,8 @@ const UpdateProfile = () => {
           </button>
 
           {changePhoto && (
-            <div className="new-message-background">
+            <AnimatePresence>
+            <motion.div initial={{scale: 1.1, opacity: 0}} animate={{scale: 1, opacity: 1}} className="new-message-background">
               <div ref={changePhotoRef} className="change-photo-container">
                 <div>Changle Profile Photo</div>
                 <label htmlFor="photo">
@@ -242,7 +244,8 @@ const UpdateProfile = () => {
                 </label>
                 <div onClick={handleChangePhoto}>Cancel</div>
               </div>
-            </div>
+            </motion.div>
+            </AnimatePresence>
           )}
         </div>
 

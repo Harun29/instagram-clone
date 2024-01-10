@@ -4,6 +4,7 @@ import { db } from "../../config/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NewMessage = ({newMessageRef}) => {
   const [searchResults, setSearchResults] = useState([]);
@@ -53,7 +54,8 @@ const NewMessage = ({newMessageRef}) => {
 
   return (
     <div className="new-message-background">
-      <div ref={newMessageRef} className="new-message">
+      <AnimatePresence>
+      <motion.div initial={{scale: 1.1, opacity: 0}} animate={{scale: 1, opacity: 1}} ref={newMessageRef} className="new-message">
         <div className="new-message-span">
           <span>New Message</span>
         </div>
@@ -93,7 +95,8 @@ const NewMessage = ({newMessageRef}) => {
             <span>No accounts found.</span>
           </div>
         )}
-      </div>
+      </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

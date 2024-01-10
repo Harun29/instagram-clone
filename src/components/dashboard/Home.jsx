@@ -16,6 +16,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Post from "../projects/Post";
 import Suggested from "../projects/Suggested";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -369,35 +370,68 @@ const Home = () => {
                       )
                     }
                   >
-                    <svg
-                      id={post.id}
-                      xmlns="http://www.w3.org/2000/svg"
-                      class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${
-                        post.likedBy.includes(userViewing.email) ? "active" : ""
-                      }`}
-                      width="30"
-                      height="30"
-                      viewBox="0 0 24 24"
-                      stroke-width="1"
-                      stroke="currentColor"
-                      fill={
-                        post.likedBy.includes(userViewing.email)
-                          ? "red"
-                          : "none"
-                      }
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                    <motion.div
+                      whileHover={{
+                        scale: 1.1,
+                      }}
+                      whileTap={{
+                        scale: 1.2,
+                      }}
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                    </svg>
+                      <svg
+                        id={post.id}
+                        xmlns="http://www.w3.org/2000/svg"
+                        class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${
+                          post.likedBy.includes(userViewing.email)
+                            ? "active"
+                            : ""
+                        }`}
+                        width="30"
+                        height="30"
+                        viewBox="0 0 24 24"
+                        stroke-width="1"
+                        stroke="currentColor"
+                        fill={
+                          post.likedBy.includes(userViewing.email)
+                            ? "red"
+                            : "none"
+                        }
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                      </svg>
+                    </motion.div>
                   </div>
-                  <div onClick={() => handleSeePost(post.id)}>
+                  <motion.div 
+                  whileHover={{
+                    scale: 1.1,
+                  }}
+                  whileTap={{
+                    scale: 1.2,
+                  }}
+                  onClick={() => handleSeePost(post.id, post.photo)}>
                     <MessageCircleIcon></MessageCircleIcon>
-                  </div>
+                  </motion.div>
+                  <motion.div
+                  whileHover={{
+                    scale: 1.1,
+                  }}
+                  whileTap={{
+                    scale: 1.2,
+                  }}
+                  >
                   <ArrowForwardIcon></ArrowForwardIcon>
+                  </motion.div>
                 </div>
-                <div
+                <motion.div
+                  whileHover={{
+                    scale: 1.1,
+                  }}
+                  whileTap={{
+                    scale: 1.2,
+                  }}
                   key={`${posts.indexOf(post)}save`}
                   onClick={() => handleSave(post.id, post.photo)}
                   className="save-div"
@@ -418,7 +452,7 @@ const Home = () => {
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" />
                   </svg>
-                </div>
+                </motion.div>
               </div>
 
               {post.likedBy.length !== 0 && (

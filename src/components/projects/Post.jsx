@@ -15,6 +15,7 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingId, userViewingPhoto }) => {
   const [post, setPost] = useState();
@@ -221,8 +222,9 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
     }
   };
 
-  return post && postPhoto ? (
-    <div className="card" ref={postRef}>
+  return post && postPhoto && (
+    <AnimatePresence>
+    <motion.div initial={{scale: 1.1, opacity: 0}} animate={{scale: 1, opacity: 1}} className="card" ref={postRef}>
       <img src={postPhoto} alt="Post" className="card-img-top" />
 
       <div className="card-body">
@@ -325,10 +327,9 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
           </button>
         </div>
       </div>
-    </div>
-  ) : (
-    <p>Loading...</p>
-  );
+    </motion.div>
+    </AnimatePresence>
+  )
 };
 
 export default Post;

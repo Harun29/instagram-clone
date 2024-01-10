@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { storage } from "../../config/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import PhotoIcon from "../../icons/PhotoIcon";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CreatePost = ({ createRef, userPhoto, userName, createPost, setCreatePost }) => {
   const [description, setDescription] = useState("");
@@ -114,7 +115,9 @@ const CreatePost = ({ createRef, userPhoto, userName, createPost, setCreatePost 
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div
+    <AnimatePresence>
+      <motion.div
+      initial={{scale: 1.1, opacity: 0}} animate={{scale: 1, opacity: 1}}
       ref={createRef}
       className={`create-post-container ${photo && !finish && "next"}`}
       >
@@ -173,7 +176,8 @@ const CreatePost = ({ createRef, userPhoto, userName, createPost, setCreatePost 
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
+      </AnimatePresence>
     </form>
   );
 };
