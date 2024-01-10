@@ -289,6 +289,7 @@ const Navigation = () => {
     <div className="navigation-container">
       <nav className="nav-wrapper">
         <div className="container">
+          <div>
           <Link
             onClick={hide && handleHide}
             to="/"
@@ -302,6 +303,7 @@ const Navigation = () => {
             </h1>
             <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Link>
+          </div>
           <Link onClick={hide && handleHide} to="/">
             {window.location.pathname === "/" && !hide ? (
               <HomeIconFull />

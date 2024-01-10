@@ -16,6 +16,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { auth } from "./config/firebase";
 import { useState, useEffect } from "react";
 import Chats from "./components/projects/Chats";
+import { motion, AnimatePresence } from "framer-motion";
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -37,12 +38,18 @@ function App() {
   return (
     <AuthProvider>
       <div className="App">
+        <AnimatePresence>
         {loading &&
-        <div className="loading-screen">
+        <motion.div
+        animate={{translateY: 0}}
+        transition={{duration: 0.5}}
+        exit={{translateY: -2000}} 
+        className="loading-screen">
           <img src="igclone.png" />
           <h1 style={{ fontFamily: "Oleo Script" }}>Igclone</h1>
-        </div>
+          </motion.div>
         }
+        </AnimatePresence>
         <Router>
           {currentUser && <Navigation />}
           <Routes>
