@@ -2000,3 +2000,82 @@ a {
 .comment p a {
   font-weight: 600;
 }
+
+/* LikedBy */
+
+.liked-by-background{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(53, 53, 53, 0.3);
+}
+
+.liked-by-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgb(204, 208, 213);
+  font-weight: 500;
+}
+
+.likes {
+  padding: 15px;
+  border-radius: 15px;
+  background-color: white;
+  height: 400px;
+  width: 350px;
+}
+
+.liked-by-list-container{
+  height: calc(100% - 50px);
+  padding: 5px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.liked-by-list-container::-webkit-scrollbar {
+  display: none;
+}
+
+.liked-by-from-array{
+  width: calc(100% - 10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.liked-by-from-array div:nth-child(1){
+  display: flex;
+  align-items: center;
+}
+
+.liked-by-list-container span{
+  font-size: 0.9rem;
+}
+
+.liked-by-list-container span:nth-child(1){
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.liked-by-from-array div div{
+  display: flex;
+  flex-direction: column;
+}
+
+.liked-by-from-array img{
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+  object-fit: cover;
+  border-radius: 50%;
+}

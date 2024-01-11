@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import Post from "../projects/Post";
 import Suggested from "../projects/Suggested";
 import { motion, AnimatePresence } from "framer-motion";
+import LikedBy from "../projects/LikedBy";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,27 +33,41 @@ const Home = () => {
   const [seePost, setSeePost] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const postRef = useRef(null);
+  const likedByRef = useRef(null)
   const [comment, setComment] = useState("");
   const [postPhoto, setPostPhoto] = useState("");
+  const [likedByToggle, setLikedByToggle] = useState(false);
+  const [likedBy, setLikedBy] = useState([]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       const isClickInsidePost =
         postRef.current && postRef.current.contains(event.target);
 
+      const isClickInsideLikedBy =
+        likedByRef.current && likedByRef.current.contains(event.target);
+
       if (!isClickInsidePost && !buttonClicked) {
         setSeePost(false);
+      }
+
+      if (!isClickInsideLikedBy && !buttonClicked) {
+        setLikedByToggle(false);
       }
     };
     window.addEventListener("click", handleClickOutside);
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, [seePost, buttonClicked]);
+  }, [seePost, buttonClicked, likedByToggle]);
 
   useEffect(() => {
     seePost && setButtonClicked(false);
   }, [seePost]);
+
+  useEffect(() => {
+    likedByToggle && setButtonClicked(false);
+  }, [likedByToggle])
 
   useEffect(() => {
     if (!currentUser) {
@@ -337,6 +352,12 @@ const Home = () => {
     console.log(postPhoto);
   };
 
+  const handleLikedBy = (likedby) => {
+    setButtonClicked(true)
+    setLikedByToggle(true);
+    setLikedBy(likedby)
+  }
+
   return (
     <div className="home-container">
       <div className="row">
@@ -465,7 +486,7 @@ const Home = () => {
                     {post.likedByUsername}
                   </Link>
                   <p>and</p>
-                  <Link to="">others</Link>
+                  <div onClick={() => handleLikedBy(post.likedBy)}>others</div>
                 </div>
               )}
 
@@ -534,6 +555,7 @@ const Home = () => {
                   </div>
                 </div>
               )}
+              {likedByToggle && <LikedBy likedby={likedBy} likedByRef={likedByRef}></LikedBy>}
             </div>
           ))
         ) : (
