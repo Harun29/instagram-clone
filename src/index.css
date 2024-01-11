@@ -879,9 +879,14 @@ a {
 .options-line.posts{
   transform: translateX(-95px);
 }
-
 .options-line.saved{
   transform: translateX(100px);
+}
+.options-line.line-user.posts{
+  transform: translateX(-45px);
+}
+.options-line.line-user.liked{
+  transform: translateX(50px);
 }
 
 /* POSTS ON PROFILE */

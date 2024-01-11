@@ -49,11 +49,11 @@ const Home = () => {
   
       if (!isClickInsidePost && !buttonClicked) {
         setSeePost(false);
-        setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
+        posts && setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
       }
       if (!isClickInsideLikedBy && !buttonClicked) {
         setLikedByToggle(false);
-        setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
+        posts && setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
       }
     };
   

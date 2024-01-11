@@ -20,6 +20,7 @@ import {} from "firebase/firestore";
 import BorderAll from "../../icons/BorderAll";
 import HeartIcon from "../../icons/HeartIcon";
 import UserFollowList from "./UserFollowList";
+import { motion } from "framer-motion";
 
 const User = () => {
   const { currentUser } = useAuth();
@@ -330,14 +331,25 @@ const User = () => {
             </div>
           </div>
           <div className="posts-border">
-            <div onClick={handlePosts} className={posts && `active`}>
+            <motion.div whileHover={{
+                        scale: 1.1,
+                      }}
+                      whileTap={{
+                        scale: 1.2,
+                      }} onClick={handlePosts} className={posts && `active`}>
               <BorderAll></BorderAll>
               <p>POSTS</p>
-            </div>
-            <div onClick={handleLiked} className={liked && `active`}>
+            </motion.div>
+            <motion.div whileHover={{
+                        scale: 1.1,
+                      }}
+                      whileTap={{
+                        scale: 1.2,
+                      }} onClick={handleLiked} className={liked && `active`}>
               <HeartIcon size={"18"}></HeartIcon>
               <p>LIKED</p>
-            </div>
+            </motion.div>
+            <div className={`options-line line-user ${posts && " posts "}${liked && " liked "}`}></div>
           </div>
           {user && posts && <PostsList postsList={user.posts} />}
           {user && liked && <PostsList postsList={user.likedPosts} />}
