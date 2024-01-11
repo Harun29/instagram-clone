@@ -158,16 +158,10 @@ const User = () => {
   };
 
   const handleUnfollow = async () => {
-    const newUserFollowers = userFollowers.filter(
-      (follower) => follower !== userViewing.userName,
-    );
-    const newCurrentUserFollowing = currentUserFollowing.filter(
-      (following) => following !== user.userName,
-    );
     const docNotifRef = doc(db, "users", userId);
     try {
-      setUserFollowers(newUserFollowers);
-      setCurrentUserFollowing(newCurrentUserFollowing);
+      setUserFollowers(prevUserFollowers => prevUserFollowers.filter((follower) => follower !== userViewing.userName));
+      setCurrentUserFollowing(prevUserFollowers => prevUserFollowers.filter((follower) => follower !== user.userName));
       await followersUpdate(user.email, arrayRemove(userViewing.userName));
       await followingUpdate(currentUser.email, arrayRemove(user.userName));
       await updateDoc(docNotifRef, {
@@ -291,7 +285,7 @@ const User = () => {
                     <label>posts</label>
                   </div>
                   <div className="following-stats-button" onClick={handleFollowers}>
-                    <strong>{user.followers.length}</strong>
+                    <strong>{userFollowers.length}</strong>
                     <label>followers</label>
                   </div>
                   <div className="following-stats-button" onClick={handleFollowing}>
@@ -302,7 +296,7 @@ const User = () => {
                     <div className="post-background">
                       <UserFollowList
                         userRef={userRef}
-                        userFollowers={user.followers}
+                        userFollowers={userFollowers}
                         userViewingFollowers={userViewing.following}
                         fetchType={"followers"}
                         currentUserName={userViewing.userName}
