@@ -642,9 +642,13 @@ a {
   align-items: center;
 }
 
-.liked-by a:nth-child(n + 2) {
-  margin: 0 5px;
+.liked-by a:nth-child(n + 2), .liked-by p {
+  margin-right: 5px;
+}
+
+.liked-by a:nth-child(n + 2), .liked-by div{
   font-weight: 700;
+  cursor: pointer;
 }
 
 .liked-by a:nth-child(1) {
