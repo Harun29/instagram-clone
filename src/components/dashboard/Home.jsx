@@ -43,23 +43,26 @@ const Home = () => {
     const handleClickOutside = (event) => {
       const isClickInsidePost =
         postRef.current && postRef.current.contains(event.target);
-
+  
       const isClickInsideLikedBy =
         likedByRef.current && likedByRef.current.contains(event.target);
-
+  
       if (!isClickInsidePost && !buttonClicked) {
         setSeePost(false);
+        setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
       }
-
       if (!isClickInsideLikedBy && !buttonClicked) {
         setLikedByToggle(false);
+        setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
       }
     };
+  
     window.addEventListener("click", handleClickOutside);
+  
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, [seePost, buttonClicked, likedByToggle]);
+  }, [postRef, likedByRef, buttonClicked, seePost, likedByToggle]);  
 
   useEffect(() => {
     seePost && setButtonClicked(false);
@@ -182,6 +185,8 @@ const Home = () => {
               user: nick,
               userId: userId,
               userPhoto: userPhotoUrl,
+              likedByPopup: false,
+              postPopup: false
             };
           } else {
             return {
@@ -197,6 +202,8 @@ const Home = () => {
               user: nick,
               userId: userId,
               userPhoto: "/blank-profile.jpg",
+              likedByPopup: false,
+              postPopup: false
             };
           }
         }),
@@ -344,25 +351,26 @@ const Home = () => {
     }
   };
 
-  const handleSeePost = (postid, postPhoto) => {
+  const handleSeePost = (postid, postPhoto, index) => {
     setPostid(postid);
     setPostPhoto(postPhoto);
     setSeePost(true);
     setButtonClicked(true);
-    console.log(postPhoto);
+    posts[index].postPopup = true
   };
 
-  const handleLikedBy = (likedby) => {
+  const handleLikedBy = (likedby, index) => {
     setButtonClicked(true)
     setLikedByToggle(true);
     setLikedBy(likedby)
+    posts[index].likedByPopup = true
   }
 
   return (
     <div className="home-container">
       <div className="row">
         {posts ? (
-          posts.map((post) => (
+          posts.map((post, index) => (
             <div id="post" className="post">
               <div className="post-header">
                 <Link className="link-to-user" to={`/user/${post.user}`}>
@@ -486,7 +494,7 @@ const Home = () => {
                     {post.likedByUsername}
                   </Link>
                   <p>and</p>
-                  <div onClick={() => handleLikedBy(post.likedBy)}>others</div>
+                  <div onClick={() => handleLikedBy(post.likedBy, index)}>others</div>
                 </div>
               )}
 
@@ -513,7 +521,7 @@ const Home = () => {
 
               {post.comments ? (
                 <div
-                  onClick={() => handleSeePost(post.id, post.photo)}
+                  onClick={() => handleSeePost(post.id, post.photo, index)}
                   className="view-all-comments"
                 >
                   {post.comments.length > 0 && (
@@ -540,7 +548,7 @@ const Home = () => {
                 </button>
               </div>
 
-              {seePost && (
+              {seePost && post.postPopup && (
                 <div className="show-post">
                   <div className="post-background">
                     <Post
@@ -555,7 +563,7 @@ const Home = () => {
                   </div>
                 </div>
               )}
-              {likedByToggle && <LikedBy likedby={likedBy} likedByRef={likedByRef} userFollowing={userViewing.following}></LikedBy>}
+              {likedByToggle && post.likedByPopup && <LikedBy likedby={likedBy} likedByRef={likedByRef} userFollowing={userViewing.following}></LikedBy>}
             </div>
           ))
         ) : (
