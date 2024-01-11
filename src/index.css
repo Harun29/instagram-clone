@@ -2053,7 +2053,7 @@ a {
   padding: 5px;
 }
 
-.liked-by-from-array div:nth-child(1){
+.liked-by-from-array a{
   display: flex;
   align-items: center;
 }
@@ -2067,7 +2067,7 @@ a {
   margin-bottom: 2px;
 }
 
-.liked-by-from-array div div{
+.liked-by-from-array a div{
   display: flex;
   flex-direction: column;
 }

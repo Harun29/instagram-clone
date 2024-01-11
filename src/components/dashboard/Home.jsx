@@ -555,7 +555,7 @@ const Home = () => {
                   </div>
                 </div>
               )}
-              {likedByToggle && <LikedBy likedby={likedBy} likedByRef={likedByRef}></LikedBy>}
+              {likedByToggle && <LikedBy likedby={likedBy} likedByRef={likedByRef} userFollowing={userViewing.following}></LikedBy>}
             </div>
           ))
         ) : (

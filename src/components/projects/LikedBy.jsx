@@ -3,11 +3,17 @@ import { useAuth } from "../../context/AuthContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
-const LikedBy = ({likedby, likedByRef}) => {
+const LikedBy = ({likedby, likedByRef, userFollowing}) => {
 
   const {getUserByEmail} = useAuth();
   const [likedByArray, setLikedByArray] = useState([]);
+  const [userFollowingList, setUserFollowingList] = useState([])
+
+  useEffect(() => {
+    userFollowing && setUserFollowingList(userFollowing)
+  }, [userFollowing])
 
   useEffect(() => {
     setLikedByArray([])
@@ -40,14 +46,15 @@ const LikedBy = ({likedby, likedByRef}) => {
         <div className="liked-by-list-container">
         {likedByArray && likedByArray.map(likedby => (
           <div className="liked-by-from-array">
-            <div>
+            <Link to={`/user/${likedby.userName}`}>
               <img src={likedby.pphoto} alt="user" />
               <div>
                 <span>{likedby.userName}</span>
                 <span>{likedby.name}</span>
               </div>
-            </div>
-            <div className="follow-button">Follow</div>
+            </Link>
+            {!userFollowingList.includes(likedby.userName) && <div className="follow-button">Follow</div>}
+            {userFollowingList.includes(likedby.userName) && <div className="unfollow-button">Following</div>}
           </div>
         ))}
         </div>
