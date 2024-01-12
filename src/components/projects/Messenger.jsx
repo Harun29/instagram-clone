@@ -30,19 +30,12 @@ const Messenger = ({ user }) => {
   const [seenBy, setSeenBy] = useState();
 
   useEffect(() => {
-    seenBy && console.log("seen by: ", seenBy);
-    userViewingUserName && console.log("user viewing: ", userViewingUserName);
-    seenBy && userViewingUserName && console.log(seenBy[0] === userViewingUserName)
-  }, [seenBy, userViewingUserName, chat]);
-
-  useEffect(() => {
     try {
       if (chatId && chat) {
         const unsubscribe = onSnapshot(doc(db, "chats", chatId), (document) => {
           const messages = document.data()?.messages || [];
           const lastIndex = messages.length - 1;
           setSeenBy(document.data()?.seenBy);
-          console.log("1", document.data()?.seenBy)
           if (messages[lastIndex]) {
             setLastMessage(messages[lastIndex].message);
           } else {
@@ -66,7 +59,6 @@ const Messenger = ({ user }) => {
       await updateDoc(docRef, {
         seenBy: userViewingUserName,
       });
-      console.log("2", userViewingUserName)
     };
     try {
       userViewingUserName &&
@@ -84,7 +76,6 @@ const Messenger = ({ user }) => {
       if (chatRef.exists()) {
         setChat(chatRef.data().messages);
         setSeenBy(chatRef.data().seenBy);
-        console.log("3", chatRef.data().seenBy)
       }
     };
     try {
