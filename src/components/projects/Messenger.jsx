@@ -22,33 +22,59 @@ const Messenger = ({ user }) => {
   const { currentUser } = useAuth();
   const [userViewing, setUserViewing] = useState();
   const [userViewingPhoto, setUserViewingPhoto] = useState();
+  const [userViewingUserName, setUserViewingUserName] = useState();
   const [chatId, setChatId] = useState();
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
+  const [chat, setChat] = useState();
   const [lastMessage, setLastMessage] = useState("");
+  const [seenBy, setSeenBy] = useState(["initial seen"]);
+
+  useEffect(() => {
+    seenBy && console.log("seen by: ", seenBy[0]);
+    userViewingUserName && console.log("user viewing: ", userViewingUserName);
+    chat && console.log("sent by: ", chat[chat.length - 1].sentBy);
+  }, [seenBy, userViewingUserName, chat]);
 
   useEffect(() => {
     try {
-      if (chatId) {
-        const unsubscribe = onSnapshot(doc(db, "chats", chatId), (doc) => {
-          const messages = doc.data()?.messages || [];
+      if (chatId && chat) {
+        const unsubscribe = onSnapshot(doc(db, "chats", chatId), (document) => {
+          const messages = document.data()?.messages || [];
           const lastIndex = messages.length - 1;
+          setSeenBy(messages.seenBy);
           if (messages[lastIndex]) {
             setLastMessage(messages[lastIndex].message);
           } else {
             setLastMessage("");
           }
-          if (lastIndex >= 0) {
+          if (lastIndex >= 0 && chat.length !== messages.length) {
             setChat((prevChat) => [...prevChat, messages[lastIndex]]);
           }
         });
-
         return () => unsubscribe();
       }
     } catch (err) {
       console.error(err);
     }
-  }, [chatId]);
+  }, [chatId, chat]);
+
+  useEffect(() => {
+    const updateSeen = async () => {
+      const docRef = doc(db, "chats", chatId);
+      await updateDoc(docRef, {
+        seenBy: [userViewingUserName],
+      });
+      setSeenBy([userViewingUserName]);
+    };
+    try {
+      userViewingUserName &&
+        userData &&
+        chat[chat.length - 1].sentBy === userData.userName &&
+        updateSeen();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [chat, chatId, userViewingUserName, userData]);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -56,6 +82,7 @@ const Messenger = ({ user }) => {
       const chatRef = await getDoc(chatDoc);
       if (chatRef.exists()) {
         setChat(chatRef.data().messages);
+        chatRef.data().seenBy && setSeenBy(chatRef.data().seenBy);
       }
     };
     try {
@@ -95,6 +122,7 @@ const Messenger = ({ user }) => {
     } else {
       setUserViewingPhoto(userViewingPhoto);
     }
+    setUserViewingUserName(user.docs[0].data().userName);
   };
 
   useEffect(() => {
@@ -131,6 +159,7 @@ const Messenger = ({ user }) => {
           const userRef = doc(db, "users", param.userid);
           await setDoc(doc(db, "chats", chatId), {
             messages: [],
+            seenBy: [],
           });
           await updateDoc(userViewingRef, {
             chats: arrayUnion({
@@ -178,6 +207,7 @@ const Messenger = ({ user }) => {
         sentBy: userViewing.docs[0].data().userName,
         time: new Date(),
       }),
+      seenBy: [userViewingUserName],
     });
 
     await updateDoc(userRef, {
@@ -233,9 +263,9 @@ const Messenger = ({ user }) => {
         <span>{userData && userData.userName}</span>
       </div>
       <div className="messages-container">
-        {chat[0] &&
+        {chat &&
           chat.map((message, index) =>
-            message.sentBy === userViewing.docs[0].data().userName ? (
+            message.sentBy === userViewingUserName ? (
               <div className="my-message-container message" key={index}>
                 <div className="my-message">{message.message}</div>
               </div>
@@ -245,6 +275,12 @@ const Messenger = ({ user }) => {
               </div>
             ),
           )}
+          <div className="seen-status">
+            {chat?.[chat.length - 1]?.sentBy === userViewingUserName &&
+              seenBy?.[0] === userViewingUserName && <div>Sent</div>}
+            {chat?.[chat.length - 1]?.sentBy === userViewingUserName &&
+              seenBy?.[0] !== userViewingUserName && <div>Seen</div>}
+          </div>
       </div>
       <div className="send-message">
         <input
