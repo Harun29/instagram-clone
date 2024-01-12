@@ -27,12 +27,12 @@ const Messenger = ({ user }) => {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState();
   const [lastMessage, setLastMessage] = useState("");
-  const [seenBy, setSeenBy] = useState(["initial seen"]);
+  const [seenBy, setSeenBy] = useState();
 
   useEffect(() => {
-    seenBy && console.log("seen by: ", seenBy[0]);
+    seenBy && console.log("seen by: ", seenBy);
     userViewingUserName && console.log("user viewing: ", userViewingUserName);
-    chat && console.log("sent by: ", chat[chat.length - 1].sentBy);
+    seenBy && userViewingUserName && console.log(seenBy[0] === userViewingUserName)
   }, [seenBy, userViewingUserName, chat]);
 
   useEffect(() => {
@@ -41,7 +41,8 @@ const Messenger = ({ user }) => {
         const unsubscribe = onSnapshot(doc(db, "chats", chatId), (document) => {
           const messages = document.data()?.messages || [];
           const lastIndex = messages.length - 1;
-          setSeenBy(messages.seenBy);
+          setSeenBy(document.data()?.seenBy);
+          console.log("1", document.data()?.seenBy)
           if (messages[lastIndex]) {
             setLastMessage(messages[lastIndex].message);
           } else {
@@ -61,15 +62,15 @@ const Messenger = ({ user }) => {
   useEffect(() => {
     const updateSeen = async () => {
       const docRef = doc(db, "chats", chatId);
+      userViewingUserName && setSeenBy(userViewingUserName);
       await updateDoc(docRef, {
-        seenBy: [userViewingUserName],
+        seenBy: userViewingUserName,
       });
-      setSeenBy([userViewingUserName]);
+      console.log("2", userViewingUserName)
     };
     try {
       userViewingUserName &&
         userData &&
-        chat[chat.length - 1].sentBy === userData.userName &&
         updateSeen();
     } catch (err) {
       console.error(err);
@@ -82,7 +83,8 @@ const Messenger = ({ user }) => {
       const chatRef = await getDoc(chatDoc);
       if (chatRef.exists()) {
         setChat(chatRef.data().messages);
-        chatRef.data().seenBy && setSeenBy(chatRef.data().seenBy);
+        setSeenBy(chatRef.data().seenBy);
+        console.log("3", chatRef.data().seenBy)
       }
     };
     try {
@@ -159,7 +161,7 @@ const Messenger = ({ user }) => {
           const userRef = doc(db, "users", param.userid);
           await setDoc(doc(db, "chats", chatId), {
             messages: [],
-            seenBy: [],
+            seenBy,
           });
           await updateDoc(userViewingRef, {
             chats: arrayUnion({
@@ -192,7 +194,7 @@ const Messenger = ({ user }) => {
     if (userViewing && chatId && userData && param) {
       checkChatExists();
     }
-  }, [chatId, param, userViewing, userViewingPhoto, userData]);
+  }, [chatId, param, userViewing, userViewingPhoto, userData, seenBy]);
 
   const handleSend = async () => {
     const messageToSend = message;
@@ -207,10 +209,10 @@ const Messenger = ({ user }) => {
         sentBy: userViewing.docs[0].data().userName,
         time: new Date(),
       }),
-      seenBy: [userViewingUserName],
+      seenBy: userViewingUserName,
     });
 
-    setSeenBy([userViewingUserName]);
+    setSeenBy(userViewingUserName);
 
     await updateDoc(userRef, {
       chats: arrayUnion({
@@ -272,7 +274,7 @@ const Messenger = ({ user }) => {
                 <div className="my-message">{message.message}</div>
                 {index === chat.length - 1 && (
                   <div className="seen-status">
-                    {seenBy?.[0] === userViewingUserName ? (
+                    {seenBy === message.sentBy ? (
                       <div>Sent</div>
                       ) : (
                       <div>Seen</div>
