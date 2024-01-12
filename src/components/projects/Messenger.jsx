@@ -210,6 +210,8 @@ const Messenger = ({ user }) => {
       seenBy: [userViewingUserName],
     });
 
+    setSeenBy([userViewingUserName]);
+
     await updateDoc(userRef, {
       chats: arrayUnion({
         chatId,
@@ -268,6 +270,15 @@ const Messenger = ({ user }) => {
             message.sentBy === userViewingUserName ? (
               <div className="my-message-container message" key={index}>
                 <div className="my-message">{message.message}</div>
+                {index === chat.length - 1 && (
+                  <div className="seen-status">
+                    {seenBy?.[0] === userViewingUserName ? (
+                      <div>Sent</div>
+                      ) : (
+                      <div>Seen</div>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="friends-message-container message" key={index}>
@@ -275,12 +286,6 @@ const Messenger = ({ user }) => {
               </div>
             ),
           )}
-          <div className="seen-status">
-            {chat?.[chat.length - 1]?.sentBy === userViewingUserName &&
-              seenBy?.[0] === userViewingUserName && <div>Sent</div>}
-            {chat?.[chat.length - 1]?.sentBy === userViewingUserName &&
-              seenBy?.[0] !== userViewingUserName && <div>Seen</div>}
-          </div>
       </div>
       <div className="send-message">
         <input

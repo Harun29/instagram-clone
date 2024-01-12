@@ -1583,22 +1583,6 @@ a {
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  position: relative;
-}
-
-.seen-status{
-  position: absolute;
-  bottom: 0;
-  color: #737373;
-  font-size: 0.8rem;
-  background-color: red;
-  background-color: black;
-  z-index: 10000;
-}
-
-.seen-status div{
-  font-size: 50px;
-  color: red;
 }
 
 .messages-container::-webkit-scrollbar {
@@ -1621,8 +1605,6 @@ a {
   position: relative;
 }
 
-
-
 .send-button {
   position: absolute;
   right: 50px;
@@ -1644,6 +1626,14 @@ a {
 .my-message-container {
   justify-content: flex-end;
   align-items: flex-end;
+  position: relative;
+}
+
+.seen-status{
+  position: absolute;
+  bottom: -15px;
+  color: #737373;
+  font-size: 0.8rem;
 }
 
 .friends-message-container {
