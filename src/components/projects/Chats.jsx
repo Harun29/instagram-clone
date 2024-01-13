@@ -92,19 +92,41 @@ const Chats = () => {
   };
 
   useEffect(() => {
-    setChats([])
+    try {
+      if (chats) {
+        const unsub = onSnapshot(doc(db, "users", userId), (user) => {
+          setChats(user.data()?.chats.reverse());
+        });
+        return () => unsub();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    setChats([]);
     try {
       const fetchUser = async () => {
         const user = await getUserByEmailInPost(currentUser.email);
         const userName = user.docs[0].data().userName;
         setUserId(user.docs[0].id);
         setUserName(userName);
-        Promise.all(user.docs[0].data().chats.map(async (chat) => {
-          const chatSnap = await getDoc(doc(db, "chats", chat.chatId));
-          console.log(chatSnap.data());
-          chatSnap.data()?.messages[0] &&
-            setChats((prevChat) => [chat, ...prevChat]);
-        }))
+        Promise.all(
+          user.docs[0].data().chats.map(async (chat) => {
+            const object = chat;
+            const chatSnap = await getDoc(doc(db, "chats", chat.chatId));
+            console.log(chatSnap.data());
+              // if (chatSnap.data().seenBy === userName) {
+              //   object.seen = true;
+              // } else {
+              //   object.seen = false;
+              // }
+            console.log(object);
+            chatSnap.data()?.messages[0] &&
+              setChats((prevChat) => [object, ...prevChat]);
+          })
+        );
       };
       currentUser && fetchUser();
       setLoadingChats(false);
@@ -114,13 +136,21 @@ const Chats = () => {
   }, [currentUser, getUserByEmail]);
 
   const handleNewMessage = () => {
-    setButtonClicked(true)
-    setNewMessage(true)
-  }
+    setButtonClicked(true);
+    setNewMessage(true);
+  };
+
+  useEffect(() => {
+    chats && console.log(chats);
+  }, [chats]);
 
   return (
-    <ul className={`dropdown-menu active chat-box ${newMessage && "new-message-z-index"}`}>
-      {newMessage && <NewMessage newMessageRef={newMessageRef}/>}
+    <ul
+      className={`dropdown-menu active chat-box ${
+        newMessage && "new-message-z-index"
+      }`}
+    >
+      {newMessage && <NewMessage newMessageRef={newMessageRef} />}
       <div className="search-box chats-box">
         <h1 className="chats-heading">
           <span>{userName}</span>
@@ -132,21 +162,25 @@ const Chats = () => {
         {chats.length > 0 && (
           <div className="chats">
             {chats.map((chat) => (
-              <Link to={`/messenger/${chat.friendsId}`} className="chat">
+              <Link
+                to={`/messenger/${chat.friendsId}`}
+                className={`chat`}
+              >
                 <img className="friends-photo" src={chat.friendsPhoto} alt="" />
                 <div className="friends-info">
                   <span>{chat.friendsUserName}</span>
                   <span>{chat.lastMessage}</span>
                 </div>
+                {/* {!chat.seen && <div className="not-seen-dot"></div>} */}
               </Link>
             ))}
           </div>
         )}
-      {chats.length === 0 && (
-        <div className="empty-chats">
-          <span>No messages found.</span>
-        </div>
-      )}
+        {chats.length === 0 && (
+          <div className="empty-chats">
+            <span>No messages found.</span>
+          </div>
+        )}
       </div>
       {param.userid ? (
         <Messenger user={param} />
@@ -155,7 +189,9 @@ const Chats = () => {
           <MessageCircleIcon></MessageCircleIcon>
           <span>Your chats</span>
           <p>Send private chats to a friend</p>
-          <button onClick={handleNewMessage} className="follow-button">Send message</button>
+          <button onClick={handleNewMessage} className="follow-button">
+            Send message
+          </button>
         </div>
       )}
     </ul>

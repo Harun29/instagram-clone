@@ -1532,6 +1532,7 @@ a {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  overflow-y: scroll;
 }
 
 .chats-heading{
@@ -1553,6 +1554,17 @@ a {
   width: calc(100% - 40px);
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.chat.not-seen{
+  background-color: #c7c7c7;
+}
+
+.not-seen-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #0064e0;
 }
 
 .chat:hover {
