@@ -273,7 +273,7 @@ const Post = () => {
 
   return post ? (
     <div className="post-link-container">
-    <div className="card post-link">
+    <div className="card-in-post post-link">
       <img src={postPhoto} alt="Post" className="card-img-top" />
 
       <div className="card-body">

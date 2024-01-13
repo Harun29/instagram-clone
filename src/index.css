@@ -1965,11 +1965,11 @@ a {
   font-size: 0.9rem;
 }
 
-.card {
+.card, .card-in-post {
   display: flex;
   background-color: white;
   max-width: 85%;
-  height: 90%;
+  max-height: 90%;
   /* transition: all 0.1s ease; */
 }
 
@@ -1980,7 +1980,7 @@ a {
 }
 
 .card-body {
-  min-width: 40%;
+  max-width: 500px;
   display: grid;
   grid-template-rows: 60px 1fr 5fr 50px 50px;
   font-size: 0.8rem;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { db } from "../../config/firebase";
 import {
   getDoc,
@@ -36,6 +36,23 @@ const Post = ({
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     const isClickInsidePost =
+  //       postRef.current && postRef.current.contains(event.target);
+
+  //     if (!isClickInsidePost && !buttonClicked) {
+  //       setSeePost(false);
+  //     }
+  //   };
+
+  //   window.addEventListener("click", handleClickOutside);
+
+  //   return () => {
+  //     window.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [postRef, buttonClicked, seePost]);
+
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
@@ -55,7 +72,7 @@ const Post = ({
         setLiked(true);
       }
     }
-  }, [userViewing, post]);
+  }, [userViewing, post, liked, saved]);
 
   useEffect(() => {
     if (post && !saved) {
@@ -63,7 +80,7 @@ const Post = ({
         setSaved(true);
       }
     }
-  }, [savedArray, post, param]);
+  }, [savedArray, post, param, saved]);
 
   const handleLike = async () => {
     const docRef = doc(db, "posts", param);
@@ -247,132 +264,135 @@ const Post = ({
 
   return (
     post &&
-    postPhoto && (
-      <AnimatePresence>
-        <motion.div
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="card"
-          ref={postRef}
-        >
-          <img src={postPhoto} alt="Post" className="card-img-top" />
+    postPhoto &&
+    postRef && (
+      <div className="post-background">
+        <AnimatePresence>
+          <motion.div
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="card"
+            ref={postRef}
+          >
+            <img src={postPhoto} alt="Post" className="card-img-top" />
 
-          <div className="card-body">
-            <div className="post-header in-post">
-              <Link className="link-to-user" to={`/user/${user}`}>
-                <img
-                  className="profile-photo"
-                  src={userPhoto ? userPhoto : "blank-profile.jpg"}
-                  alt="profile"
-                />
-                <label>{user}</label>
-              </Link>
-              <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
-            </div>
+            <div className="card-body">
+              <div className="post-header in-post">
+                <Link className="link-to-user" to={`/user/${user}`}>
+                  <img
+                    className="profile-photo"
+                    src={userPhoto ? userPhoto : "blank-profile.jpg"}
+                    alt="profile"
+                  />
+                  <label>{user}</label>
+                </Link>
+                <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
+              </div>
 
-            <div className="post-header-description">
-              <Link className="link-to-user" to={`/user/${user}`}>
-                <img
-                  className="profile-photo"
-                  src={userPhoto ? userPhoto : "blank-profile.jpg"}
-                  alt="profile"
-                />
-              </Link>
-              <p className="card-text">
-                <Link to={`/user/${user}`} className="bold">
-                  {user}
-                </Link>{" "}
-                {post.title} {post.description}
-              </p>
-            </div>
+              <div className="post-header-description">
+                <Link className="link-to-user" to={`/user/${user}`}>
+                  <img
+                    className="profile-photo"
+                    src={userPhoto ? userPhoto : "blank-profile.jpg"}
+                    alt="profile"
+                  />
+                </Link>
+                <p className="card-text">
+                  <Link to={`/user/${user}`} className="bold">
+                    {user}
+                  </Link>{" "}
+                  {post.title} {post.description}
+                </p>
+              </div>
 
-            <div className="comments-in-post">
-              {comments.map((comment) => (
-                <div className="comment">
-                  <Link to={`/user/${comment.userName}`}>
-                    <img
-                      src={
-                        comment.userPhoto
-                          ? comment.userPhoto
-                          : "blank-profile.jpg"
-                      }
-                      alt="commented by"
-                    />
-                  </Link>
-                  <p>
+              <div className="comments-in-post">
+                {comments.map((comment) => (
+                  <div className="comment">
                     <Link to={`/user/${comment.userName}`}>
-                      {comment.userName}
-                    </Link>{" "}
-                    {comment.comment}
-                  </p>
-                </div>
-              ))}
-            </div>
+                      <img
+                        src={
+                          comment.userPhoto
+                            ? comment.userPhoto
+                            : "blank-profile.jpg"
+                        }
+                        alt="commented by"
+                      />
+                    </Link>
+                    <p>
+                      <Link to={`/user/${comment.userName}`}>
+                        {comment.userName}
+                      </Link>{" "}
+                      {comment.comment}
+                    </p>
+                  </div>
+                ))}
+              </div>
 
-            <div className="interactions in-post">
-              <div>
-                <div onClick={handleLike}>
+              <div className="interactions in-post">
+                <div>
+                  <div onClick={handleLike}>
+                    <svg
+                      id={param}
+                      xmlns="http://www.w3.org/2000/svg"
+                      class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${
+                        liked ? "active" : ""
+                      }`}
+                      width="30"
+                      height="30"
+                      viewBox="0 0 24 24"
+                      stroke-width="1"
+                      stroke="currentColor"
+                      fill={liked ? "red" : "none"}
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                    </svg>
+                  </div>
+                  <MessageCircleIcon></MessageCircleIcon>
+                  <ArrowForwardIcon></ArrowForwardIcon>
+                </div>
+                <div key={`${param}save`} onClick={handleSave}>
                   <svg
-                    id={param}
+                    id={`${param}save`}
                     xmlns="http://www.w3.org/2000/svg"
-                    class={`icon icon-tabler icon-tabler-heart icon-tabler-heart ${
-                      liked ? "active" : ""
-                    }`}
+                    class="icon icon-tabler icon-tabler-bookmark"
                     width="30"
                     height="30"
                     viewBox="0 0 24 24"
                     stroke-width="1"
                     stroke="currentColor"
-                    fill={liked ? "red" : "none"}
+                    fill={saved ? "full" : "none"}
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                    <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" />
                   </svg>
                 </div>
-                <MessageCircleIcon></MessageCircleIcon>
-                <ArrowForwardIcon></ArrowForwardIcon>
               </div>
-              <div key={`${param}save`} onClick={handleSave}>
-                <svg
-                  id={`${param}save`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="icon icon-tabler icon-tabler-bookmark"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                  stroke-width="1"
-                  stroke="currentColor"
-                  fill={saved ? "full" : "none"}
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z" />
-                </svg>
-              </div>
-            </div>
 
-            <div className="add-comment-container in-post">
-              <input
-                className="add-comment in-post"
-                placeholder="Add a comment..."
-                id={post.id + "comment"}
-                type="text"
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-              />
-              <button
-                className="comment-button-in-post"
-                onClick={handleComment}
-              >
-                post
-              </button>
+              <div className="add-comment-container in-post">
+                <input
+                  className="add-comment in-post"
+                  placeholder="Add a comment..."
+                  id={post.id + "comment"}
+                  type="text"
+                  onChange={(e) => setComment(e.target.value)}
+                  value={comment}
+                />
+                <button
+                  className="comment-button-in-post"
+                  onClick={handleComment}
+                >
+                  post
+                </button>
+              </div>
             </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     )
   );
 };

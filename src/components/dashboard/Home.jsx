@@ -33,7 +33,7 @@ const Home = () => {
   const [seePost, setSeePost] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const postRef = useRef(null);
-  const likedByRef = useRef(null)
+  const likedByRef = useRef(null);
   const [comment, setComment] = useState("");
   const [postPhoto, setPostPhoto] = useState("");
   const [likedByToggle, setLikedByToggle] = useState(false);
@@ -43,19 +43,29 @@ const Home = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const isClickInsidePost =
-        postRef.current && postRef.current.contains(event.target);
-  
-      const isClickInsideLikedBy =
-        likedByRef.current && likedByRef.current.contains(event.target);
+      const isClickInsidePost = event.target.closest(".card");
+      const isClickInsideLikedBy = event.target.closest(".likes");
   
       if (!isClickInsidePost && !buttonClicked) {
         setSeePost(false);
-        posts && setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
+        setPosts((prevPosts) =>
+          prevPosts.map((post) => ({
+            ...post,
+            likedByPopup: false,
+            postPopup: false,
+          })),
+        );
       }
+  
       if (!isClickInsideLikedBy && !buttonClicked) {
         setLikedByToggle(false);
-        posts && setPosts(prevPosts => prevPosts.map(post => ({ ...post, likedByPopup: false, postPopup: false })));
+        setPosts((prevPosts) =>
+          prevPosts.map((post) => ({
+            ...post,
+            likedByPopup: false,
+            postPopup: false,
+          })),
+        );
       }
     };
   
@@ -64,7 +74,13 @@ const Home = () => {
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, [postRef, likedByRef, buttonClicked, seePost, likedByToggle]);  
+  }, [buttonClicked, posts, seePost, likedByToggle]);
+  
+  
+
+  useEffect(() => {
+    console.log(postRef)
+  }, [postRef])
 
   useEffect(() => {
     seePost && setButtonClicked(false);
@@ -72,7 +88,7 @@ const Home = () => {
 
   useEffect(() => {
     likedByToggle && setButtonClicked(false);
-  }, [likedByToggle])
+  }, [likedByToggle]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -188,7 +204,7 @@ const Home = () => {
               userId: userId,
               userPhoto: userPhotoUrl,
               likedByPopup: false,
-              postPopup: false
+              postPopup: false,
             };
           } else {
             return {
@@ -205,7 +221,7 @@ const Home = () => {
               userId: userId,
               userPhoto: "/blank-profile.jpg",
               likedByPopup: false,
-              postPopup: false
+              postPopup: false,
             };
           }
         }),
@@ -248,7 +264,7 @@ const Home = () => {
         notif: arrayUnion(notifObject(false)),
       });
       setComment("");
-      setFinishedAddingComment(true)
+      setFinishedAddingComment(true);
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
@@ -360,15 +376,15 @@ const Home = () => {
     setPostPhoto(postPhoto);
     setSeePost(true);
     setButtonClicked(true);
-    posts[index].postPopup = true
+    posts[index].postPopup = true;
   };
 
   const handleLikedBy = (likedby, index) => {
-    setButtonClicked(true)
+    setButtonClicked(true);
     setLikedByToggle(true);
-    setLikedBy(likedby)
-    posts[index].likedByPopup = true
-  }
+    setLikedBy(likedby);
+    posts[index].likedByPopup = true;
+  };
 
   return (
     <div className="home-container">
@@ -437,25 +453,26 @@ const Home = () => {
                       </svg>
                     </motion.div>
                   </div>
-                  <motion.div 
-                  whileHover={{
-                    scale: 1.1,
-                  }}
-                  whileTap={{
-                    scale: 1.2,
-                  }}
-                  onClick={() => handleSeePost(post.id, post.photo, index)}>
+                  <motion.div
+                    whileHover={{
+                      scale: 1.1,
+                    }}
+                    whileTap={{
+                      scale: 1.2,
+                    }}
+                    onClick={() => handleSeePost(post.id, post.photo, index)}
+                  >
                     <MessageCircleIcon></MessageCircleIcon>
                   </motion.div>
                   <motion.div
-                  whileHover={{
-                    scale: 1.1,
-                  }}
-                  whileTap={{
-                    scale: 1.2,
-                  }}
+                    whileHover={{
+                      scale: 1.1,
+                    }}
+                    whileTap={{
+                      scale: 1.2,
+                    }}
                   >
-                  <ArrowForwardIcon></ArrowForwardIcon>
+                    <ArrowForwardIcon></ArrowForwardIcon>
                   </motion.div>
                 </div>
                 <motion.div
@@ -498,7 +515,9 @@ const Home = () => {
                     {post.likedByUsername}
                   </Link>
                   <p>and</p>
-                  <div onClick={() => handleLikedBy(post.likedBy, index)}>others</div>
+                  <div onClick={() => handleLikedBy(post.likedBy, index)}>
+                    others
+                  </div>
                 </div>
               )}
 
@@ -534,13 +553,21 @@ const Home = () => {
                 </div>
               ) : null}
 
-              {newComment && 
-              <div className={`new-comment-container ${!finishedAddingComment && "not-finished"}`}>
-                <div>
-                  <img src={userViewingPhoto} alt="" />
+              {newComment && (
+                <div
+                  className={`new-comment-container ${
+                    !finishedAddingComment && "not-finished"
+                  }`}
+                >
+                  <div>
+                    <img src={userViewingPhoto} alt="" />
+                  </div>
+                  <span>
+                    <span>{userViewing.userName} </span>
+                    {newComment}
+                  </span>
                 </div>
-                <span><span>{userViewing.userName} </span>{newComment}</span>
-              </div>}
+              )}
 
               <div className="add-comment-container">
                 <input
@@ -561,21 +588,24 @@ const Home = () => {
               </div>
 
               {seePost && post.postPopup && (
-                <div className="show-post">
-                  <div className="post-background">
-                    <Post
-                      param={postid}
-                      postRef={postRef}
-                      savedArray={savedArray}
-                      postPhoto={postPhoto}
-                      userViewing={userViewing}
-                      userViewingId={userViewingId}
-                      userViewingPhoto={userViewingPhoto}
-                    ></Post>
-                  </div>
-                </div>
+                <Post
+                  param={postid}
+                  postRef={postRef}
+                  savedArray={savedArray}
+                  postPhoto={postPhoto}
+                  userViewing={userViewing}
+                  userViewingId={userViewingId}
+                  userViewingPhoto={userViewingPhoto}
+                ></Post>
               )}
-              {likedByToggle && post.likedByPopup && <LikedBy likedby={likedBy} likedByRef={likedByRef} userFollowing={userViewing.following} currentUserName={userViewing.userName}></LikedBy>}
+              {likedByToggle && post.likedByPopup && (
+                <LikedBy
+                  likedby={likedBy}
+                  likedByRef={likedByRef}
+                  userFollowing={userViewing.following}
+                  currentUserName={userViewing.userName}
+                ></LikedBy>
+              )}
             </div>
           ))
         ) : (
