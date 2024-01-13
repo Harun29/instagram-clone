@@ -25,7 +25,8 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
   const [userPhoto, setUserPhoto] = useState();
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [comment, setComment] = useState("")
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
@@ -178,6 +179,7 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
     try{
       const unsub = onSnapshot(doc(db, "posts", param), (document) => {
         setPost(document.data());
+        setComments(document.data().comments.reverse())
       })
       return () => unsub()
     }catch(err){
@@ -189,7 +191,9 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
     const fetchPost = async (id) => {
       const docRef = doc(db, "posts", id);
       const post = await getDoc(docRef);
+      const postComments = post.data().comments.reverse()
       setPost(post.data());
+      setComments(postComments)
     };
 
     try {
@@ -261,7 +265,7 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
         </div>
 
         <div className="comments-in-post">
-          {post.comments.map((comment) => (
+          {comments.map((comment) => (
             <div className="comment">
               <Link to={`/user/${comment.userName}`}>
                 <img src={comment.userPhoto ? comment.userPhoto : "blank-profile.jpg"} alt="commented by" />
