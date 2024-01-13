@@ -38,6 +38,8 @@ const Home = () => {
   const [postPhoto, setPostPhoto] = useState("");
   const [likedByToggle, setLikedByToggle] = useState(false);
   const [likedBy, setLikedBy] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [finishedAddingComment, setFinishedAddingComment] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -233,6 +235,7 @@ const Home = () => {
     };
 
     try {
+      setNewComment(comment);
       await updateDoc(docRef, {
         comments: arrayUnion({
           user: userViewing.email,
@@ -245,6 +248,7 @@ const Home = () => {
         notif: arrayUnion(notifObject(false)),
       });
       setComment("");
+      setFinishedAddingComment(true)
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
@@ -529,6 +533,14 @@ const Home = () => {
                   )}
                 </div>
               ) : null}
+
+              {newComment && 
+              <div className={`new-comment-container ${!finishedAddingComment && "not-finished"}`}>
+                <div>
+                  <img src={userViewingPhoto} alt="" />
+                </div>
+                <span><span>{userViewing.userName}</span>{newComment}</span>
+              </div>}
 
               <div className="add-comment-container">
                 <input

@@ -662,6 +662,38 @@ a {
   object-fit: cover;
 }
 
+.new-comment-container{
+  width: 100%;
+  display: flex;
+  font-size: 0.8rem;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.new-comment-container div{
+  display: flex;
+}
+
+.new-comment-container span span{
+  font-weight: 700;
+}
+
+.new-comment-container img{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.new-comment-container.not-finished img{
+  opacity: 0.5;
+}
+
+.new-comment-container.not-finished span{
+  color: #737373;
+}
+
 /* SUGGESTED */
 
 .suggested-people{
