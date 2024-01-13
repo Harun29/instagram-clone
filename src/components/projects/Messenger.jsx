@@ -28,6 +28,7 @@ const Messenger = ({ user }) => {
   const [chat, setChat] = useState();
   const [lastMessage, setLastMessage] = useState("");
   const [seenBy, setSeenBy] = useState();
+  const [addedDoc, setAddedDoc] = useState(false);
 
   useEffect(() => {
     try {
@@ -63,11 +64,12 @@ const Messenger = ({ user }) => {
     try {
       userViewingUserName &&
         userData &&
+        addedDoc &&
         updateSeen();
     } catch (err) {
       console.error(err);
     }
-  }, [chat, chatId, userViewingUserName, userData]);
+  }, [chat, chatId, userViewingUserName, userData, addedDoc]);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -152,8 +154,9 @@ const Messenger = ({ user }) => {
           const userRef = doc(db, "users", param.userid);
           await setDoc(doc(db, "chats", chatId), {
             messages: [],
-            seenBy,
+            seenBy: ""
           });
+          setAddedDoc(true);
           await updateDoc(userViewingRef, {
             chats: arrayUnion({
               chatId,
@@ -181,9 +184,12 @@ const Messenger = ({ user }) => {
         console.error("Error fetching document:", error);
       }
     };
-
-    if (userViewing && chatId && userData && param) {
-      checkChatExists();
+    try{
+      if (userViewing && chatId && userData && param) {
+        checkChatExists();
+      }
+    }catch(err){
+      console.error("error in checking if chat exists: ", err)
     }
   }, [chatId, param, userViewing, userViewingPhoto, userData, seenBy]);
 
