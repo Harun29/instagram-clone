@@ -179,6 +179,8 @@ const Messenger = ({ user }) => {
               lastMessage: "",
             }),
           });
+        }else{
+          setAddedDoc(true);
         }
       } catch (error) {
         console.error("Error fetching document:", error);
