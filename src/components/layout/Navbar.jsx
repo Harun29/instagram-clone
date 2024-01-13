@@ -139,7 +139,7 @@ const Navigation = () => {
     const fetchUser = async (email) => {
       const user = await getUserByEmail(email);
       // setUser(user);
-      setNotifs(user.notif);
+      setNotifs(user.notif.reverse());
       if (user.pphoto) {
         const userPhotoUrl = await getDownloadURL(
           ref(storage, `profile_pictures/${user.pphoto}`),
