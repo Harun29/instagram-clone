@@ -25,7 +25,7 @@ const Messenger = ({ user }) => {
   const [userViewingUserName, setUserViewingUserName] = useState();
   const [chatId, setChatId] = useState();
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState();
+  const [chat, setChat] = useState([]);
   const [lastMessage, setLastMessage] = useState("");
   const [seenBy, setSeenBy] = useState();
   const [addedDoc, setAddedDoc] = useState(false);
