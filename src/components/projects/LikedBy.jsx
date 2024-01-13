@@ -5,7 +5,7 @@ import { storage } from "../../config/firebase";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
-const LikedBy = ({likedby, likedByRef, userFollowing}) => {
+const LikedBy = ({likedby, likedByRef, userFollowing, currentUserName}) => {
 
   const {getUserByEmail} = useAuth();
   const [likedByArray, setLikedByArray] = useState([]);
@@ -53,8 +53,8 @@ const LikedBy = ({likedby, likedByRef, userFollowing}) => {
                 <span>{likedby.name}</span>
               </div>
             </Link>
-            {!userFollowingList.includes(likedby.userName) && <div className="follow-button">Follow</div>}
-            {userFollowingList.includes(likedby.userName) && <div className="unfollow-button">Following</div>}
+            {(likedby.userName !== currentUserName && !userFollowingList.includes(likedby.userName)) && <div className="follow-button">Follow</div>}
+            {(likedby.userName !== currentUserName && userFollowingList.includes(likedby.userName)) && <div className="unfollow-button">Following</div>}
           </div>
         ))}
         </div>

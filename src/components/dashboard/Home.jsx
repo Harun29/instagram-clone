@@ -539,7 +539,7 @@ const Home = () => {
                 <div>
                   <img src={userViewingPhoto} alt="" />
                 </div>
-                <span><span>{userViewing.userName}</span>{newComment}</span>
+                <span><span>{userViewing.userName} </span>{newComment}</span>
               </div>}
 
               <div className="add-comment-container">
@@ -575,7 +575,7 @@ const Home = () => {
                   </div>
                 </div>
               )}
-              {likedByToggle && post.likedByPopup && <LikedBy likedby={likedBy} likedByRef={likedByRef} userFollowing={userViewing.following}></LikedBy>}
+              {likedByToggle && post.likedByPopup && <LikedBy likedby={likedBy} likedByRef={likedByRef} userFollowing={userViewing.following} currentUserName={userViewing.userName}></LikedBy>}
             </div>
           ))
         ) : (
