@@ -444,7 +444,7 @@ const Home = () => {
                   whileTap={{
                     scale: 1.2,
                   }}
-                  onClick={() => handleSeePost(post.id, post.photo)}>
+                  onClick={() => handleSeePost(post.id, post.photo, index)}>
                     <MessageCircleIcon></MessageCircleIcon>
                   </motion.div>
                   <motion.div
