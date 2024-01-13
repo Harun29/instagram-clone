@@ -6,6 +6,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  onSnapshot,
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
@@ -172,6 +173,17 @@ const Post = ({ param, postRef, savedArray, postPhoto, userViewing, userViewingI
       console.error(err);
     }
   }, [post]);
+
+  useEffect(() => {
+    try{
+      const unsub = onSnapshot(doc(db, "posts", param), (document) => {
+        setPost(document.data());
+      })
+      return () => unsub()
+    }catch(err){
+      console.error("erron in post snapshot: ", err)
+    }
+  })
 
   useEffect(() => {
     const fetchPost = async (id) => {
