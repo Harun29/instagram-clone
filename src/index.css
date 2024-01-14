@@ -1968,19 +1968,19 @@ a {
 .card, .card-in-post {
   display: flex;
   background-color: white;
-  max-width: 85%;
+  max-width: 1000px;
   max-height: 90%;
   /* transition: all 0.1s ease; */
 }
 
 .card-img-top {
-  max-width: 60%;
+  width: 60%;
   object-fit: contain;
   background-color: black;
 }
 
 .card-body {
-  max-width: 500px;
+  width: 400px;
   display: grid;
   grid-template-rows: 60px 1fr 5fr 50px 50px;
   font-size: 0.8rem;
@@ -2084,6 +2084,12 @@ a {
   padding-bottom: 15px;
   border-bottom: 1px solid rgb(204, 208, 213);
   font-weight: 500;
+  position: relative;
+}
+
+.liked-by-header div{
+  position: absolute;
+  right: 0;
 }
 
 .likes {

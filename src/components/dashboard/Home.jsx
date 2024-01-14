@@ -42,45 +42,58 @@ const Home = () => {
   const [finishedAddingComment, setFinishedAddingComment] = useState(false);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      const isClickInsidePost = event.target.closest(".card");
-      const isClickInsideLikedBy = event.target.closest(".likes");
-  
-      if (!isClickInsidePost && !buttonClicked) {
-        setSeePost(false);
-        setPosts((prevPosts) =>
-          prevPosts.map((post) => ({
-            ...post,
-            likedByPopup: false,
-            postPopup: false,
-          })),
-        );
-      }
-  
-      if (!isClickInsideLikedBy && !buttonClicked) {
-        setLikedByToggle(false);
-        setPosts((prevPosts) =>
-          prevPosts.map((post) => ({
-            ...post,
-            likedByPopup: false,
-            postPopup: false,
-          })),
-        );
-      }
-    };
-  
-    window.addEventListener("click", handleClickOutside);
-  
-    return () => {
-      window.removeEventListener("click", handleClickOutside);
-    };
-  }, [buttonClicked, posts, seePost, likedByToggle]);
-  
-  
+    postRef && console.log(postRef)
+  }, [postRef])
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //   const isClickInsideLikedBy = likedByRef.current && likedByRef.current.contains(event.target);
+
+  //     if (!isClickInsideLikedBy && !buttonClicked) {
+  //       setLikedByToggle(false);
+  //       setPosts((prevPosts) =>
+  //         prevPosts.map((post) => ({
+  //           ...post,
+  //           likedByPopup: false,
+  //           postPopup: false,
+  //         })),
+  //       );
+  //     }
+  //   };
+
+  //   window.addEventListener("click", handleClickOutside);
+
+  //   return () => {
+  //     window.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [buttonClicked, likedByToggle]);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     const isClickInsidePost = postRef.current && postRef.current.contains(event.target);
+
+  //     if (!isClickInsidePost && !buttonClicked) {
+  //       setSeePost(false);
+  //       setPosts((prevPosts) =>
+  //         prevPosts.map((post) => ({
+  //           ...post,
+  //           likedByPopup: false,
+  //           postPopup: false,
+  //         })),
+  //       );
+  //     }
+  //   };
+
+  //   window.addEventListener("click", handleClickOutside);
+
+  //   return () => {
+  //     window.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [buttonClicked, seePost]);
 
   useEffect(() => {
-    console.log(postRef)
-  }, [postRef])
+    console.log(postRef);
+  }, [postRef]);
 
   useEffect(() => {
     seePost && setButtonClicked(false);
@@ -386,6 +399,10 @@ const Home = () => {
     posts[index].likedByPopup = true;
   };
 
+  useEffect(() => {
+    seePost && console.log(seePost)
+  }, [seePost])
+
   return (
     <div className="home-container">
       <div className="row">
@@ -596,6 +613,7 @@ const Home = () => {
                   userViewing={userViewing}
                   userViewingId={userViewingId}
                   userViewingPhoto={userViewingPhoto}
+                  setSeePost={() => setSeePost(false)}
                 ></Post>
               )}
               {likedByToggle && post.likedByPopup && (
@@ -604,6 +622,7 @@ const Home = () => {
                   likedByRef={likedByRef}
                   userFollowing={userViewing.following}
                   currentUserName={userViewing.userName}
+                  setLikedByToggle={() => setLikedByToggle(false)}
                 ></LikedBy>
               )}
             </div>

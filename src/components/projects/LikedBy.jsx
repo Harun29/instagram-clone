@@ -4,8 +4,9 @@ import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import ExitIcon from "../../icons/xIcon";
 
-const LikedBy = ({likedby, likedByRef, userFollowing, currentUserName}) => {
+const LikedBy = ({likedby, likedByRef, userFollowing, currentUserName, setLikedByToggle}) => {
 
   const {getUserByEmail} = useAuth();
   const [likedByArray, setLikedByArray] = useState([]);
@@ -42,7 +43,12 @@ const LikedBy = ({likedby, likedByRef, userFollowing, currentUserName}) => {
     <div className="liked-by-background">
       <AnimatePresence>
       <motion.div initial={{scale: 1.1, opacity: 0}} animate={{scale: 1, opacity: 1}} ref={likedByRef} className="likes">
-        <div className="liked-by-header">Likes</div>
+        <div className="liked-by-header">
+          <span>Likes</span>
+          <motion.div onClick={setLikedByToggle} whileHover={{scale: 1.1}} whileTap={{scale: 1.2}}>
+            <ExitIcon size={"28"} stroke={"1"}></ExitIcon>
+          </motion.div>
+        </div>
         <div className="liked-by-list-container">
         {likedByArray && likedByArray.map(likedby => (
           <div className="liked-by-from-array">

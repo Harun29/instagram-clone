@@ -9,7 +9,7 @@ import { ref, uploadBytes } from "firebase/storage";
 import PhotoIcon from "../../icons/PhotoIcon";
 import { motion, AnimatePresence } from "framer-motion";
 
-const CreatePost = ({ createRef, userPhoto, userName, createPost, setCreatePost }) => {
+const CreatePost = ({ createRef, userPhoto, userName, setCreatePost }) => {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);

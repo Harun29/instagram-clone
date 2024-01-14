@@ -17,6 +17,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import { motion, AnimatePresence } from "framer-motion";
+import ExitIcon from "../../icons/xIcon";
 
 const Post = ({
   param,
@@ -26,6 +27,8 @@ const Post = ({
   userViewing,
   userViewingId,
   userViewingPhoto,
+  seePost,
+  setSeePost,
 }) => {
   const [post, setPost] = useState();
   const [user, setUser] = useState();
@@ -286,7 +289,9 @@ const Post = ({
                   />
                   <label>{user}</label>
                 </Link>
-                <FontAwesomeIcon icon={faEllipsis}></FontAwesomeIcon>
+                <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 1.2}} onClick={setSeePost}>
+                  <ExitIcon size={"36"} stroke={"0.5"}></ExitIcon>
+                </motion.div>
               </div>
 
               <div className="post-header-description">

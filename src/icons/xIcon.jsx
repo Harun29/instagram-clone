@@ -1,12 +1,12 @@
-const ExitIcon = () => {
+const ExitIcon = ({size, stroke}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="icon icon-tabler icon-tabler-x"
-      width="10"
-      height="10"
+      width={size ? size : "10"}
+      height={size ? size : "10"}
       viewBox="0 0 24 24"
-      stroke-width="2"
+      stroke-width={stroke ? stroke : "2"}
       stroke="currentColor"
       fill="none"
       stroke-linecap="round"
