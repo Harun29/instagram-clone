@@ -102,7 +102,7 @@ const Chats = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [userId]);
+  }, [userId, chats]);
 
   useEffect(() => {
     setChats([]);

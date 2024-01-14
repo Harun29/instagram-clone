@@ -45,7 +45,7 @@ function App() {
         transition={{duration: 0.5}}
         exit={{translateY: -2000}} 
         className="loading-screen">
-          <img src="igclone.png" />
+          <img src="igclone.png" alt="ig"/>
           <h1 style={{ fontFamily: "Oleo Script" }}>Igclone</h1>
           </motion.div>
         }

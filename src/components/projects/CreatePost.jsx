@@ -14,7 +14,7 @@ const CreatePost = ({ createRef, userPhoto, userName, setCreatePost }) => {
   const [photo, setPhoto] = useState(null);
   const [imgName, setImgName] = useState(null);
   const [post, setPost] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [imageUpload, setImageUpload] = useState(null);
   const [finish, setFinish] = useState(false);
 
@@ -24,7 +24,6 @@ const CreatePost = ({ createRef, userPhoto, userName, setCreatePost }) => {
   const { postsUpdate } = useContext(AuthContext);
 
   const addData = async (data) => {
-    setLoading(true);
     try {
       const docRef = await addDoc(collection(db, "posts"), data);
       await postsUpdate(currentUser.email, arrayUnion(docRef.id));
@@ -32,7 +31,6 @@ const CreatePost = ({ createRef, userPhoto, userName, setCreatePost }) => {
       navigate("/");
     } catch (e) {
       console.error("Error adding document: ", e);
-      setLoading(false);
     }
   };
 

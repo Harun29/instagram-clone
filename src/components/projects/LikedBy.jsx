@@ -33,7 +33,7 @@ const LikedBy = ({likedby, likedByRef, userFollowing, currentUserName, setLikedB
     }catch(err){
       console.error("error fetching user in liked by: ", err)
     }
-  }, [likedby])
+  }, [likedby, getUserByEmail])
 
   useEffect(() => {
     console.log(likedByArray)

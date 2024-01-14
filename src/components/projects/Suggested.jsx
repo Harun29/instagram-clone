@@ -46,12 +46,6 @@ const Suggested = () => {
       userFollowingList.push(user.userName);
       setUserFollowing(userFollowingList);
       setCurrentUserName(user.userName);
-      let userPhoto = "blank-profile.jpg";
-      if (user.pphoto) {
-        userPhoto = await getDownloadURL(
-          ref(storage, `profile_pictures/${user.pphoto}`),
-        );
-      }
       setCurrentUserPhoto(currentUserPhoto);
     };
     try {
@@ -59,7 +53,7 @@ const Suggested = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [currentUser]);
+  }, [currentUser, currentUserPhoto, getUserByEmail]);
 
   useEffect(() => {
     const fetchUsers = async () => {
