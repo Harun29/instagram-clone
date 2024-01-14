@@ -1993,6 +1993,10 @@ a {
   font-weight: 700;
 }
 
+.post-header.in-post svg{
+  cursor: pointer;
+}
+
 .post-header-description {
   margin: 10px;
   font-size: 0.8rem;
@@ -2088,6 +2092,10 @@ a {
 .liked-by-header div{
   position: absolute;
   right: 0;
+}
+
+.liked-by-header svg{
+  cursor: pointer;
 }
 
 .likes {
