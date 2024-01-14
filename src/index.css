@@ -1820,6 +1820,7 @@ a {
   padding: 16px;
   margin-bottom: 25px;
   border-radius: 20px;
+  width: 100%;
 }
 
 .picture-update div {
