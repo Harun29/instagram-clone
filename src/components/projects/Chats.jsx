@@ -24,7 +24,7 @@ const Chats = () => {
   const [userName, setUserName] = useState();
   const [chats, setChats] = useState([]);
   const [userId, setUserId] = useState();
-  const [loadingChats, setLoadingChats] = useState(true);
+  // const [loadingChats, setLoadingChats] = useState(true);
   const [newMessage, setNewMessage] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const newMessageRef = useRef(null);
@@ -129,7 +129,6 @@ const Chats = () => {
         );
       };
       currentUser && fetchUser();
-      setLoadingChats(false);
     } catch (err) {
       console.error(err);
     }
