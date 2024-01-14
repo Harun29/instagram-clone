@@ -488,7 +488,7 @@ const Navigation = () => {
                 <div className="notification-container">
                   <Link
                     className="notif-by follow-notif-link"
-                    to={`/user/${notif.followedBy}`}
+                    to={`/user/${notif.commentedBy}`}
                   >
                     <div>
                       <img

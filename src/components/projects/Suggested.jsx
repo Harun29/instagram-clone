@@ -61,7 +61,7 @@ const Suggested = () => {
         collection(db, "users"),
         where("userName", "not-in", userFollowing),
         limit(5),
-      );
+        );
       const users = await getDocs(usersRef);
       users.forEach(async (user) => {
         const object = user.data();

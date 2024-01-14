@@ -192,6 +192,7 @@ const User = () => {
   useEffect(() => {
     const fetchUserByUsername = async (username) => {
       const userData = await getUserByUsername(username);
+      console.log("user data: ", userData)
       const user = await getUserByEmailInUser(userData.email);
       setUser(userData);
       setUserId(user.docs[0].id);

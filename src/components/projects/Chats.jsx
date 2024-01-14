@@ -158,7 +158,7 @@ const Chats = () => {
           </button>
         </h1>
         <span className="chats-span">Messages</span>
-        {chats.length > 0 && (
+        {chats && (
           <div className="chats">
             {chats.map((chat) => (
               <Link
