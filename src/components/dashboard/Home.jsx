@@ -46,51 +46,37 @@ const Home = () => {
     postRef && console.log(postRef)
   }, [postRef])
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //   const isClickInsideLikedBy = likedByRef.current && likedByRef.current.contains(event.target);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+    const isClickInsideLikedBy = likedByRef.current && likedByRef.current.contains(event.target);
 
-  //     if (!isClickInsideLikedBy && !buttonClicked) {
-  //       setLikedByToggle(false);
-  //       setPosts((prevPosts) =>
-  //         prevPosts.map((post) => ({
-  //           ...post,
-  //           likedByPopup: false,
-  //           postPopup: false,
-  //         })),
-  //       );
-  //     }
-  //   };
+      if (!isClickInsideLikedBy && !buttonClicked) {
+        setLikedByToggle(false);
+      }
+    };
 
-  //   window.addEventListener("click", handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
 
-  //   return () => {
-  //     window.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, [buttonClicked, likedByToggle]);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [buttonClicked, likedByToggle]);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     const isClickInsidePost = postRef.current && postRef.current.contains(event.target);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInsidePost = postRef.current && postRef.current.contains(event.target);
 
-  //     if (!isClickInsidePost && !buttonClicked) {
-  //       setSeePost(false);
-  //       setPosts((prevPosts) =>
-  //         prevPosts.map((post) => ({
-  //           ...post,
-  //           likedByPopup: false,
-  //           postPopup: false,
-  //         })),
-  //       );
-  //     }
-  //   };
+      if (!isClickInsidePost && !buttonClicked) {
+        setSeePost(false);
+      }
+    };
 
-  //   window.addEventListener("click", handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
 
-  //   return () => {
-  //     window.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, [buttonClicked, seePost]);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [buttonClicked, seePost]);
 
   useEffect(() => {
     console.log(postRef);
@@ -216,9 +202,7 @@ const Home = () => {
               photo: photoUrl,
               user: nick,
               userId: userId,
-              userPhoto: userPhotoUrl,
-              likedByPopup: false,
-              postPopup: false,
+              userPhoto: userPhotoUrl
             };
           } else {
             return {
@@ -233,9 +217,7 @@ const Home = () => {
               photo: photoUrl,
               user: nick,
               userId: userId,
-              userPhoto: "/blank-profile.jpg",
-              likedByPopup: false,
-              postPopup: false,
+              userPhoto: "/blank-profile.jpg"
             };
           }
         }),
@@ -605,29 +587,6 @@ const Home = () => {
                   post
                 </button>
               </div>
-
-              {seePost && post.postPopup && (
-                <Post
-                  param={postid}
-                  postRef={postRef}
-                  savedArray={savedArray}
-                  postPhoto={postPhoto}
-                  userViewing={userViewing}
-                  userViewingId={userViewingId}
-                  userViewingPhoto={userViewingPhoto}
-                  setSeePost={() => setSeePost(false)}
-                  userId={userId}
-                ></Post>
-              )}
-              {likedByToggle && post.likedByPopup && (
-                <LikedBy
-                  likedby={likedBy}
-                  likedByRef={likedByRef}
-                  userFollowing={userViewing.following}
-                  currentUserName={userViewing.userName}
-                  setLikedByToggle={() => setLikedByToggle(false)}
-                ></LikedBy>
-              )}
             </div>
           ))
         ) : (
@@ -662,6 +621,28 @@ const Home = () => {
         )}
       </div>
       <Suggested></Suggested>
+      {seePost && (
+                <Post
+                  param={postid}
+                  postRef={postRef}
+                  savedArray={savedArray}
+                  postPhoto={postPhoto}
+                  userViewing={userViewing}
+                  userViewingId={userViewingId}
+                  userViewingPhoto={userViewingPhoto}
+                  setSeePost={() => setSeePost(false)}
+                  userId={userId}
+                ></Post>
+              )}
+              {likedByToggle && (
+                <LikedBy
+                  likedby={likedBy}
+                  likedByRef={likedByRef}
+                  userFollowing={userViewing.following}
+                  currentUserName={userViewing.userName}
+                  setLikedByToggle={() => setLikedByToggle(false)}
+                ></LikedBy>
+              )}
     </div>
   );
 };

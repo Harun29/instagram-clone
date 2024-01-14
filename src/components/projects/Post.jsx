@@ -27,7 +27,6 @@ const Post = ({
   userViewing,
   userViewingId,
   userViewingPhoto,
-  seePost,
   setSeePost,
   userId
 }) => {
