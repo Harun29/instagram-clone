@@ -31,6 +31,15 @@ const Messenger = ({ user }) => {
   const [addedDoc, setAddedDoc] = useState(false);
 
   useEffect(() => {
+    const messagesContainer = document.getElementsByClassName("messages-container")[0];
+    
+    if (messagesContainer) {
+      const lastMessage = messagesContainer.lastElementChild;
+      chat && lastMessage && lastMessage.scrollIntoView();
+    }
+  }, [chat]);
+  
+  useEffect(() => {
     try {
       if (chatId && chat) {
         const unsubscribe = onSnapshot(doc(db, "chats", chatId), (document) => {
