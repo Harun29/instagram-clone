@@ -1968,9 +1968,8 @@ a {
 .card, .card-in-post {
   display: flex;
   background-color: white;
-  max-width: 1000px;
-  max-height: 90%;
-  /* transition: all 0.1s ease; */
+  width: 75%;
+  height: 90%;
 }
 
 .card-img-top {
@@ -1980,9 +1979,9 @@ a {
 }
 
 .card-body {
-  width: 400px;
+  width: 40%;
   display: grid;
-  grid-template-rows: 60px 1fr 5fr 50px 50px;
+  grid-template-rows: 60px auto 5fr 50px 50px;
   font-size: 0.8rem;
   line-height: 18px;
 }
@@ -2002,7 +2001,7 @@ a {
   margin: 0 15px 15px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  width: calc(100% - 30px);
+  /* width: calc(100% - 30px); */
 }
 
 .comments-in-post::-webkit-scrollbar {
@@ -2011,6 +2010,7 @@ a {
 
 .interactions.in-post {
   padding: 15px;
+  margin: 0;
 }
 
 .interactions.in-post div:nth-child(2) svg{
@@ -2019,7 +2019,7 @@ a {
 
 .add-comment-container.in-post {
   padding: 0 15px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   width: calc(100% - 30px);
 }
 

@@ -40,6 +40,7 @@ const Home = () => {
   const [likedBy, setLikedBy] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [finishedAddingComment, setFinishedAddingComment] = useState(false);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     postRef && console.log(postRef)
@@ -384,11 +385,12 @@ const Home = () => {
     }
   };
 
-  const handleSeePost = (postid, postPhoto, index) => {
+  const handleSeePost = (postid, postPhoto, index, userid) => {
     setPostid(postid);
     setPostPhoto(postPhoto);
     setSeePost(true);
     setButtonClicked(true);
+    setUserId(userid)
     posts[index].postPopup = true;
   };
 
@@ -477,7 +479,7 @@ const Home = () => {
                     whileTap={{
                       scale: 1.2,
                     }}
-                    onClick={() => handleSeePost(post.id, post.photo, index)}
+                    onClick={() => handleSeePost(post.id, post.photo, index, post.userId)}
                   >
                     <MessageCircleIcon></MessageCircleIcon>
                   </motion.div>
@@ -614,6 +616,7 @@ const Home = () => {
                   userViewingId={userViewingId}
                   userViewingPhoto={userViewingPhoto}
                   setSeePost={() => setSeePost(false)}
+                  userId={userId}
                 ></Post>
               )}
               {likedByToggle && post.likedByPopup && (

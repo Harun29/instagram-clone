@@ -29,10 +29,10 @@ const Post = ({
   userViewingPhoto,
   seePost,
   setSeePost,
+  userId
 }) => {
   const [post, setPost] = useState();
   const [user, setUser] = useState();
-  const [userId, setUserId] = useState();
   const [userPhoto, setUserPhoto] = useState();
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -189,7 +189,6 @@ const Post = ({
       } else {
         setUserPhoto(userPhoto);
       }
-      setUserId(user.docs[0].id);
     };
 
     /* ERROR ON LOADING */
@@ -264,6 +263,10 @@ const Post = ({
       console.error("Error in handleComment: ", err);
     }
   };
+
+  useEffect(() => {
+    userId && console.log(userId)
+  }, [userId])
 
   return (
     post &&
