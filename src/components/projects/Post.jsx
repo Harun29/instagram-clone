@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
 import {
   getDoc,
@@ -11,8 +11,6 @@ import {
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";

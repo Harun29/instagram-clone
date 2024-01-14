@@ -16,7 +16,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Post from "../projects/Post";
 import Suggested from "../projects/Suggested";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import LikedBy from "../projects/LikedBy";
 
 const Home = () => {

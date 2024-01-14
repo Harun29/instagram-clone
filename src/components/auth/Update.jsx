@@ -36,7 +36,7 @@ const UpdateProfile = () => {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(true);
   const [passwordUpdating, setPasswordUpdateing] = useState(false);
   const [confirmation, setConfirmation] = useState();
@@ -87,7 +87,6 @@ const UpdateProfile = () => {
   };
 
   const updatePhoto = async () => {
-    setLoading(true);
     try {
       console.log("Before uploadBytes 1");
       if (imageUpload == null) return;
@@ -104,7 +103,6 @@ const UpdateProfile = () => {
       console.log("Before profilePhotoUpdate");
       await profilePhotoUpdate(user.email, imgName);
       console.log("After profilePhotoUpdate");
-      setLoading(false);
     } catch (err) {
       console.error("Error adding image: ", err);
     }
