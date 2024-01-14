@@ -175,7 +175,7 @@ const Chats = () => {
             ))}
           </div>
         )}
-        {chats.length === 0 && (
+        {chats && (chats.length === 0 &&
           <div className="empty-chats">
             <span>No messages found.</span>
           </div>
