@@ -48,36 +48,6 @@ const Chats = () => {
     newMessage && setButtonClicked(false);
   }, [newMessage]);
 
-  // useEffect(() => {
-  //   try {
-  //     if (userId && !loadingChats) {
-  //       const unsubscribe = onSnapshot(
-  //         doc(db, "users", userId),
-  //         async (document) => {
-  //           const chatsRef = document.data()?.chats || [];
-  //           const lastIndex = chatsRef.length - 1;
-  //           console.log(chats[lastIndex].chatId)
-  //           console.log(chatsRef[lastIndex].chatId)
-  //           const chatSnap = await getDoc(
-  //             doc(db, "chats", chatsRef[lastIndex].chatId),
-  //           );
-  //           if (
-  //             lastIndex >= 0 &&
-  //             chats[lastIndex].chatId !== chatsRef[lastIndex].chatId &&
-  //             chatSnap.data().messages[0]
-  //           ) {
-  //             setChats((prevChat) => [chatsRef[lastIndex], ...prevChat]);
-  //           }
-  //         },
-  //       );
-
-  //       return () => unsubscribe();
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [userId, loadingChats]);
-
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
@@ -93,16 +63,16 @@ const Chats = () => {
 
   useEffect(() => {
     try {
-      if (chats) {
-        const unsub = onSnapshot(doc(db, "users", userId), (user) => {
-          setChats(user.data()?.chats.reverse());
-        });
-        return () => unsub();
-      }
+      const unsub = onSnapshot(doc(db, "users", userId), (user) => {
+        const newChats = user.data()?.chats.reverse();
+        setChats(newChats);
+      });
+      return () => unsub();
     } catch (err) {
       console.error(err);
     }
-  }, [userId, chats]);
+  }, [userId]);
+  
 
   useEffect(() => {
     setChats([]);
@@ -117,11 +87,6 @@ const Chats = () => {
             const object = chat;
             const chatSnap = await getDoc(doc(db, "chats", chat.chatId));
             console.log(chatSnap.data());
-              // if (chatSnap.data().seenBy === userName) {
-              //   object.seen = true;
-              // } else {
-              //   object.seen = false;
-              // }
             console.log(object);
             chatSnap.data()?.messages[0] &&
               setChats((prevChat) => [object, ...prevChat]);
@@ -140,7 +105,7 @@ const Chats = () => {
   };
 
   useEffect(() => {
-    chats && console.log(chats);
+    chats && console.log("chats: ", chats);
   }, [chats]);
 
   return (
