@@ -38,17 +38,17 @@ const Home = () => {
   const [postPhoto, setPostPhoto] = useState("");
   const [likedByToggle, setLikedByToggle] = useState(false);
   const [likedBy, setLikedBy] = useState([]);
-  const [newComment, setNewComment] = useState("");
   const [finishedAddingComment, setFinishedAddingComment] = useState(false);
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    postRef && console.log(postRef)
-  }, [postRef])
+    postRef && console.log(postRef);
+  }, [postRef]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-    const isClickInsideLikedBy = likedByRef.current && likedByRef.current.contains(event.target);
+      const isClickInsideLikedBy =
+        likedByRef.current && likedByRef.current.contains(event.target);
 
       if (!isClickInsideLikedBy && !buttonClicked) {
         setLikedByToggle(false);
@@ -64,7 +64,8 @@ const Home = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const isClickInsidePost = postRef.current && postRef.current.contains(event.target);
+      const isClickInsidePost =
+        postRef.current && postRef.current.contains(event.target);
 
       if (!isClickInsidePost && !buttonClicked) {
         setSeePost(false);
@@ -202,7 +203,7 @@ const Home = () => {
               photo: photoUrl,
               user: nick,
               userId: userId,
-              userPhoto: userPhotoUrl
+              userPhoto: userPhotoUrl,
             };
           } else {
             return {
@@ -217,7 +218,7 @@ const Home = () => {
               photo: photoUrl,
               user: nick,
               userId: userId,
-              userPhoto: "/blank-profile.jpg"
+              userPhoto: "/blank-profile.jpg",
             };
           }
         }),
@@ -229,7 +230,7 @@ const Home = () => {
     fetchPosts();
   }, [getUserByEmail]);
 
-  const handleComment = async (postid, postPhoto, userId) => {
+  const handleComment = async (postid, postPhoto, userId, index) => {
     const docRef = doc(db, "posts", postid);
     const docNotifRef = doc(db, "users", userId);
 
@@ -247,7 +248,8 @@ const Home = () => {
     };
 
     try {
-      setNewComment(comment);
+      setFinishedAddingComment(false)
+      posts[index].newComment = comment;
       await updateDoc(docRef, {
         comments: arrayUnion({
           user: userViewing.email,
@@ -372,7 +374,7 @@ const Home = () => {
     setPostPhoto(postPhoto);
     setSeePost(true);
     setButtonClicked(true);
-    setUserId(userid)
+    setUserId(userid);
     posts[index].postPopup = true;
   };
 
@@ -384,8 +386,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    seePost && console.log(seePost)
-  }, [seePost])
+    seePost && console.log(seePost);
+  }, [seePost]);
 
   return (
     <div className="home-container">
@@ -461,7 +463,9 @@ const Home = () => {
                     whileTap={{
                       scale: 1.2,
                     }}
-                    onClick={() => handleSeePost(post.id, post.photo, index, post.userId)}
+                    onClick={() =>
+                      handleSeePost(post.id, post.photo, index, post.userId)
+                    }
                   >
                     <MessageCircleIcon></MessageCircleIcon>
                   </motion.div>
@@ -554,7 +558,7 @@ const Home = () => {
                 </div>
               ) : null}
 
-              {newComment && (
+              {post.newComment && (
                 <div
                   className={`new-comment-container ${
                     !finishedAddingComment && "not-finished"
@@ -565,7 +569,7 @@ const Home = () => {
                   </div>
                   <span>
                     <span>{userViewing.userName} </span>
-                    {newComment}
+                    {post.newComment}
                   </span>
                 </div>
               )}
@@ -581,7 +585,7 @@ const Home = () => {
                 />
                 <button
                   onClick={() =>
-                    handleComment(post.id, post.photo, post.userId)
+                    handleComment(post.id, post.photo, post.userId, index)
                   }
                 >
                   post
@@ -622,27 +626,27 @@ const Home = () => {
       </div>
       <Suggested></Suggested>
       {seePost && (
-                <Post
-                  param={postid}
-                  postRef={postRef}
-                  savedArray={savedArray}
-                  postPhoto={postPhoto}
-                  userViewing={userViewing}
-                  userViewingId={userViewingId}
-                  userViewingPhoto={userViewingPhoto}
-                  setSeePost={() => setSeePost(false)}
-                  userId={userId}
-                ></Post>
-              )}
-              {likedByToggle && (
-                <LikedBy
-                  likedby={likedBy}
-                  likedByRef={likedByRef}
-                  userFollowing={userViewing.following}
-                  currentUserName={userViewing.userName}
-                  setLikedByToggle={() => setLikedByToggle(false)}
-                ></LikedBy>
-              )}
+        <Post
+          param={postid}
+          postRef={postRef}
+          savedArray={savedArray}
+          postPhoto={postPhoto}
+          userViewing={userViewing}
+          userViewingId={userViewingId}
+          userViewingPhoto={userViewingPhoto}
+          setSeePost={() => setSeePost(false)}
+          userId={userId}
+        ></Post>
+      )}
+      {likedByToggle && (
+        <LikedBy
+          likedby={likedBy}
+          likedByRef={likedByRef}
+          userFollowing={userViewing.following}
+          currentUserName={userViewing.userName}
+          setLikedByToggle={() => setLikedByToggle(false)}
+        ></LikedBy>
+      )}
     </div>
   );
 };
