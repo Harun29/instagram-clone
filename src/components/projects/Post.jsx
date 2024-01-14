@@ -38,23 +38,6 @@ const Post = ({
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     const isClickInsidePost =
-  //       postRef.current && postRef.current.contains(event.target);
-
-  //     if (!isClickInsidePost && !buttonClicked) {
-  //       setSeePost(false);
-  //     }
-  //   };
-
-  //   window.addEventListener("click", handleClickOutside);
-
-  //   return () => {
-  //     window.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, [postRef, buttonClicked, seePost]);
-
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("email", "==", email));
@@ -216,9 +199,9 @@ const Post = ({
     const fetchPost = async (id) => {
       const docRef = doc(db, "posts", id);
       const post = await getDoc(docRef);
-      const postComments = post.data().comments.reverse();
+      const postComments = post.data().comments;
       setPost(post.data());
-      setComments(postComments);
+      setComments(postComments.reverse());
     };
 
     try {
@@ -270,7 +253,8 @@ const Post = ({
   return (
     post &&
     postPhoto &&
-    postRef && (
+    postRef &&
+    userViewingPhoto && (
       <div className="post-background">
         <AnimatePresence>
           <motion.div

@@ -87,28 +87,35 @@ const UpdateProfile = () => {
   };
 
   const updatePhoto = async () => {
+    setLoading(true);
     try {
+      console.log("Before uploadBytes 1");
       if (imageUpload == null) return;
-      const imageRef = ref(storage, `profile_pictures/${imgName}`);
-
-      // we check for current photo name in case the person does not have profile photo
+  
+      const imageRef = ref(storage, `profile_pictures/${imgName}`); // Specify the file path
+  
+      // Check for the current photo name in case the person does not have a profile photo
       if (currentPhotoName) {
-        await deleteObject(
-          ref(storage, "profile_pictures/" + currentPhotoName),
-        );
+        await deleteObject(ref(storage, `profile_pictures/${currentPhotoName}`));
       }
+  
+      console.log("Before uploadBytes");
       await uploadBytes(imageRef, imageUpload);
+      console.log("Before profilePhotoUpdate");
       await profilePhotoUpdate(user.email, imgName);
+      console.log("After profilePhotoUpdate");
+      setLoading(false);
     } catch (err) {
       console.error("Error adding image: ", err);
     }
   };
+  
+  
 
   /* ----- */
 
   const handleChanges = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
       name && await nameUpdate(user.email, name);
       userName && await userNameUpdate(user.email, userName);
@@ -118,8 +125,6 @@ const UpdateProfile = () => {
       imageUpload && await updatePhoto();
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -196,6 +201,10 @@ const UpdateProfile = () => {
     setButtonClicked(true)
     setChangePhoto(!changePhoto)
   }
+
+  useEffect(() => {
+    imageUpload && console.log(imageUpload)
+  }, [imageUpload])
 
   return user ? (
     <div className="settings-container">
@@ -301,7 +310,7 @@ const UpdateProfile = () => {
           ></input>
         </div>
 
-        <button className="update-submit" disabled={loading} type="submit">
+        <button className="update-submit" type="submit">
           Submit
         </button>
       </form>

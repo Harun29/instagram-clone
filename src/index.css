@@ -511,6 +511,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-weight: 700;
 }
 
 .post-header .link-to-user {
@@ -1236,6 +1237,7 @@ a {
   width: 35px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover;
 }
 
 .user-in-create span{
@@ -1967,39 +1969,40 @@ a {
 }
 
 .card, .card-in-post {
-  display: flex;
   background-color: white;
+  display: flex;
+  height: 90%;
 }
 
 .card-img-top {
+  max-width: 600px;
   object-fit: contain;
   background-color: black;
 }
 
 .card-body {
-  width: 40%;
+  width: 400px;
+  height: 100%;
   display: grid;
-  grid-template-rows: 60px auto 5fr 50px 50px;
-  font-size: 0.8rem;
-  line-height: 18px;
+  grid-template-rows: 50px auto 5fr 40px 60px;
 }
 
 .post-header.in-post {
-  padding: 30px 15px;
-  font-weight: 600;
-  border-bottom: 1px solid rgb(224, 222, 222);
+  margin: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .post-header-description {
-  padding: 15px;
+  margin: 10px;
+  font-size: 0.8rem;
 }
 
 .comments-in-post {
   overflow-y: scroll;
-  margin: 0 15px 15px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  /* width: calc(100% - 30px); */
+  margin: 0 10px;
 }
 
 .comments-in-post::-webkit-scrollbar {
@@ -2007,8 +2010,7 @@ a {
 }
 
 .interactions.in-post {
-  padding: 15px;
-  margin: 0;
+  margin: 20px 10px 0 10px;
 }
 
 .interactions.in-post div:nth-child(2) svg{
@@ -2016,9 +2018,8 @@ a {
 }
 
 .add-comment-container.in-post {
-  padding: 0 15px;
-  margin-bottom: 10px;
-  width: calc(100% - 30px);
+  margin: 0 10px;
+  width: calc(100% - 20px);
 }
 
 .show-post .icon-tabler-x {
@@ -2030,6 +2031,7 @@ a {
 
 .post-header-description {
   display: flex;
+  margin: 10px 10px 20px;
 }
 
 .bold {
@@ -2038,27 +2040,25 @@ a {
 
 .comment {
   display: flex;
-  width: 100%;
-  text-wrap: wrap;
-  margin-bottom: 20px;
+  /* align-items: center; */
+  margin-bottom: 15px;
 }
 
 .comment a img {
   width: 35px;
   height: 35px;
-  object-fit: cover;
   border-radius: 50%;
-  margin-right: 12px;
-}
-
-.comment p {
-  width: 90%;
-  word-wrap: break-word;
+  margin-right: 10px;
 }
 
 .comment p a {
-  font-weight: 600;
+  font-weight: 700;
 }
+
+.comment p {
+  font-size: 0.8rem;
+}
+
 
 /* LikedBy */
 
