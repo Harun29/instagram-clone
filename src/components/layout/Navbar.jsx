@@ -13,6 +13,8 @@ import {
   query,
   getDocs,
   or,
+  onSnapshot,
+  doc
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
@@ -46,6 +48,7 @@ const Navigation = () => {
   const [dropdown, setDropdown] = useState(false);
   const [moreDropdown, setMoreDropdown] = useState(false);
   const [userPhoto, setUserPhoto] = useState("/blank-profile.jpg");
+  const [userId, setUserId] = useState();
   const [userName, setUserName] = useState();
   const [createPost, setCreatePost] = useState(false);
   const [searchDropdown, setSearchDropdown] = useState(false);
@@ -135,10 +138,25 @@ const Navigation = () => {
     }
   }, [searchInput, searchResults]);
 
+  const getUserByEmailInPost = async (email) => {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.error("No matching documents for email:", email);
+      return null;
+    }
+    const user = querySnapshot;
+    return user;
+  };
+
   useEffect(() => {
     const fetchUser = async (email) => {
-      const user = await getUserByEmail(email);
+      const userSnapshot = await getUserByEmailInPost(email);
       // setUser(user);
+      const user = userSnapshot.docs[0].data()
+      setUserId(userSnapshot.docs[0].id)
       setNotifs(user.notif?.reverse());
       if (user.pphoto) {
         const userPhotoUrl = await getDownloadURL(
@@ -155,6 +173,25 @@ const Navigation = () => {
       console.error("error in fetch user: ", err);
     }
   }, [currentUser, getUserByEmail]);
+
+  useEffect(() => {
+    try{
+      const unsub = onSnapshot(doc(db, "users", userId), async (user) => {
+        const newPhoto = user.data()?.pphoto;
+        const userPhotoUrl = await getDownloadURL(
+          ref(storage, `profile_pictures/${newPhoto}`),
+        ); 
+        setUserPhoto(userPhotoUrl);
+      })
+      return () => unsub();
+    }catch (err){
+      console.error(err)
+    }
+  }, [userId])
+
+  useEffect(() => {
+    userId && console.log(userId)
+  }, [userId])
 
   const handleLogout = async () => {
     setError("");
