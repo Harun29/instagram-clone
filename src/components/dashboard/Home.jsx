@@ -282,6 +282,7 @@ const Home = () => {
         opened: notifStatus,
         notifRef: docNotifRef,
         notifType: "like",
+        notifDate: new Date()
       };
       return object;
     };

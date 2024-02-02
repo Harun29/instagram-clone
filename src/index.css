@@ -270,6 +270,7 @@ a {
   transition: all 0.1s ease;
 }
 
+
 .container a:nth-child(n + 2):hover,
 .nav-wrapper footer:hover,
 .menu-bar:hover {
@@ -360,9 +361,13 @@ a {
   width: calc(100% - 40px);
 }
 
+.notification label{
+  line-height: 15px;
+}
+
 .notif-by img {
   width: 2.2rem;
-  height: 2.2rem;
+  aspect-ratio: 1;
   margin-right: 15px;
   border-radius: 50%;
   object-fit: cover;
@@ -1087,7 +1092,7 @@ a {
 }
 
 .notification-container {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   width: 100%;
   display: flex;
   align-items: center;
@@ -2181,4 +2186,19 @@ a {
   49.99%{transform:scaleY(1)  rotate(135deg)}
   50%   {transform:scaleY(-1) rotate(0deg)}
   100%  {transform:scaleY(-1) rotate(-135deg)}
+}
+
+.time-ago{
+  margin-left: 5px;
+  color: #737373;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.time-ago-container .dot{
+  width: 4px;
+  height: 4px;
+  background-color: #737373;
+  border-radius: 50%;
+  margin-right: 5px;
 }

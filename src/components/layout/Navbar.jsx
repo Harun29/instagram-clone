@@ -35,6 +35,7 @@ import SaveIcon from "../../icons/SaveIcon";
 import CreatePost from "../projects/CreatePost";
 import ExitIcon from "../../icons/xIcon";
 import { db } from "../../config/firebase";
+import TimeAgo from "../projects/TimeAgo";
 
 const Navigation = () => {
   const location = useLocation();
@@ -173,6 +174,10 @@ const Navigation = () => {
       console.error("error in fetch user: ", err);
     }
   }, [currentUser, getUserByEmail]);
+
+  // useEffect(() => {
+  //   notifs[0] && console.log(notifs[0].notifDate.nanoseconds)
+  // }, [notifs])
 
   useEffect(() => {
     try{
@@ -473,8 +478,12 @@ const Navigation = () => {
                       }
                       alt="liked"
                     />
-                    <strong>{notif.likedBy}</strong>
-                    <label>Liked your post</label>
+                    <label>
+                      <strong>{notif.likedBy}</strong>
+                      Liked your post
+                      <TimeAgo nanoseconds={notif.notifDate.nanoseconds} seconds={notif.notifDate.seconds}></TimeAgo>
+                    </label>
+                    
                   </Link>{" "}
                   <div className="photo-and-exit">
                     <Link
