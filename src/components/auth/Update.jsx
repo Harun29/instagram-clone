@@ -1,6 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
 import { storage } from "../../config/firebase";
 import { v4 } from "uuid";
 import {
@@ -36,7 +35,7 @@ const UpdateProfile = () => {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(true);
   const [passwordUpdating, setPasswordUpdateing] = useState(false);
   const [confirmation, setConfirmation] = useState();
@@ -86,6 +85,10 @@ const UpdateProfile = () => {
     }
   };
 
+  useEffect(() => {
+    imgName && console.log(imgName)
+  }, [imgName])
+
   const updatePhoto = async () => {
     try {
       console.log("Before uploadBytes 1");
@@ -109,11 +112,11 @@ const UpdateProfile = () => {
   };
   
   
-
   /* ----- */
 
   const handleChanges = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       name && await nameUpdate(user.email, name);
       userName && await userNameUpdate(user.email, userName);
@@ -121,6 +124,7 @@ const UpdateProfile = () => {
       bio && await bioUpdate(user.email, bio);
       birthday && await birthdayUpdate(user.email, birthday);
       imageUpload && await updatePhoto();
+      setLoading(false)
     } catch (err) {
       console.error(err);
     }
@@ -308,8 +312,8 @@ const UpdateProfile = () => {
           ></input>
         </div>
 
-        <button className="update-submit" type="submit">
-          Submit
+        <button disabled={loading} className="update-submit" type="submit">
+          {loading ? <div className="loader update-profile"></div> : "submit"}
         </button>
       </form>
 
@@ -372,9 +376,7 @@ const UpdateProfile = () => {
     </div>
   ) : (
     <div>
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
+      <div className="loader"></div>
     </div>
   );
 };
