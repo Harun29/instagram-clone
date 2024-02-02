@@ -57,6 +57,7 @@ const Suggested = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setUsers([])
       const usersRef = query(
         collection(db, "users"),
         where("userName", "not-in", userFollowing),
