@@ -518,8 +518,11 @@ const Navigation = () => {
                         }
                         alt="liked"
                       />
-                      <strong>{notif.followedBy}</strong>
-                      <label>Started Following You!</label>
+                      <label>
+                        <strong>{notif.followedBy}</strong>
+                        Started Following You!
+                        <TimeAgo nanoseconds={notif.notifDate.nanoseconds} seconds={notif.notifDate.seconds}></TimeAgo>
+                      </label>
                     </div>
                   </Link>
                   <button
@@ -545,8 +548,11 @@ const Navigation = () => {
                         }
                         alt="liked"
                       />
-                      <strong>{notif.commentedBy}</strong>
-                      <label>Commented your photo</label>
+                      <label>
+                        <strong>{notif.commentedBy}</strong>
+                        Commented your photo
+                        <TimeAgo nanoseconds={notif.notifDate.nanoseconds} seconds={notif.notifDate.seconds}></TimeAgo>
+                      </label>
                     </div>
                   </Link>
                   <div className="photo-and-exit">

@@ -79,6 +79,7 @@ const Post = ({
         opened: notifStatus,
         notifRef: docNotifRef,
         notifType: "like",
+        notifDate: new Date()
       };
       return object;
     };
@@ -209,6 +210,10 @@ const Post = ({
     }
   }, [param]);
 
+  useEffect(() => {
+    console.log(post)
+  }, [post])
+
   const handleComment = async () => {
     const docRef = doc(db, "posts", param);
     const docNotifRef = doc(db, "users", userId);
@@ -222,6 +227,7 @@ const Post = ({
         opened: notifStatus,
         notifRef: docNotifRef,
         notifType: "comment",
+        notifDate: new Date()
       };
       return object;
     };

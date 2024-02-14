@@ -136,6 +136,7 @@ const User = () => {
       opened: notifStatus,
       notifRef: notifRef,
       notifType: "follow",
+      notifDate: new Date()
     };
     return object;
   };

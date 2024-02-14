@@ -119,6 +119,7 @@ const Post = () => {
         opened: notifStatus,
         notifRef: docNotifRef,
         notifType: "like",
+        notifDate: new Date()
       };
       return object;
     };
@@ -249,6 +250,7 @@ const Post = () => {
         opened: notifStatus,
         notifRef: docNotifRef,
         notifType: "comment",
+        notifDate: new Date()
       };
       return object;
     };

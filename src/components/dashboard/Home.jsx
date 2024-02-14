@@ -243,6 +243,7 @@ const Home = () => {
         opened: notifStatus,
         notifRef: docNotifRef,
         notifType: "comment",
+        notifDate: new Date()
       };
       return object;
     };
@@ -373,10 +374,10 @@ const Home = () => {
   const handleSeePost = (postid, postPhoto, index, userid) => {
     setPostid(postid);
     setPostPhoto(postPhoto);
-    setSeePost(true);
     setButtonClicked(true);
     setUserId(userid);
     posts[index].postPopup = true;
+    setSeePost(true);
   };
 
   const handleLikedBy = (likedby, index) => {
