@@ -187,7 +187,6 @@ const Post = ({
       const unsub = onSnapshot(doc(db, "posts", param), (document) => {
         setPost(document.data());
         setComments(document.data().comments.reverse());
-        console.log("im here!!")
       });
       return () => unsub();
     } catch (err) {
@@ -213,6 +212,7 @@ const Post = ({
 
   const handleComment = async () => {
     const docRef = doc(db, "posts", param);
+    console.log("userid: ", userId)
     const docNotifRef = doc(db, "users", userId);
 
     const notifObject = (notifStatus) => {

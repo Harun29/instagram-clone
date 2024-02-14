@@ -225,6 +225,7 @@ const Home = () => {
       );
 
       setPosts(postsData);
+      console.log(postsData)
     };
 
     fetchPosts();
@@ -375,6 +376,7 @@ const Home = () => {
     setPostid(postid);
     setPostPhoto(postPhoto);
     setButtonClicked(true);
+    console.log(userid)
     setUserId(userid);
     setSeePost(true);
   };
@@ -464,7 +466,7 @@ const Home = () => {
                       scale: 1.2,
                     }}
                     onClick={() =>
-                      handleSeePost(post.id, post.photo, index, post.userId)
+                      handleSeePost(post.id, post.photo, post.userId)
                     }
                   >
                     <MessageCircleIcon></MessageCircleIcon>
@@ -549,7 +551,7 @@ const Home = () => {
 
               {post.comments ? (
                 <div
-                  onClick={() => handleSeePost(post.id, post.photo, index)}
+                  onClick={() => handleSeePost(post.id, post.photo, post.userId)}
                   className="view-all-comments"
                 >
                   {post.comments.length > 0 && (
