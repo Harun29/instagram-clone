@@ -371,20 +371,18 @@ const Home = () => {
     }
   };
 
-  const handleSeePost = (postid, postPhoto, index, userid) => {
+  const handleSeePost = (postid, postPhoto, userid) => {
     setPostid(postid);
     setPostPhoto(postPhoto);
     setButtonClicked(true);
     setUserId(userid);
-    posts[index].postPopup = true;
     setSeePost(true);
   };
 
-  const handleLikedBy = (likedby, index) => {
+  const handleLikedBy = (likedby) => {
     setButtonClicked(true);
     setLikedByToggle(true);
     setLikedBy(likedby);
-    posts[index].likedByPopup = true;
   };
 
   useEffect(() => {
