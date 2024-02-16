@@ -11,7 +11,7 @@ import {
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import { Link } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, orderBy } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import { motion, AnimatePresence } from "framer-motion";
@@ -183,32 +183,57 @@ const Post = ({
   }, [post]);
 
   useEffect(() => {
-    try {
-      const unsub = onSnapshot(doc(db, "posts", param), (document) => {
-        setPost(document.data());
-        setComments(document.data().comments.reverse());
-      });
+    try{
+      const docRef = doc(db, "posts", param);
+      const unsub = onSnapshot(collection(docRef, "comments"), (document) => {
+        document.forEach((doc) => {
+          if (!comments.includes(doc.data())){
+            setComment((prevComments) => [...prevComments, doc.data()])
+          }
+        });
+      })
       return () => unsub();
+    }catch(err){
+      console.error("error in fetching comments")
+    }
+  }, [param])
+
+  useEffect(() => {
+    try {
+      const document = doc(db, "posts", param)
+      setPost(document.data());
     } catch (err) {
       console.error("erron in post snapshot: ", err);
     }
   }, []);
 
   useEffect(() => {
-    const fetchPost = async (id) => {
+    const fetchComments = async (id) => {
       const docRef = doc(db, "posts", id);
-      const post = await getDoc(docRef);
-      const postComments = post.data().comments;
-      setPost(post.data());
-      setComments(postComments.reverse());
+      const collectionRef = collection(docRef, "comments");
+      const orderedQuery = query(collectionRef, orderBy('date', 'asc'));
+      
+      try {
+        const commentsSnapshot = await getDocs(orderedQuery);
+        const commentsData = [];
+        
+        commentsSnapshot.forEach((doc) => {
+          commentsData.push(doc.data());
+        });
+  
+        setComments(commentsData);
+      } catch (err) {
+        console.error("Error fetching comments:", err);
+      }
     };
-
+  
     try {
-      fetchPost(param);
+      fetchComments(param);
     } catch (err) {
-      console.error("error: ", err);
+      console.error("Error fetching comments:", err);
     }
   }, [param]);
+  
 
   const handleComment = async () => {
     const docRef = doc(db, "posts", param);
@@ -230,14 +255,13 @@ const Post = ({
     };
 
     try {
-      await updateDoc(docRef, {
-        comments: arrayUnion({
-          user: userViewing.email,
-          comment: comment,
-          userPhoto: userViewingPhoto,
-          userName: userViewing.userName,
-        }),
-      });
+      await addDoc(collection(docRef, "comments"), {
+        user: userViewing.email,
+        comment: comment,
+        userPhoto: userViewingPhoto,
+        userName: userViewing.userName,
+        date: new Date()
+      })
       await updateDoc(docNotifRef, {
         notif: arrayUnion(notifObject(false)),
       });
