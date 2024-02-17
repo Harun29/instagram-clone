@@ -16,6 +16,7 @@ import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import { motion, AnimatePresence } from "framer-motion";
 import ExitIcon from "../../icons/xIcon";
+import TimeAgo from "./TimeAgo";
 
 const Post = ({
   param,
@@ -216,7 +217,7 @@ const Post = ({
     const fetchComments = async (id) => {
       const docRef = doc(db, "posts", id);
       const collectionRef = collection(docRef, "comments");
-      const orderedQuery = query(collectionRef, orderBy('date', 'asc'));
+      const orderedQuery = query(collectionRef, orderBy('date', 'desc'));
       
       try {
         const commentsSnapshot = await getDocs(orderedQuery);
@@ -340,6 +341,7 @@ const Post = ({
                         {comment.userName}
                       </Link>{" "}
                       {comment.comment}
+                      <TimeAgo specialClass={"comments"} nanoseconds={comment.date.nanoseconds} seconds={comment.date.seconds}></TimeAgo>
                     </p>
                   </div>
                 ))}

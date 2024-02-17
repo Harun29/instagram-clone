@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 
-const TimeAgo = ({ nanoseconds, seconds }) => {
+const TimeAgo = ({ specialClass, nanoseconds, seconds }) => {
   const [timeAgo, setTimeAgo] = useState('');
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const TimeAgo = ({ nanoseconds, seconds }) => {
     }
   }, [nanoseconds, seconds]);
 
-  return <span className='time-ago'>{timeAgo}</span>;
+  return <span className={`time-ago ${specialClass && specialClass}`}>{timeAgo}</span>;
 };
 
 export default TimeAgo;

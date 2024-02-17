@@ -2195,6 +2195,10 @@ a {
   font-weight: 400;
 }
 
+.time-ago.comments{
+  font-size: 0.8rem;
+}
+
 .time-ago-container .dot{
   width: 4px;
   height: 4px;
