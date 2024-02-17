@@ -35,6 +35,7 @@ const Post = ({
   const [saved, setSaved] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentsIds, setCommentsIds] = useState([]);
 
   const getUserByEmailInPost = async (email) => {
     const usersRef = collection(db, "users");
@@ -184,14 +185,18 @@ const Post = ({
 
 
   // NEWWW
+  
+  useEffect(() => {
+    console.log(commentsIds)
+  }, [commentsIds])
 
   useEffect(() => {
     try{
       const docRef = doc(db, "posts", param);
       const unsub = onSnapshot(collection(docRef, "comments"), (document) => {
-        document.forEach((doc) => {
-          if (!comments.includes(doc.data())){
-            setComment((prevComments) => [...prevComments, doc.data()])
+        document.docChanges().forEach((change) => {
+          if(change.type === "added"){
+            setComments((prevComments) => [change.doc.data(), ...prevComments])
           }
         });
       })
@@ -224,12 +229,15 @@ const Post = ({
       try {
         const commentsSnapshot = await getDocs(orderedQuery);
         const commentsData = [];
+        const commentsIdsData = [];
         
         commentsSnapshot.forEach((doc) => {
           commentsData.push(doc.data());
+          commentsIdsData.push(doc.id);
         });
   
         setComments(commentsData);
+        setCommentsIds(commentsIdsData);
       } catch (err) {
         console.error("Error fetching comments:", err);
       }
