@@ -190,6 +190,7 @@ const Post = ({
         document.docChanges().forEach((change) => {
           if(change.type === "added"){
             setComments((prevComments) => [change.doc.data(), ...prevComments])
+            setComment("");
           }
         });
       })
@@ -210,8 +211,6 @@ const Post = ({
       console.error("erron in post snapshot: ", err);
     }
   }, []);
-
-  // NEWW
 
   useEffect(() => {
     const fetchComments = async (id) => {
@@ -243,7 +242,6 @@ const Post = ({
 
   const handleComment = async () => {
     const docRef = doc(db, "posts", param);
-    console.log("userid: ", userId)
     const docNotifRef = doc(db, "users", userId);
 
     const notifObject = (notifStatus) => {
@@ -271,7 +269,6 @@ const Post = ({
       await updateDoc(docNotifRef, {
         notif: arrayUnion(notifObject(false)),
       });
-      setComment("");
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }

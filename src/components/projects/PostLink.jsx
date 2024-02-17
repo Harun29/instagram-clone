@@ -12,7 +12,7 @@ import { storage } from "../../config/firebase";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, orderBy, onSnapshot } from "firebase/firestore";
 import MessageCircleIcon from "../../icons/MessageCircleIcon";
 import ArrowForwardIcon from "../../icons/ArrowForwardIcon";
 import { useAuth } from "../../context/AuthContext";
@@ -31,6 +31,7 @@ const Post = () => {
   const [userViewingId, setUserViewingId] = useState("");
   const [userViewingPhoto, setUserViewingPhoto] = useState("");
   const [comment, setComment] = useState("")
+  const [comments, setComments] = useState([])
   const param = useParams().id;
 
 
@@ -224,16 +225,14 @@ const Post = () => {
   }, [post]);
 
   useEffect(() => {
-    const fetchPost = async (id) => {
-      const docRef = doc(db, "posts", id);
-      const post = await getDoc(docRef);
-      setPost(post.data());
-    };
-
+    const fetchPost = async () => {
+      const document = await getDoc(doc(db, "posts", param))
+      setPost(document.data())
+    }
     try {
-      fetchPost(param);
+      fetchPost()
     } catch (err) {
-      console.error("error: ", err);
+      console.error("erron in post snapshot: ", err);
     }
   }, [param]);
 
@@ -256,22 +255,64 @@ const Post = () => {
     };
 
     try {
-      await updateDoc(docRef, {
-        comments: arrayUnion({
-          user: userViewing.email,
-          comment: comment,
-          userPhoto: userViewingPhoto,
-          userName: userViewing.userName
-        }),
-      });
+      await addDoc(collection(docRef, "comments"), {
+        user: userViewing.email,
+        comment: comment,
+        userPhoto: userViewingPhoto,
+        userName: userViewing.userName,
+        date: new Date()
+      })
       await updateDoc(docNotifRef, {
         notif: arrayUnion(notifObject(false)),
       });
-      setComment("")
     } catch (err) {
       console.error("Error in handleComment: ", err);
     }
   };
+
+  useEffect(() => {
+    const fetchComments = async (id) => {
+      const docRef = doc(db, "posts", id);
+      const collectionRef = collection(docRef, "comments");
+      const orderedQuery = query(collectionRef, orderBy('date', 'desc'));
+      
+      try {
+        const commentsSnapshot = await getDocs(orderedQuery);
+        const commentsData = [];
+        
+        commentsSnapshot.forEach((doc) => {
+          commentsData.push(doc.data());
+        });
+  
+        setComments(commentsData);
+      } catch (err) {
+        console.error("Error fetching comments:", err);
+      }
+    };
+  
+    try {
+      fetchComments(param);
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  }, [param]);
+
+  useEffect(() => {
+    try{
+      const docRef = doc(db, "posts", param);
+      const unsub = onSnapshot(collection(docRef, "comments"), (document) => {
+        document.docChanges().forEach((change) => {
+          if(change.type === "added"){
+            setComments((prevComments) => [change.doc.data(), ...prevComments])
+            setComment("");
+          }
+        });
+      })
+      return () => unsub();
+    }catch(err){
+      console.error("error in fetching comments")
+    }
+  }, [param])
 
   return post ? (
     <div className="post-link-container">
@@ -300,7 +341,7 @@ const Post = () => {
         </div>
 
         <div className="comments-in-post">
-          {post.comments.map((comment) => (
+          {comments.map((comment) => (
             <div className="comment">
               <Link to={`/user/${comment.userName}`}>
                 <img src={comment.userPhoto ? comment.userPhoto : "blank-profile.jpg"} alt="commented by" />
