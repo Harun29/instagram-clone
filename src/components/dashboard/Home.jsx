@@ -42,10 +42,6 @@ const Home = () => {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    postRef && console.log(postRef);
-  }, [postRef]);
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
       const isClickInsideLikedBy =
         likedByRef.current && likedByRef.current.contains(event.target);
@@ -78,10 +74,6 @@ const Home = () => {
       window.removeEventListener("click", handleClickOutside);
     };
   }, [buttonClicked, seePost]);
-
-  useEffect(() => {
-    console.log(postRef);
-  }, [postRef]);
 
   useEffect(() => {
     seePost && setButtonClicked(false);
@@ -225,7 +217,6 @@ const Home = () => {
       );
 
       setPosts(postsData);
-      console.log(postsData)
     };
 
     fetchPosts();
@@ -373,12 +364,11 @@ const Home = () => {
   };
 
   const handleSeePost = (postid, postPhoto, userid) => {
+    setButtonClicked(true);
     setPostid(postid);
     setPostPhoto(postPhoto);
-    setButtonClicked(true);
-    console.log(userid)
-    setUserId(userid);
     setSeePost(true);
+    setUserId(userid);
   };
 
   const handleLikedBy = (likedby) => {
@@ -388,8 +378,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    seePost && console.log(seePost);
-  }, [seePost]);
+    console.log("See post: ", seePost)
+    console.log("button clicked: ", buttonClicked);
+  }, [buttonClicked]);
 
   return (
     <div className="home-container">

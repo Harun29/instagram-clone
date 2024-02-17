@@ -182,6 +182,9 @@ const Post = ({
     }
   }, [post]);
 
+
+  // NEWWW
+
   useEffect(() => {
     try{
       const docRef = doc(db, "posts", param);
@@ -199,13 +202,18 @@ const Post = ({
   }, [param])
 
   useEffect(() => {
+    const fetchPost = async () => {
+      const document = await getDoc(doc(db, "posts", param))
+      setPost(document.data())
+    }
     try {
-      const document = doc(db, "posts", param)
-      setPost(document.data());
+      fetchPost()
     } catch (err) {
       console.error("erron in post snapshot: ", err);
     }
   }, []);
+
+  // NEWW
 
   useEffect(() => {
     const fetchComments = async (id) => {
@@ -270,10 +278,6 @@ const Post = ({
       console.error("Error in handleComment: ", err);
     }
   };
-
-  useEffect(() => {
-    userId && console.log(userId)
-  }, [userId])
 
   return (
     post &&
